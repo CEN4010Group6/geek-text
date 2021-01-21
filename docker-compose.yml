@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+      - database:/app/db
+      - node_modules_backend:/app/node_modules
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - node_modules_frontend:/app/node_modules
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - backend
+      - frontend
+volumes:
+  database: {}
+  node_modules_backend: {}
+  node_modules_frontend: {}
