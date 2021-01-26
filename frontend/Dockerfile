@@ -11,5 +11,6 @@ COPY . /app
 EXPOSE 4200
 
 ENV PATH /app/node_modules/.bin:$PATH
+ENV NODE_ENV development
 
 ENTRYPOINT ["ng", "serve", "--host", "0.0.0.0"]
