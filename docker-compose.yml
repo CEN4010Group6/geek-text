@@ -4,6 +4,7 @@ services:
     build: ./backend
     environment:
       NODE_ENV: development
+      DATABASE_URL: "file:/app/db/dev.db"
     volumes:
       - ./backend:/app
       - database:/app/db

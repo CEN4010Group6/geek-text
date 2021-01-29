@@ -17,6 +17,8 @@ RUN npm cache clean --force && \
 
 COPY . .
 
+RUN npx prisma generate
+
 EXPOSE 3000
 
 ENTRYPOINT ["npm", "run", "start:dev"]
