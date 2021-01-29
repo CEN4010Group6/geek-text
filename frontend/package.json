@@ -22,6 +22,7 @@
     "@angular/router": "~11.1.0",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
     "bootstrap": "^4.5.0",
+    "pm2": "^4.5.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
@@ -29,7 +30,6 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^11.0.0",
     "@angular-devkit/build-angular": "~0.1101.0",
-    "@angular/cli": "~11.1.0",
     "@angular/compiler-cli": "~11.1.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.19.15",
