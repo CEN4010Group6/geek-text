@@ -1,18 +1,22 @@
 FROM node:lts-alpine3.10
 
+ENV NODE_ENV development
+
+ENV npm_config_loglevel error
+
+ENV PATH /app/node_modules/.bin:$PATH
+
 WORKDIR /app
 
 COPY ./package*.json /app/
 
-RUN npm cache clean --force && npm install
+RUN npm cache clean --force && \
+  npm prune && \
+  npm install && \
+  npm i -g @nestjs/cli
 
-COPY . /app
+COPY . .
 
-RUN npx tsc
+EXPOSE 3000
 
-EXPOSE 9000
-
-ENV PATH /app/node_modules/.bin:$PATH
-
-ENTRYPOINT ["npm", "run", "devel"]
-
+ENTRYPOINT ["npm", "run", "start:dev"]

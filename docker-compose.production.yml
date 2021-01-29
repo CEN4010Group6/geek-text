@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  backend:
+    environment:
+      NODE_ENV: production
+
+  frontend:
+    environment:
+      NODE_ENV: production
+
+  node:
+    environment:
+      ENV: production
+    ports:
+      - "443:443"
