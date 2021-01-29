@@ -7,6 +7,11 @@ import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
 
 export default {
+  output: {
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[id].js',
+    crossOriginLoading: 'anonymous'
+  },
   optimization: {
     minimize: process.env.NODE_ENV === 'production',
     minimizer: [
