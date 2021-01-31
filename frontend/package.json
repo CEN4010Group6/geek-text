@@ -22,7 +22,7 @@
     "@angular/router": "~11.1.0",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
     "bootstrap": "^4.5.0",
-    "pm2": "^4.5.1",
+    "immutable": "^4.0.0-rc.12",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

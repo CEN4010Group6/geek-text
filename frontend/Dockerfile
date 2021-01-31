@@ -6,16 +6,14 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 WORKDIR /app
 
-COPY ./package*.json /app/
-
-RUN npm cache clean --force && \
-  npm prune && \
-  npm install --no-optional && \
-  npm install -g @angular/cli && \
-  npm audit --fix
-
 COPY . .
+
+RUN npm install -g @angular/cli && \
+  npm install --no-optional && \
+  npm cache clean --force
+
+COPY ./package-lock.json /tmp/package-lock.json
 
 EXPOSE 4200
 
-ENTRYPOINT ["ng", "serve", "--host", "0.0.0.0", "--disableHostCheck"]
+ENTRYPOINT ["./docker-entrypoint.sh"]

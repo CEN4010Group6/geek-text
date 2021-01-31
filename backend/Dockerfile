@@ -6,15 +6,14 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 WORKDIR /app
 
-COPY ./package*.json /app/
-
-RUN npm cache clean --force && \
-  npm prune && \
-  npm install --no-optional && \
-  npm i -g @nestjs/cli
-
 COPY . .
+
+RUN npm install -g @nestjs/cli && \
+  npm install --no-optional && \
+  npm cache clean --force
+
+COPY ./package-lock.json /tmp/package-lock.json
 
 EXPOSE 3000
 
-ENTRYPOINT ["npm", "run", "start:dev"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
