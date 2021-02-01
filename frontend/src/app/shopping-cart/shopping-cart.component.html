@@ -1,0 +1,14 @@
+<h1>Your Shopping Cart</h1>
+<ol id="shopping-cart-list">
+  <!-- The list of items that have been selected via the "Add to Cart" button in the Book Details page -->
+  <li>
+    <p><a>book title</a></p>
+    <p>author information</p>
+    <button [ngClass]="['btn', 'btn-primary']">Plus</button>
+    <span>
+      Quantity
+      <!--Default to 1-->
+    </span>
+    <button [ngClass]="['btn', 'btn-primary']">Minus</button>
+  </li>
+</ol>
