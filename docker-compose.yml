@@ -7,7 +7,6 @@ services:
       DATABASE_URL: "file:/app/db/dev.db"
     volumes:
       - ./backend:/app
-      - database:/app/db
       - /app/node_modules
 
   frontend:

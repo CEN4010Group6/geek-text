@@ -1,5 +1,5 @@
 // Core Angular Imports
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -9,8 +9,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Site imports
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ApiService } from './service/api.service';
+import { ApiService } from './api.service';
 import { NavigationComponent } from './navigation/navigation.component';
+import { CustomErrorHandlerService } from './custom-error-handler.service';
+import { LoggerService } from './logger.service';
 
 
 @NgModule({
@@ -24,7 +26,14 @@ import { NavigationComponent } from './navigation/navigation.component';
     AppRoutingModule,
     NgbModule
   ],
-  providers: [ ApiService ],
+  providers: [
+    ApiService,
+    LoggerService,
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandlerService
+    }
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

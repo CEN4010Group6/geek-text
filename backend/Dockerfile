@@ -4,6 +4,8 @@ ENV NODE_ENV development
 
 ENV PATH /app/node_modules/.bin:$PATH
 
+ENV DATABASE_URL "file:/app/db/dev.db"
+
 WORKDIR /app
 
 COPY . .

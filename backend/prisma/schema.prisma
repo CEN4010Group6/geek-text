@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "sqlite"
-  url = "file:../db/dev.db"
+  url = env("DATABASE_URL")
 }
 
 generator client {
@@ -11,41 +11,98 @@ generator client {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   email String @unique
-  password_hash String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  passwordHash String
+  profilePicture String?
+  transactions Transaction[]
+  shippingAddress Address[] @relation("ShippingAddress")
+  billingAddress Address? @relation("BillingAddress")
+  creditCard CreditCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("users")
 }
 
 model Book {
-  book_id String @id @default(uuid())
+  id String @id @default(uuid())
   title String @unique
   author Author[]
   publisher Publisher
+  isbn String @unique
   description String
   genre Genre[]
   price Float
-  rating Float
-  cover_url String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  rating Rating[]
+  coverUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("books")
 }
 
 model Author {
-  author_id String @id @default(uuid())
+  id String @id @default(uuid())
   name String @unique
   description String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("authors")
 }
 
 model Publisher {
-  publisher_id String @id @default(uuid())
-  publisher_name String @unique
+  id String @id @default(uuid())
+  name String @unique
+  // City? State?
+  @@map("publishers")
 }
 
 model Genre {
-  genre_id Int @id @default(autoincrement())
-  genre_name String @unique
+  id Int @id @default(autoincrement())
+  name String @unique
+  @@map("genres")
+}
+
+model Rating {
+  id String @id @default(uuid())
+  value Int
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  @@map("ratings")
+}
+
+model Address {
+  id String @id @default(uuid())
+  street String
+  apartmentOrUnit String?
+  city String
+  state String
+  country String
+  zipcode Int
+  userShippingAddress User @relation("ShippingAddress", fields: [userShippingAddressId], references: [id])
+  userShippingAddressId String
+  userBillingAddress User @relation("BillingAddress", fields: [userBillingAddressId], references: [id])
+  userBillingAddressId String
+  @@map("addresses")
+}
+
+model Transaction {
+  id String @id @default(uuid())
+  books Book[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("transactions")
+}
+
+model CreditCard {
+  cardId String @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  encryptedCreditCardNumber String
+  encryptedCCV String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("credit_cards")
 }
