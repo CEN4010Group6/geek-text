@@ -10,8 +10,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install -g @nestjs/cli && \
+RUN apk --no-cache --virtual build add python make g++ && \
+  npm install -g @nestjs/cli node-gyp && \
   npm install --no-optional && \
+  npm uninstall -g node-gyp && \
   npm cache clean --force
 
 COPY ./package-lock.json /tmp/package-lock.json
