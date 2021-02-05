@@ -15,6 +15,7 @@ RUN apk --no-cache --virtual build add python make g++ && \
   npm install --no-optional && \
   npm uninstall -g node-gyp && \
   npm cache clean --force && \
+  # find . -name '*.sh' | xargs dos2unix && \
   apk del build
 
 COPY ./package-lock.json /tmp/package-lock.json

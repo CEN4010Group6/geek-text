@@ -15,6 +15,7 @@ model User {
   email String @unique
   passwordHash String
   firstName String
+  middleName String?
   lastName String
   profilePicture String?
   transactions Transaction[]
@@ -30,7 +31,7 @@ model Book {
   title String @unique
   author Author[]
   publisher Publisher
-  isbn String @unique
+  isbn Int @unique
   description String
   genre Genre[]
   price Float
@@ -43,7 +44,9 @@ model Book {
 
 model Author {
   id String @id @default(uuid())
-  name String @unique
+  firstName String
+  middleName String?
+  lastName String
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -89,7 +92,10 @@ model Address {
 
 model Transaction {
   id String @id @default(uuid())
-  books Book[]
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  books Book[] // @relation(fields: [booksId], references: [id])
+  booksId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("transactions")

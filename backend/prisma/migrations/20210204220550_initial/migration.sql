@@ -3,6 +3,9 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT,
+    "lastName" TEXT NOT NULL,
     "profilePicture" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
@@ -12,9 +15,9 @@ CREATE TABLE "users" (
 CREATE TABLE "books" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "title" TEXT NOT NULL,
-    "isbn" TEXT NOT NULL,
+    "isbn" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
-    "price" REAL NOT NULL,
+    "price" DECIMAL NOT NULL,
     "coverUrl" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
@@ -27,7 +30,9 @@ CREATE TABLE "books" (
 -- CreateTable
 CREATE TABLE "authors" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT,
+    "lastName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
@@ -72,18 +77,17 @@ CREATE TABLE "addresses" (
     "country" TEXT NOT NULL,
     "zipcode" INTEGER NOT NULL,
     "userShippingAddressId" TEXT NOT NULL,
-    "userBillingAddressId" TEXT NOT NULL,
-    FOREIGN KEY ("userShippingAddressId") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ("userBillingAddressId") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY ("userShippingAddressId") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "transactions" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "userId" TEXT NOT NULL,
+    "booksId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "userId" TEXT,
-    FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -107,13 +111,7 @@ CREATE UNIQUE INDEX "books.title_unique" ON "books"("title");
 CREATE UNIQUE INDEX "books.isbn_unique" ON "books"("isbn");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "authors.name_unique" ON "authors"("name");
-
--- CreateIndex
 CREATE UNIQUE INDEX "publishers.name_unique" ON "publishers"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "genres.name_unique" ON "genres"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "addresses_userBillingAddressId_unique" ON "addresses"("userBillingAddressId");
