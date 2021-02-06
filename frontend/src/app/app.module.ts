@@ -10,6 +10,7 @@ import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApiService } from './api.service';
+import { BookModule } from './book/books.module';
 import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
@@ -24,8 +25,13 @@ import { LoggerService } from './logger.service';
     BrowserModule,
     HttpClientModule,
     NgbModule,
+<<<<<<< HEAD
     NgbCollapseModule,
     AppRoutingModule
+=======
+    AppRoutingModule,
+    BookModule
+>>>>>>> b59d80d (Initial setup of Book module.)
   ],
   providers: [
     ApiService,
