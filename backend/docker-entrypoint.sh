@@ -12,6 +12,7 @@ npx prisma generate
 npx prisma migrate deploy --preview-feature
 
 if [[ $NODE_ENV == 'development' ]]; then
+  npm run seed
   npm run start:dev
 else
   npm prune

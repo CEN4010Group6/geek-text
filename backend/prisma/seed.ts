@@ -40,7 +40,7 @@ async function main() {
           city: faker.address.city(),
           state: faker.address.stateAbbr(),
           country: faker.address.country(),
-          zipcode: Number(faker.address.zipCode())
+          zipcode: faker.address.zipCode()
         }
       }
     },

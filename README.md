@@ -14,4 +14,8 @@
 
 ## Rebuilding the container images from a new push
 
+- `docker-compose build <container>`
+
+OR
+
 - `docker-compose up --build`

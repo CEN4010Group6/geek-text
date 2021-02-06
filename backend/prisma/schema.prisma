@@ -84,7 +84,7 @@ model Address {
   city String
   state String
   country String
-  zipcode Int
+  zipcode String
   userShippingAddress User @relation("ShippingAddress", fields: [userShippingAddressId], references: [id])
   userShippingAddressId String
   @@map("addresses")
@@ -102,7 +102,7 @@ model Transaction {
 }
 
 model CreditCard {
-  cardId String @id @default(uuid())
+  id String @id @default(uuid())
   user User @relation(fields: [userId], references: [id])
   userId String
   encryptedCreditCardNumber String
