@@ -13,6 +13,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { AddressComponent } from './profile/address/address.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
@@ -20,28 +21,29 @@ const routes: List<Route> = List([
   {
     path: 'logout',
     component: LogoutComponent,
-    canActivate: [ AuthGuard ] // Seems silly to allow logging
-                               // out when someone isn't even
-                               // logged in
+    canActivate: [AuthGuard] // Seems silly to allow logging
+    // out when someone isn't even
+    // logged in
   },
   { path: 'books/:bookId', component: BookComponent },
   {
     path: 'books/:bookId/review',
     component: ReviewComponent,
-    canActivate: [ AuthGuard ]
+    canActivate: [AuthGuard],
   },
   { path: 'authors/:authorId', component: AuthorsComponent },
   {
     path: 'profile',
-    canActivate: [ AuthGuard ],
+    canActivate: [AuthGuard],
     component: ProfileComponent,
   },
   { path: '', component: StorefrontComponent, pathMatch: 'full' },
-  { path: '**', component: NotFoundComponent }
+  { path: '**', component: NotFoundComponent },
+  { path: 'shopping-cart', component: ShoppingCartComponent }
 ]);
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes.toArray()) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes.toArray())],
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }
