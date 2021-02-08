@@ -42,7 +42,7 @@ export default {
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
-      REST_API_ENTRYPOINT: process.env.REST_API_ENTRYPOINT || 'http://127.0.0.1:8080'
+      REST_API_ENTRYPOINT: process.env.REST_API_ENTRYPOINT || 'http://127.0.0.1:8080/api'
     }),
     new SriPlugin({
       hashFuncNames: [ 'sha256' ],

@@ -1,0 +1,8 @@
+<h1>{{ book.title }}</h1>
+<h2 *ngFor="let auth of book.author">
+  {{ auth.firstName }} {{ auth.lastName }}
+</h2>
+<p>ISBN: {{ book.isbn }}</p>
+<img [src]="book.coverUrl" lightbox />
+<p>Price: ${{ book.price }}</p>
+<p>{{ book.description }}</p>

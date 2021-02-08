@@ -10,10 +10,10 @@ import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApiService } from './api.service';
+import { BookModule } from './book/books.module';
 import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
-
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { LoggerService } from './logger.service';
     HttpClientModule,
     NgbModule,
     NgbCollapseModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BookModule
   ],
   providers: [
     ApiService,
