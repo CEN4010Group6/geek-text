@@ -22,21 +22,13 @@ const httpOptions = {
 })
 export class ApiService {
 
-  private REST_API_ENTRYPOINT: string;
+  private REST_API_ENTRYPOINT: string = process.env.REST_API_ENTRYPOINT;
 
   /**
    * API service constructor
    * @param http
    */
-  constructor(private http: HttpClient) {
-    // @TODO: synchronize production and development environment
-    // routing to the API endpoints.
-    if (process.env.NODE_ENV === 'production') {
-      this.REST_API_ENTRYPOINT = "https://127.0.0.1/api";
-    } else {
-      this.REST_API_ENTRYPOINT = "https://127.0.0.1/:8081";
-    }
-  }
+  constructor(private http: HttpClient) { }
 
   /**
    * HTTP GET operation

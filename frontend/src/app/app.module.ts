@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 // 3rd party Angular components
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Site imports
 import { AppRoutingModule } from './app-routing.module';
@@ -23,16 +23,17 @@ import { LoggerService } from './logger.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
-    NgbModule
+    NgbModule,
+    NgbCollapseModule,
+    AppRoutingModule
   ],
   providers: [
     ApiService,
-    LoggerService,
-    {
-      provide: ErrorHandler,
-      useClass: CustomErrorHandlerService
-    }
+    // LoggerService,
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: CustomErrorHandlerService
+    // }
   ],
   bootstrap: [ AppComponent ]
 })
