@@ -14,11 +14,13 @@ import { BookModule } from './book/books.module';
 import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
