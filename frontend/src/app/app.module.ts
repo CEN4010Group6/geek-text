@@ -15,7 +15,6 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,13 +24,9 @@ import { LoggerService } from './logger.service';
     BrowserModule,
     HttpClientModule,
     NgbModule,
-<<<<<<< HEAD
     NgbCollapseModule,
-    AppRoutingModule
-=======
     AppRoutingModule,
     BookModule
->>>>>>> b59d80d (Initial setup of Book module.)
   ],
   providers: [
     ApiService,

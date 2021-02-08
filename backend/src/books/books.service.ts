@@ -13,7 +13,10 @@ export class BooksService {
    */
   async findOne(bookWhereUniqueInput: Prisma.BookWhereUniqueInput): Promise<Book | null> {
     return this.$prisma.book.findUnique({
-      where: bookWhereUniqueInput
+      where: bookWhereUniqueInput,
+      include: {
+        author: true
+      }
     });
   }
 

@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
+import { Book } from './models/book';
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -62,6 +64,16 @@ export class ApiService {
    */
   public delete(endpoint: string): Observable<any> {
     return this.http.delete(this.REST_API_ENTRYPOINT, httpOptions);
+  }
 
+  /**
+   * Get a book by its Id from the backend.
+   * @param id The Id of the requested book.
+   */
+  public getBookById(id: string): Observable<Book> {
+    return this.http.get<Book>(
+      this.REST_API_ENTRYPOINT + '/books/' + id,
+      httpOptions
+    );
   }
 }

@@ -14,7 +14,7 @@ export class BookComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.$route.queryParams.subscribe(params => {
+    this.$route.params.subscribe(params => {
       this.bookId = params.bookId;
     });
   }

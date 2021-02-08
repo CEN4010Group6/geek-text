@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
+import { ApiService } from '../../api.service';
 import { Book } from '../../models/book';
 
 @Component({
@@ -8,11 +9,14 @@ import { Book } from '../../models/book';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-  @Input() bookId: string;
+  @Input() bookId: string = '';
 
-  constructor() { }
+  public book: Book = {} as Book;
+
+  constructor(private $api: ApiService) { }
 
   ngOnInit(): void {
+    this.$api.getBookById(this.bookId)
+      .subscribe(res => this.book = res);
   }
-
 }

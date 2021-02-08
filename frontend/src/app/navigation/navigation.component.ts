@@ -12,7 +12,6 @@ export class NavigationComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this._isCollapsed);
   }
 
   public get isCollapsed(): boolean {
@@ -21,6 +20,5 @@ export class NavigationComponent implements OnInit {
 
   public toggleCollapsed() {
     this._isCollapsed = !this._isCollapsed;
-    console.log(this._isCollapsed);
   }
 }
