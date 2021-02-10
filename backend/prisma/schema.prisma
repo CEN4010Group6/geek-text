@@ -51,6 +51,7 @@ model Author {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("authors")
+  @@unique([firstName, lastName])
 }
 
 model Publisher {
