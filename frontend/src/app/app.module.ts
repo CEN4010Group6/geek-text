@@ -15,12 +15,14 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { StorefrontComponent } from './storefront/storefront.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    StorefrontComponent
   ],
   imports: [
     BrowserModule,
