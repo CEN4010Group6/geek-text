@@ -8,7 +8,7 @@ if [[ $NODE_ENV == 'development' ]]; then
 fi
 
 if [[ $NODE_ENV == 'development' ]]; then
-  ng serve --host "0.0.0.0" --disableHostCheck --watch --live-reload
+  ng serve --host "0.0.0.0" --disable-host-check --watch --live-reload
 else
   npm prune
   npm run build

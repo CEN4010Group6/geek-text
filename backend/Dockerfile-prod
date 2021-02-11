@@ -1,0 +1,31 @@
+FROM node:lts-alpine3.10 as builder
+
+ENV NODE_ENV production
+ENV DATABASE_URL "file:/app/db/dev.db"
+
+WORKDIR /app
+
+COPY . .
+
+RUN apk --no-cache --virtual build add python make g++ && \
+  npm install -g @nestjs/cli node-gyp && \
+  NODE_ENV=development npm install --no-optional && \
+  npm run build && \
+  npm uninstall -g node-gyp && \
+  npm cache clean --force && \
+  apk del build
+
+FROM node:lts-alpine3.10
+
+WORKDIR /app
+
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/package-lock.json .
+COPY --from=builder /app/dist .
+COPY --from=builder /app/prisma .
+
+RUN npm install --no-optional --only=production
+
+EXPOSE 3000
+
+ENTRYPOINT ["node", "dist/main"]

@@ -8,7 +8,6 @@ import SriPlugin from 'webpack-subresource-integrity';
 
 export default {
   output: {
-    filename: '[name].[contenthash].js',
     chunkFilename: '[id].js',
     crossOriginLoading: 'anonymous'
   },
@@ -41,8 +40,8 @@ export default {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
-      REST_API_ENTRYPOINT: process.env.REST_API_ENTRYPOINT || 'http://127.0.0.1:8080/api'
+      NODE_ENV: process.env.NODE_ENV || 'development',
+      REST_API_ENTRYPOINT: process.env.REST_API_ENTRYPOINT || '/api'
     }),
     new SriPlugin({
       hashFuncNames: [ 'sha256' ],
@@ -50,4 +49,4 @@ export default {
     }),
     new ResourceHintWebpackPlugin()
   ]
-} as webpack.Configuration;
+} as unknown as webpack.Configuration;

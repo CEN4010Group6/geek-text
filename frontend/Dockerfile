@@ -1,7 +1,7 @@
 FROM node:lts-alpine3.10
 
 ENV NODE_ENV development
-ENV REST_API_ENDPOINT http://127.0.0.1:8080/api
+ENV REST_API_ENDPOINT /api
 ENV PATH /app/node_modules/.bin:$PATH
 
 WORKDIR /app

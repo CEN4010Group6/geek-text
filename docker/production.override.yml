@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile-prod
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "file:/app/db/prod.db"
+    volumes:
+      - database:/app/db
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile-prod
+    environment:
+      NODE_ENV: production
+      REST_API_ENTRYPOINT: /api
+
+volumes:
+  database: {}

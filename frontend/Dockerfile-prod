@@ -1,18 +1,19 @@
-FROM node:lts-alpine3.10 as builder
+FROM node:lts-alpine3.10
 
-ENV PATH /app/node_modules/.bin:$PATH
-ENV NODE_ENV development
+ENV NODE_ENV production
+ENV REST_API_ENDPOINT /api
 
 WORKDIR /app
 
-COPY ./package*.json /app/
+COPY . .
 
-RUN npm cache clean --force && npm install && npm audit --fix
-
-COPY . /app
+RUN NODE_ENV=development npm install --no-optional && \
+  npm run build -- --prod --aot --preserve-symlinks
 
 FROM nginx:mainline-alpine
 
 COPY etc/nginx/conf.d/default.conf /etc/nginx/conf.d/
 
 COPY --from=builder /app/dist /app/dist
+
+EXPOSE 4200
