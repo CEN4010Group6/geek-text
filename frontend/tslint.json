@@ -19,7 +19,8 @@
     "eofline": true,
     "import-blacklist": [
       true,
-      "rxjs/Rx"
+      "rxjs/Rx",
+      "rxjs/intenal/operators"
     ],
     "import-spacing": true,
     "indent": {

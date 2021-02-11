@@ -1,7 +1,10 @@
+declare var process: any;
+
 // Core Angular Imports
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 // 3rd party Angular components
 import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +32,9 @@ import { StorefrontComponent } from './storefront/storefront.component';
     HttpClientModule,
     NgbModule,
     NgbCollapseModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: (process.env.NODE_ENV === 'production')
+    }),
     AppRoutingModule,
     BookModule
   ],
