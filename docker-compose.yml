@@ -30,15 +30,15 @@ services:
       - backend
       - frontend
 
-  db-migration:
-    image: backend
-    command: npm run seed
-    volumes:
-      - database:/app/db
-    profiles:
-      - develop
-    depends_on:
-      - backend
+  # db-migration:
+  #   image: backend
+  #   command: npm run seed
+  #   volumes:
+  #     - database:/app/db
+  #   profiles:
+  #     - develop
+  #   depends_on:
+  #     - backend
 
 volumes:
   database: {}
