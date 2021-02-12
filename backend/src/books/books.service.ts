@@ -31,15 +31,17 @@ export class BooksService {
     cursor?: Prisma.BookWhereUniqueInput;
     where?: Prisma.BookWhereInput;
     orderBy?: Prisma.BookOrderByInput;
+    select?: Prisma.BookSelect;
   }): Promise<Book[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where, orderBy, select } = params;
     return this.$prisma.book.findMany({
       skip,
       take,
       cursor,
       where,
-      orderBy
-    });
+      orderBy,
+      select
+    }) as unknown as Book[];
   }
 
   /**

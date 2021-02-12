@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { Book, Prisma } from '@prisma/client';
+import { Book, Author, Prisma } from '@prisma/client';
 
 import { BooksService } from './books.service';
 
@@ -81,5 +81,28 @@ export class BooksController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Book> {
     return this.$booksService.deleteBook({id: id} as Prisma.BookWhereUniqueInput);
+  }
+
+  /**
+   * GET request to get Books by a given Author.
+   * Routed to '/books/by-author'
+   */
+  @Get('by-author')
+  async byAuthor(
+    @Query('firstName') firstName: string,
+    @Query('lastName') lastName: string,
+    @Query('middleName') middleName: string
+  ): Promise<any> {
+    return this.$booksService.findAll({
+      select: {
+        author: {
+          where: {
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName
+          }
+        }
+      }
+    })
   }
 }

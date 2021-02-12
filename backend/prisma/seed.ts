@@ -13,24 +13,21 @@ import {
 } from '@prisma/client';
 import * as faker from 'faker';
 import * as argon2 from 'argon2';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+import { fake } from 'faker';
 
 const client = new PrismaClient();
 
 async function main() {
-
-  // Temporary method of deleting old data
-  await client.address.deleteMany();
-  await client.creditCard.deleteMany();
-  await client.user.deleteMany();
-  await client.author.deleteMany();
-  await client.book.deleteMany();
-  await client.publisher.deleteMany();
-
   const password = 'IAmAPassword';
   const hash = await argon2.hash(password);
 
-  const users: Prisma.UserCreateInput[] = [
-    {
+  const testUser = await client.user.upsert({
+    where: {
+      email: 'john.doe@gmail.com'
+    },
+    update: {},
+    create: {
       email: 'john.doe@gmail.com',
       passwordHash: hash,
       firstName: 'John',
@@ -53,27 +50,31 @@ async function main() {
         }
       }
     },
-    {
-      email: faker.internet.email(),
-      passwordHash: hash,
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      profilePicture: faker.image.avatar()
-    }
-  ];
+  });
 
-  for(let user of users) {
-    await client.user.upsert({
+  for(let i = 0; i < 10; i++) {
+    const email = faker.internet.email();
+    const _user = await client.user.upsert({
       where: {
-        email: user.email
+        email: email
       },
-      update: user,
-      create: user
+      update: {},
+      create: {
+        email: email,
+        passwordHash: hash,
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        profilePicture: faker.image.avatar()
+      }
     });
   }
 
-  const books: Prisma.BookCreateInput[] = [
-    {
+  const toKillAMockingBird = await client.book.upsert({
+    where: {
+      title: 'To Kill a Mockingbird',
+    },
+    update: {},
+    create: {
       title: 'To Kill a Mockingbird',
       author: {
         create: {
@@ -101,8 +102,15 @@ async function main() {
       price: 17.99,
       coverUrl: 'https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg',
       isbn: 9780061120084,
+    }
+  });
+
+  const onLiberty = await client.book.upsert({
+    where: {
+      title: 'On Liberty'
     },
-    {
+    update: {},
+    create: {
       title: 'On Liberty',
       author: {
         create: {
@@ -132,21 +140,50 @@ async function main() {
       price: 4.00,
       coverUrl: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1555338584l/385228._SY475_.jpg'
     }
-  ];
+  });
 
-  for(let book of books) {
-    await client.book.upsert({
+  for(let i = 0; i < 50; i++) {
+    const title = faker.commerce.productName();
+    const _fakeBook = await client.book.upsert({
       where: {
-        title: book.title,
+        title: title
       },
-      create: book,
-      update: book
-    });
+      update: {},
+      create: {
+        title: title,
+        author: {
+          create: {
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            description: faker.lorem.paragraph(),
+          }
+        },
+        publisher: {
+          create: {
+            name: faker.company.companyName()
+          }
+        },
+        description: faker.lorem.paragraphs(),
+        isbn: faker.random.number({
+          min: 1000000000000,
+          max: 9999999999999
+        }),
+        price: faker.random.number({
+          min: 2.00,
+          max: 20.00,
+          precision: 0.01
+        }),
+        coverUrl: faker.image.imageUrl()
+      }
+    })
   }
 }
 
 main()
-  .catch(console.error)
+  .catch(e => {
+    console.error(e);
+    process.exit(1)
+  })
   .finally(async () => {
     await client.$disconnect();
   });

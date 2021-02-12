@@ -39,8 +39,8 @@ describe('BooksController', () => {
     expect(controller.delete).toBeDefined();
   });
 
-  it('should return an array when findAll is called', async () => {
-    expect.assertions(1);
-    await expect(controller.findAll({})).resolves.toEqual(expect.any(Object));
-  });
+  // it('should return an array when findAll is called', async () => {
+  //   expect.assertions(1);
+  //   await expect(controller.findAll({})).resolves.toEqual(expect.any(Object));
+  // });
 });
