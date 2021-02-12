@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  private _isCollapsed = true;
+  private collapsed = true;
 
   constructor() { }
 
@@ -15,10 +15,10 @@ export class NavigationComponent implements OnInit {
   }
 
   public get isCollapsed(): boolean {
-    return this._isCollapsed;
+    return this.collapsed;
   }
 
-  public toggleCollapsed() {
-    this._isCollapsed = !this._isCollapsed;
+  public set toggleCollapsed(isCollapsed: boolean) {
+    this.collapsed = !isCollapsed
   }
 }

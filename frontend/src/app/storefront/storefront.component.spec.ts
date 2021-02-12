@@ -1,4 +1,7 @@
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApiService } from '../api.service';
 
 import { StorefrontComponent } from './storefront.component';
 
@@ -8,7 +11,9 @@ describe('StorefrontComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StorefrontComponent ]
+      imports: [ RouterTestingModule, HttpClientModule ],
+      declarations: [ StorefrontComponent ],
+      providers: [ HttpClient, ApiService ]
     })
     .compileComponents();
   });
