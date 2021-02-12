@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client';
 
 import { BooksService } from './books.service';
@@ -18,6 +18,7 @@ export class BooksController {
    * @param query Query parameters to alter the `WHERE` SQL clause
    */
   @Get()
+  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   async findAll(@Query() query: {
     skip?: number;
     take?: number;
@@ -35,6 +36,7 @@ export class BooksController {
    * @param id The UUID of the requested book
    */
   @Get(':id')
+  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   async findOne(@Param('id') id: string): Promise<Book | null> {
     return this.$booksService.findOne({id: id} as Prisma.BookWhereUniqueInput);
   }
