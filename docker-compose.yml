@@ -7,7 +7,7 @@ services:
       DATABASE_URL: "file:/app/db/dev.db"
     volumes:
       - ./backend:/app
-      - /app/node_modules
+      - node_modules_backend:/app/node_modules
       - database:/app/db
 
   frontend:
@@ -17,7 +17,7 @@ services:
       REST_API_ENTRYPOINT: /api
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - node_modules_frontend:/app/node_modules
 
   nginx:
     build: ./nginx
@@ -45,3 +45,5 @@ services:
 volumes:
   database: {}
   nginx_cache: {}
+  node_modules_backend: {}
+  node_modules_frontend: {}

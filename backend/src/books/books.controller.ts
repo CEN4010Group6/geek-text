@@ -1,12 +1,13 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { Book, Author, Prisma } from '@prisma/client';
+import { Book, Prisma } from '@prisma/client';
 
 import { BooksService } from './books.service';
 
 @Controller('books')
 export class BooksController {
   /**
-   * BooksController constructor
+   * Books controller constructor
+   *
    * @param $booksService The database connection to the `books` table
    */
   constructor(private readonly $booksService: BooksService) {}
@@ -19,7 +20,7 @@ export class BooksController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  async findAll(@Query() query: {
+  public async findAll(@Query() query: {
     skip?: number;
     take?: number;
     cursor?: Prisma.BookWhereUniqueInput;
@@ -37,7 +38,7 @@ export class BooksController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  async findOne(@Param('id') id: string): Promise<Book | null> {
+  public async findOne(@Param('id') id: string): Promise<Book | null> {
     return this.$booksService.findOne({id: id} as Prisma.BookWhereUniqueInput);
   }
 
@@ -48,7 +49,7 @@ export class BooksController {
    * @param postData The book data to be created
    */
   @Post('')
-  async create(
+  public async create(
     @Body() postData: Prisma.BookCreateInput
   ): Promise<Book> {
     return this.$booksService.createBook(postData);
@@ -62,7 +63,7 @@ export class BooksController {
    * @param bookData The updated information of the Book
    */
   @Put(':id')
-  async update(
+  public async update(
     @Param('id') id: string,
     @Body() bookData: Book
   ): Promise<Book> {
@@ -79,7 +80,7 @@ export class BooksController {
    * @param id The UUID of the Book to be removed
    */
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Book> {
+  public async delete(@Param('id') id: string): Promise<Book> {
     return this.$booksService.deleteBook({id: id} as Prisma.BookWhereUniqueInput);
   }
 
@@ -88,7 +89,7 @@ export class BooksController {
    * Routed to '/books/by-author'
    */
   @Get('by-author')
-  async byAuthor(
+  public async findByAuthor(
     @Query('firstName') firstName: string,
     @Query('lastName') lastName: string,
     @Query('middleName') middleName: string

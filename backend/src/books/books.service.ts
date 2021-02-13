@@ -4,14 +4,21 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class BooksService {
-  constructor(private $prisma: PrismaService) {}
+  /**
+   * Books service constructor
+   *
+   * @param $prisma The Prisma database service
+   */
+  constructor(
+    private $prisma: PrismaService
+  ) {  }
 
   /**
    * Find a single Book in the `books` table
    *
    * @param bookWhereUniqueInput Input which specifies the book to be found
    */
-  async findOne(bookWhereUniqueInput: Prisma.BookWhereUniqueInput): Promise<Book | null> {
+  public async findOne(bookWhereUniqueInput: Prisma.BookWhereUniqueInput): Promise<Book | null> {
     return this.$prisma.book.findUnique({
       where: bookWhereUniqueInput,
       include: {
@@ -25,7 +32,7 @@ export class BooksService {
    *
    * @param params Parameters to match against the `books` table entries
    */
-  async findAll(params: {
+  public async findAll(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.BookWhereUniqueInput;
@@ -49,7 +56,7 @@ export class BooksService {
    *
    * @param data The Book data to be created
    */
-  async createBook(data: Prisma.BookCreateInput): Promise<Book> {
+  public async createBook(data: Prisma.BookCreateInput): Promise<Book> {
     return this.$prisma.book.create({
       data
     });
@@ -60,7 +67,7 @@ export class BooksService {
    *
    * @param params Updated Book data
    */
-  async updateBook(params: {
+  public async updateBook(params: {
     where: Prisma.BookWhereUniqueInput;
     data: Prisma.BookUpdateInput;
   }): Promise<Book> {
@@ -76,7 +83,7 @@ export class BooksService {
    *
    * @param where The unique identifier(s) of the Book to be removed
    */
-  async deleteBook(where: Prisma.BookWhereUniqueInput): Promise<Book> {
+  public async deleteBook(where: Prisma.BookWhereUniqueInput): Promise<Book> {
     return this.$prisma.book.delete({
       where
     });

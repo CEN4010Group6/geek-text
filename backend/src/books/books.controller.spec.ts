@@ -8,8 +8,11 @@ describe('BooksController', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PrismaService, BooksService],
-      controllers: [BooksController],
+      providers: [
+        PrismaService,
+        BooksService
+      ],
+      controllers: [ BooksController ],
     }).compile();
 
     controller = module.get<BooksController>(BooksController);
