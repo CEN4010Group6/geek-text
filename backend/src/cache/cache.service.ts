@@ -16,13 +16,13 @@ export class CacheService {
    * CacheService constructor.
    */
   constructor() {
-    if(process.env.NODE_ENV === 'development') {
-      // Using an in-memory, immutable hash Map to store data.
-      this.cache = Map();
-    } else {
+    if(process.env.NODE_ENV === 'production') {
       // Connecting to the Redis docker container
       const redisHost = process.env.REDIS_HOST;
       this.cache = new Redis(redisHost);
+    } else {
+      // Using an in-memory, immutable hash Map to store data.
+      this.cache = Map();
     }
   }
 

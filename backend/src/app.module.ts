@@ -5,12 +5,14 @@ import { BooksModule } from './books/books.module';
 import { AuthModule } from './auth/auth.module';
 import { CacheService } from './cache/cache.service';
 import { RatingsModule } from './ratings/ratings.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     BooksModule,
     AuthModule,
-    RatingsModule
+    RatingsModule,
+    UsersModule
   ],
   controllers: [ AppController ],
   providers: [

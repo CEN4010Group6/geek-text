@@ -13,10 +13,10 @@ generator client {
 model User {
   id String @id @default(uuid())
   email String @unique
-  passwordHash String
-  firstName String
+  passwordHash String?
+  firstName String?
   middleName String?
-  lastName String
+  lastName String?
   profilePicture String?
   transactions Transaction[]
   shippingAddress Address[] @relation("ShippingAddress")
