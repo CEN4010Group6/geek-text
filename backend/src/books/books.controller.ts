@@ -43,7 +43,7 @@ export class BooksController {
   /**
    * POST request to create a new Book in the `books` table
    *
-   * @param postData The book data to be created
+   * @param postData The Book data to be created
    */
   @Post('')
   public async create(
@@ -55,7 +55,7 @@ export class BooksController {
   /**
    * PUT request to update a Book in the `books` table
    *
-   * @param id The UUID of the book to be updated
+   * @param id The UUID of the Book to be updated
    * @param bookData The updated information of the Book
    */
   @Put(':id')

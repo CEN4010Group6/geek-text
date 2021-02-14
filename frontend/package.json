@@ -1,6 +1,14 @@
 {
   "name": "geek-text-frontend",
   "version": "0.1.0",
+  "description": "",
+  "author": "Joseph R. Quinn <423821+quinnjr@users.noreply.github.com>",
+  "contributors": [
+    "Paulo Pinto",
+    "Arturo Presa",
+    "Nicholas Prieto",
+    "John Quitto"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,6 +17,15 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CEN4010Group6/geek-text.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CEN4010Group6/geek-text/issues"
+  },
+  "homepage": "https://github.com/CEN4010Group6/geek-text#readme",
   "private": true,
   "dependencies": {
     "@angular-devkit/schematics": "^11.2.0",
