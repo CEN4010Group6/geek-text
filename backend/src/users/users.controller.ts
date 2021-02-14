@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -18,6 +19,7 @@ export class UsersController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @UseGuards(AuthGuard('jwt'))
   public async findAll(@Query() query: {
     skip?: number;
     take?: number;

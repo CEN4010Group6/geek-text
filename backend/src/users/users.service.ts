@@ -22,17 +22,8 @@ export class UsersService {
    */
   public async findOne(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<any | null> {
     let user = await this.$prisma.user.findFirst({
-      where: userWhereUniqueInput,
-      select: {
-        passwordHash: false
-      }
+      where: userWhereUniqueInput
     });
-
-    if(user && user.hasOwnProperty('passwordHash')) {
-      // @ts-ignore
-      // @TODO: Find a better way of doing this...
-      delete user.passwordHash;
-    }
 
     return user;
   }
