@@ -7,9 +7,10 @@ import { ApiService } from '../api.service';
 
 import { BookComponent } from './book.component';
 import { DetailsComponent } from './details/details.component';
+import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
-  declarations: [ BookComponent, DetailsComponent ],
+  declarations: [ BookComponent, DetailsComponent, CommentComponent ],
   providers: [ ApiService ],
   imports: [ CommonModule, CrystalLightboxModule ]
 })
