@@ -1,18 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { Map } from 'immutable';
-import { Observable, of } from 'rxjs';
-import { runInThisContext } from 'vm';
+import { Redis } from 'ioredis';
 
+/**
+ * Cache service for the NestJS backend.
+ *
+ * @TODO: Complete addition of `ioredis` support.
+ * @TODO: Expand current commands to support more scenarios.
+ */
 @Injectable()
 export class CacheService {
-  private cache: Map<string, any>;
+  private cache: Redis | Map<string, any>;
 
   /**
    * CacheService constructor.
    */
   constructor() {
-    // Using an in-memory, immutable hash Map to store data.
-    this.cache = Map();
+    if(process.env.NODE_ENV === 'development') {
+      // Using an in-memory, immutable hash Map to store data.
+      this.cache = Map();
+    } else {
+      // Connecting to the Redis docker container
+      const redisHost = process.env.REDIS_HOST;
+      this.cache = new Redis(redisHost);
+    }
   }
 
   /**
