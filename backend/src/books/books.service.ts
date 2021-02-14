@@ -11,7 +11,7 @@ export class BooksService {
    */
   constructor(
     private $prisma: PrismaService
-  ) {  }
+  ) {}
 
   /**
    * Find a single Book in the `books` table
@@ -56,7 +56,7 @@ export class BooksService {
    *
    * @param data The Book data to be created
    */
-  public async createBook(data: Prisma.BookCreateInput): Promise<Book> {
+  public async create(data: Prisma.BookCreateInput): Promise<Book> {
     return this.$prisma.book.create({
       data
     });
@@ -67,7 +67,7 @@ export class BooksService {
    *
    * @param params Updated Book data
    */
-  public async updateBook(params: {
+  public async update(params: {
     where: Prisma.BookWhereUniqueInput;
     data: Prisma.BookUpdateInput;
   }): Promise<Book> {
@@ -83,7 +83,7 @@ export class BooksService {
    *
    * @param where The unique identifier(s) of the Book to be removed
    */
-  public async deleteBook(where: Prisma.BookWhereUniqueInput): Promise<Book> {
+  public async delete(where: Prisma.BookWhereUniqueInput): Promise<Book> {
     return this.$prisma.book.delete({
       where
     });
