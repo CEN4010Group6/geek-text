@@ -5,6 +5,7 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: "file:/app/db/dev.db"
+      JWT_SECRET: "SuperSecretPassword"
     volumes:
       - ./backend:/app
       - node_modules_backend:/app/node_modules

@@ -1,7 +1,11 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Request, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '@prisma/client';
 
 import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './local-auth.guard';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -12,17 +16,16 @@ export class AuthController {
    */
   constructor(
     private $authService: AuthService
-  ) {  }
+  ) {}
 
-  @Get('login')
-  public async login(
-    @Query('email') email,
-    @Query('password') password
-  ): Promise<any> {
-
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  public async login(@Request() req): Promise<any> {
+    return this.$authService.login(req.user);
   }
 
-  @Get('refresh-token')
+  @Post('refresh-token')
+  @UseGuards(JwtAuthGuard)
   public async refreshToken(): Promise<any> {
 
   }
