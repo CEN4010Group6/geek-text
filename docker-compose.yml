@@ -32,6 +32,12 @@ services:
       - backend
       - frontend
 
+  redis-cache:
+    image: redis:alpine
+    volumes:
+      - redis_cache:/data
+
+
   # db-migration:
   #   image: backend
   #   command: npm run seed
@@ -47,3 +53,4 @@ volumes:
   nginx_cache: {}
   node_modules_backend: {}
   node_modules_frontend: {}
+  redis_cache: {}
