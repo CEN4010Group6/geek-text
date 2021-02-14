@@ -18,14 +18,18 @@ export class AuthController {
     private $authService: AuthService
   ) {}
 
-  @Post('login')
   @UseGuards(LocalAuthGuard)
-  public async login(@Request() req): Promise<any> {
-    return this.$authService.login(req.user);
+  @Post('login')
+  public async login(
+    @Body('email') email: string,
+    @Body('password') password: string
+  ): Promise<any> {
+    // return this.$authService.validateUser(email, password);
+    return this.$authService.login(email, password);
   }
 
-  @Post('refresh-token')
   @UseGuards(JwtAuthGuard)
+  @Post('refresh-token')
   public async refreshToken(): Promise<any> {
 
   }

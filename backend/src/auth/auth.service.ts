@@ -29,22 +29,24 @@ export class AuthService {
   ): Promise<User | null> {
     const user = await this.$usersService.findOne({ email: email });
 
-    const hash = argon2.hash(password);
-
-    if(user && user.hashPassword === hash) {
-      delete user.hashPassword;
+    if(user && argon2.verify(user.passwordHash, password)) {
+      delete user.passwordHash;
       return user;
     }
 
     return null;
   }
 
-  public async login(user: User): Promise<{
-    access_token: string;
-  }> {
-    const payload = { username: user.email, sub: user.id };
-    return {
-      access_token: this.$jwtService.sign(payload)
+  public async login(email: string, password: string): Promise<any> {
+    const user = await this.$usersService.findOne({ email: email });
+
+    if(user && argon2.verify(user.passwordHash, password)) {
+      const payload = { username: user.email, sub: user.id };
+      return {
+        accessToken: this.$jwtService.sign(payload)
+      }
     }
+
+    return null;
   }
 }
