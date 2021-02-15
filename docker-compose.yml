@@ -6,6 +6,7 @@ services:
       NODE_ENV: development
       DATABASE_URL: "file:/app/db/dev.db"
       JWT_SECRET: "SuperSecretPassword"
+      SECRET_KEY: "6d858102402dbbeb0f9bb711e3d13a1229684792db4940db0d0e71c08ca602e1"
     volumes:
       - ./backend:/app
       - node_modules_backend:/app/node_modules

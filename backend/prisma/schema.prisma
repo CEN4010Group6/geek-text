@@ -108,6 +108,7 @@ model CreditCard {
   userId String
   encryptedCreditCardNumber String
   encryptedCCV String
+  lastFourDigits String
   expirationDate DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

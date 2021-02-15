@@ -12,6 +12,10 @@ async function bootstrap() {
     throw new Error('Environment variable `JWT_SECRET` is not defined.');
   }
 
+  if(!process.env.SECRET_KEY) {
+    throw new Error('Environment variable `SECRET_KEY` is not defined.');
+  }
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['log', 'error', 'warn']
   });
