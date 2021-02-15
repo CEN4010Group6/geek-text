@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 Dockerfile
 db/dev.db
+.env.example
