@@ -33,7 +33,8 @@ jobs:
           ${{ runner.OS }}-
     - run: npm i -g @angular/cli
     - run: npm ci
-    - run: prisma migrate reset --preview-feature
+    - run: npm run migrate
+    - run: npm run seed
     - run: npm run test
 
   backend:
