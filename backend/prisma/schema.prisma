@@ -114,3 +114,11 @@ model CreditCard {
   updatedAt DateTime @updatedAt
   @@map("credit_cards")
 }
+
+model SavedShoppingCart {
+  id String @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  books Book[]
+  @@map("saved_shopping_carts")
+}
