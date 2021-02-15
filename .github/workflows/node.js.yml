@@ -13,10 +13,6 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-    env:
-      JWT_SECRET: "${{ secrets.JWT_SECRET }}"
-      SECRET_KEY: "${{ secrets.SECRET_KEY }}"
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -33,8 +29,6 @@ jobs:
           ${{ runner.OS }}-
     - run: npm i -g @angular/cli
     - run: npm ci
-    - run: npm run migrate
-    - run: npm run seed
     - run: npm run test
 
   backend:
@@ -45,6 +39,10 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+    env:
+      JWT_SECRET: "${{ secrets.JWT_SECRET }}"
+      SECRET_KEY: "${{ secrets.SECRET_KEY }}"
+      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
 
     steps:
     - uses: actions/checkout@v2
@@ -61,4 +59,6 @@ jobs:
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-
     - run: npm ci
+    - run: npm run migrate
+    - run: npm run seed
     - run: npm test
