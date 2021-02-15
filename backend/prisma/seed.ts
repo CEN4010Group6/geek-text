@@ -13,8 +13,7 @@ import {
 } from '@prisma/client';
 import * as faker from 'faker';
 import * as argon2 from 'argon2';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-import { fake } from 'faker';
+import { List } from 'immutable';
 
 const client = new PrismaClient();
 
@@ -25,7 +24,10 @@ async function main() {
   const cc = faker.finance.creditCardNumber();
   const lastFour = cc.substring(cc.length - 4, cc.length);
 
-  const testUser = await client.user.upsert({
+  let users: List<User> = List();
+  let books: List<Book> = List();
+
+  users = users.push(await client.user.upsert({
     where: {
       email: 'john.doe@gmail.com'
     },
@@ -54,11 +56,11 @@ async function main() {
         }
       }
     },
-  });
+  }));
 
   for(let i = 0; i < 10; i++) {
     const email = faker.internet.email();
-    const _user = await client.user.upsert({
+    users = users.push(await client.user.upsert({
       where: {
         email: email
       },
@@ -70,10 +72,10 @@ async function main() {
         lastName: faker.name.lastName(),
         profilePicture: faker.image.avatar()
       }
-    });
+    }));
   }
 
-  const toKillAMockingBird = await client.book.upsert({
+  books = books.push(await client.book.upsert({
     where: {
       title: 'To Kill a Mockingbird',
     },
@@ -107,9 +109,9 @@ async function main() {
       coverUrl: 'https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg',
       isbn: 9780061120084,
     }
-  });
+  }));
 
-  const onLiberty = await client.book.upsert({
+  books = books.push(await client.book.upsert({
     where: {
       title: 'On Liberty'
     },
@@ -144,11 +146,11 @@ async function main() {
       price: 4.00,
       coverUrl: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1555338584l/385228._SY475_.jpg'
     }
-  });
+  }));
 
   for(let i = 0; i < 50; i++) {
     const title = faker.commerce.productName();
-    const _fakeBook = await client.book.upsert({
+    books = books.push(await client.book.upsert({
       where: {
         title: title
       },
@@ -179,7 +181,26 @@ async function main() {
         }),
         coverUrl: faker.image.imageUrl()
       }
-    })
+    }));
+  }
+
+  for(let i = 0; i < 10; i++) {
+    const randomUserNumber = faker.random.number({min: 0, max: 10});
+    const randomBookNumber = faker.random.number({min: 0, max: 51});
+
+    const user = users.get(randomUserNumber);
+    const book = books.get(randomBookNumber);
+
+    if(user && book) {
+      const _rating = await client.rating.create({
+        data: {
+          value: faker.random.number({min: 0, max: 5}),
+          description: faker.lorem.paragraph(),
+          userId: user.id,
+          bookId: book.id
+        }
+      })
+    }
   }
 }
 
