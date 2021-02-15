@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -39,16 +39,31 @@ export class BooksService {
     where?: Prisma.BookWhereInput;
     orderBy?: Prisma.BookOrderByInput;
     select?: Prisma.BookSelect;
+    include?: Prisma.BookInclude;
   }): Promise<Book[]> {
-    const { skip, take, cursor, where, orderBy, select } = params;
-    return this.$prisma.book.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-      select
-    }) as unknown as Book[];
+    let { skip, take, cursor, where, orderBy, select, include } = params;
+
+    if(!include) {
+      return this.$prisma.book.findMany({
+        skip,
+        take,
+        cursor,
+        where,
+        orderBy,
+        select
+      }) as unknown as Book[];
+    } else if(!select && include) {
+      return this.$prisma.book.findMany({
+        skip,
+        take,
+        cursor,
+        where,
+        orderBy,
+        include
+      }) as unknown as Book[];
+    } else {
+      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
+    }
   }
 
   /**

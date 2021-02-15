@@ -7,6 +7,7 @@ import { CacheService } from './cache/cache.service';
 import { RatingsModule } from './ratings/ratings.module';
 import { UsersModule } from './users/users.module';
 import { EncryptionService } from './encryption/encryption.service';
+import { UtilityService } from './utility/utility.service';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { EncryptionService } from './encryption/encryption.service';
   providers: [
     PrismaService,
     CacheService,
-    EncryptionService
+    EncryptionService,
+    UtilityService
   ],
 })
 export class AppModule {}
