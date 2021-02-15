@@ -32,7 +32,8 @@ export class BooksService {
    *
    * @param params Parameters to match against the `books` table entries
    */
-  public async findAll(params: {
+  public async findAll(
+    params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.BookWhereUniqueInput;

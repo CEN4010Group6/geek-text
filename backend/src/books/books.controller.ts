@@ -23,18 +23,22 @@ export class BooksController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  public async findAll(@Query() query: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.BookWhereUniqueInput;
-    where?: Prisma.BookWhereInput;
-    orderBy?: Prisma.BookOrderByInput;
-    select?: Prisma.BookSelect;
-    include?: Prisma.BookInclude;
-  }): Promise<Book[]> {
-    if(query.include) {
-      query.include = this.$utilityService.convertBtoO(query.include as string);
+  public async findAll(
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+    @Query('cursor') cursor?: Prisma.BookWhereUniqueInput,
+    @Query('where') where?: Prisma.BookWhereInput,
+    @Query('orderBy') orderBy?: Prisma.BookOrderByInput,
+    @Query('select') select?: Prisma.BookSelect,
+    @Query('include') include?: Prisma.BookInclude
+  ): Promise<Book[]> {
+    if(select) {
+      select = this.$utilityService.convertBtoO(select as string);
     }
+    if(include) {
+      include = this.$utilityService.convertBtoO(include as string);
+    }
+    const query = { skip, take, cursor, where, orderBy, select, include };
     return this.$booksService.findAll(query);
   }
 
@@ -117,6 +121,6 @@ export class BooksController {
           }
         }
       }
-    })
+    });
   }
 }
