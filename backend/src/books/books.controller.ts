@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client';
+import { UtilityService } from '../utility/utility.service';
 
 import { BooksService } from './books.service';
 
@@ -10,7 +11,10 @@ export class BooksController {
    *
    * @param $booksService The database connection to the `books` table
    */
-  constructor(private readonly $booksService: BooksService) {}
+  constructor(
+    private readonly $booksService: BooksService,
+    private readonly $utilityService: UtilityService
+  ) {}
 
   /**
    * GET request to find all records in the `books` table.
@@ -25,7 +29,12 @@ export class BooksController {
     cursor?: Prisma.BookWhereUniqueInput;
     where?: Prisma.BookWhereInput;
     orderBy?: Prisma.BookOrderByInput;
+    select?: Prisma.BookSelect;
+    include?: Prisma.BookInclude;
   }): Promise<Book[]> {
+    if(query.include) {
+      query.include = this.$utilityService.convertBtoO(query.include as string);
+    }
     return this.$booksService.findAll(query);
   }
 
@@ -36,7 +45,13 @@ export class BooksController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  public async findOne(@Param('id') id: string): Promise<Book | null> {
+  public async findOne(
+    @Param('id') id: string,
+    @Query('include') include: Prisma.BookInclude
+  ): Promise<Book | null> {
+    if(include) {
+      include = this.$utilityService.convertBtoO(include as string);
+    }
     return this.$booksService.findOne({id: id} as Prisma.BookWhereUniqueInput);
   }
 

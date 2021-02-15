@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BooksController } from './books.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { BooksService } from './books.service';
+import { UtilityService } from '../utility/utility.service';
 
 describe('BooksController', () => {
   let controller: BooksController;
@@ -10,7 +11,8 @@ describe('BooksController', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PrismaService,
-        BooksService
+        BooksService,
+        UtilityService
       ],
       controllers: [ BooksController ],
     }).compile();

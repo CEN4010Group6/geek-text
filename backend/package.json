@@ -18,6 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate": "prisma migrate deploy --preview-feature",
     "seed": "prisma db seed --preview-feature"
   },
   "repository": {
@@ -47,6 +48,7 @@
     "argon2": "^0.27.1",
     "class-transformer": "^0.3.2",
     "class-validator": "^0.13.1",
+    "dotenv": "^8.2.0",
     "immutable": "^4.0.0-rc.12",
     "ioredis": "^4.22.0",
     "passport": "^0.4.1",

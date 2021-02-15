@@ -23,9 +23,9 @@ export class UsersController {
   public async findAll(@Query() query: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.BookWhereUniqueInput;
-    where?: Prisma.BookWhereInput;
-    orderBy?: Prisma.BookOrderByInput;
+    cursor?: Prisma.UserWhereUniqueInput;
+    where?: Prisma.UserWhereInput;
+    orderBy?: Prisma.UserOrderByInput;
   }): Promise<User[]> {
     return this.$usersService.findAll(query);
   }
@@ -38,7 +38,7 @@ export class UsersController {
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   public async findOne(@Param('id') id: string): Promise<User | null> {
-    return this.$usersService.findOne({id: id} as Prisma.BookWhereUniqueInput);
+    return this.$usersService.findOne({id: id} as Prisma.UserWhereUniqueInput);
   }
 
   /**
@@ -68,7 +68,7 @@ export class UsersController {
     @Body() postData: User
   ): Promise<User> {
     return this.$usersService.update({
-      where: { id: id } as Prisma.BookWhereUniqueInput,
+      where: { id: id } as Prisma.UserWhereUniqueInput,
       data: postData
     });
   }

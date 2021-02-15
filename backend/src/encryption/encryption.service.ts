@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from 'crypto';
 
-import { encryptionConstants } from './constants';
-
 @Injectable()
 export class EncryptionService {
   private key: Buffer;
 
   constructor() {
-    this.key = scryptSync(encryptionConstants.SECRET_KEY as string, 'salt', 32) as Buffer;
+    this.key = scryptSync(process.env.SECRET_KEY as string, 'salt', 32) as Buffer;
   }
 
   public async encrypt(text: string): Promise<string> {
