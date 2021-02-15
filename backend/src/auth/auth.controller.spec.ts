@@ -4,13 +4,14 @@ import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
+
+import 'dotenv/config';
 
 describe('AuthController', () => {
   let controller: AuthController;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         UsersModule,

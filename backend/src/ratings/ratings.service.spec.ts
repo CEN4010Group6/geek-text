@@ -5,7 +5,7 @@ import { RatingsService } from './ratings.service';
 describe('RatingsService', () => {
   let service: RatingsService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PrismaService,

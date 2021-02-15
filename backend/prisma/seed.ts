@@ -22,6 +22,9 @@ async function main() {
   const password = 'IAmAPassword';
   const hash = await argon2.hash(password);
 
+  const cc = faker.finance.creditCardNumber();
+  const lastFour = cc.substring(cc.length - 4, cc.length);
+
   const testUser = await client.user.upsert({
     where: {
       email: 'john.doe@gmail.com'
@@ -34,8 +37,9 @@ async function main() {
       lastName: 'Doe',
       creditCard: {
         create: {
-          encryptedCreditCardNumber: faker.finance.creditCardNumber(),
+          encryptedCreditCardNumber: cc,
           encryptedCCV: faker.finance.creditCardCVV(),
+          lastFourDigits: lastFour,
           expirationDate: new Date()
         }
       },

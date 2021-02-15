@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EncryptionService } from './encryption.service';
 
+import 'dotenv/config';
+
 describe('EncryptionService', () => {
   let service: EncryptionService;
 

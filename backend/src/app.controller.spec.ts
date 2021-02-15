@@ -5,7 +5,7 @@ import { PrismaService } from './prisma/prisma.service';
 describe('AppController', () => {
   let appController: AppController;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [PrismaService],

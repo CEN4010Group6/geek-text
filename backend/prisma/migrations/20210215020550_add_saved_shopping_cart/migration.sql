@@ -39,7 +39,7 @@ CREATE TABLE "new_credit_cards" (
     "userId" TEXT NOT NULL,
     "encryptedCreditCardNumber" TEXT NOT NULL,
     "encryptedCCV" TEXT NOT NULL,
-    "lastFourDigits" TEXT NOT NULL,
+    "lastFourDigits" TEXT NOT NULL CHECK (length("lastFourDigits") = 4),
     "expirationDate" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
