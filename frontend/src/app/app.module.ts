@@ -7,7 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 // 3rd party Angular components
-import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 // Site imports
 import { AppRoutingModule } from './app-routing.module';
@@ -31,7 +34,9 @@ import { StorefrontComponent } from './storefront/storefront.component';
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    NgbCollapseModule,
+    LoadingBarHttpClientModule,
+    LoadingBarRouterModule,
+    LoadingBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: (process.env.NODE_ENV === 'production')
     }),

@@ -24,4 +24,10 @@ describe('NavigationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should toggle navigation', () => {
+    expect(component.isCollapsed).toBe(false);
+    component.toggleCollapsed();
+    expect(component.isCollapsed).toBe(true);
+  })
 });

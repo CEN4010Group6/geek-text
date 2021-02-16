@@ -1,4 +1,5 @@
 import { Author } from './author';
+import { Rating } from './rating';
 
 export interface Book {
   id: string;
@@ -8,7 +9,8 @@ export interface Book {
   description: string;
   price: number;
   coverUrl?: string;
+  publisher?: string;
+  rating?: Rating[];
   createdAt: Date;
   updatedAt: Date;
-  publisherId: string;
 }
