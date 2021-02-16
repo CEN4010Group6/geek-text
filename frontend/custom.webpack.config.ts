@@ -1,10 +1,11 @@
 // custom.webpack.config.ts
-
 import * as webpack from 'webpack';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 // @ts-ignore
 import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
+
+import 'dotenv/config';
 
 export default {
   plugins: [
