@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,7 +11,7 @@ describe('NavigationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ NavigationComponent ],
-      imports: [ NgbModule ]
+      imports: [ NgbModule, RouterTestingModule ]
     })
     .compileComponents();
   });
@@ -26,8 +27,8 @@ describe('NavigationComponent', () => {
   });
 
   it('should toggle navigation', () => {
-    expect(component.isCollapsed).toBe(false);
+    expect(component.isCollapsed()).toBe(true);
     component.toggleCollapsed();
-    expect(component.isCollapsed).toBe(true);
+    expect(component.isCollapsed()).toBe(false);
   })
 });
