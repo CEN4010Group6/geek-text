@@ -29,7 +29,7 @@ model User {
 model Book {
   id String @id @default(uuid())
   title String @unique
-  author Author[]
+  authors Author[]
   publisher Publisher
   isbn Int @unique
   description String
@@ -48,10 +48,11 @@ model Author {
   middleName String?
   lastName String
   description String
+  books Book[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("authors")
-  @@unique([firstName, lastName])
+  @@unique([firstName, middleName, lastName])
 }
 
 model Publisher {

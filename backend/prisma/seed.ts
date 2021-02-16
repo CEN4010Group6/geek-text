@@ -82,7 +82,7 @@ async function main() {
     update: {},
     create: {
       title: 'To Kill a Mockingbird',
-      author: {
+      authors: {
         create: {
           firstName: 'Harper',
           lastName: 'Lee',
@@ -113,12 +113,48 @@ async function main() {
 
   books = books.push(await client.book.upsert({
     where: {
+      title: 'Go Set A Watchman'
+    },
+    update: {},
+    create: {
+      title: 'Go Set A Watchman',
+      authors: {
+        connect: {
+          id: (await client.author.findFirst({
+            where: {
+              firstName: 'Harper',
+              lastName: 'Lee'
+            },
+            select: {
+              id: true
+            }
+          }) as Author).id
+        }
+      },
+      publisher: {
+        connect: {
+          name: 'HarperCollins Publishers'
+        }
+      },
+      genre: {
+        connect: {
+          name: 'Fiction'
+        }
+      },
+      description: "Go Set a Watchman is a novel by Harper Lee written before the Pulitzer Prize–winning To Kill a Mockingbird, her first and only other published novel (1960). Although initially promoted as a sequel by its publisher, it is now accepted as being a first draft of To Kill a Mockingbird with many passages being used again.",
+      isbn: 9780062409850,
+      price: 5.99
+    }
+  }))
+
+  books = books.push(await client.book.upsert({
+    where: {
       title: 'On Liberty'
     },
     update: {},
     create: {
       title: 'On Liberty',
-      author: {
+      authors: {
         create: {
           firstName: 'John',
           middleName: 'Stuart',
@@ -157,7 +193,7 @@ async function main() {
       update: {},
       create: {
         title: title,
-        author: {
+        authors: {
           create: {
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),

@@ -8,13 +8,15 @@ import { RatingsModule } from './ratings/ratings.module';
 import { UsersModule } from './users/users.module';
 import { EncryptionService } from './encryption/encryption.service';
 import { UtilityService } from './utility/utility.service';
+import { AuthorsModule } from './authors/authors.module';
 
 @Module({
   imports: [
     BooksModule,
     AuthModule,
     RatingsModule,
-    UsersModule
+    UsersModule,
+    AuthorsModule
   ],
   controllers: [ AppController ],
   providers: [

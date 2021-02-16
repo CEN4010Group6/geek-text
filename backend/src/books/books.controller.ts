@@ -10,6 +10,7 @@ export class BooksController {
    * Books controller constructor
    *
    * @param $booksService The database connection to the `books` table
+   * @param $utilityService The application utility service
    */
   constructor(
     private readonly $booksService: BooksService,
@@ -56,7 +57,12 @@ export class BooksController {
     if(include) {
       include = this.$utilityService.convertBtoO(include as string);
     }
-    return this.$booksService.findOne({id: id} as Prisma.BookWhereUniqueInput);
+    return this.$booksService.findOne({
+      where: {
+        id: id
+      },
+      include
+    });
   }
 
   /**
@@ -107,13 +113,13 @@ export class BooksController {
    */
   @Get('by-author')
   public async findByAuthor(
-    @Query('firstName') firstName: string,
-    @Query('lastName') lastName: string,
-    @Query('middleName') middleName: string
+    @Query('firstName') firstName?: string,
+    @Query('lastName') lastName?: string,
+    @Query('middleName') middleName?: string
   ): Promise<Book[]> {
     return this.$booksService.findAll({
       select: {
-        author: {
+        authors: {
           where: {
             firstName: firstName,
             middleName: middleName,

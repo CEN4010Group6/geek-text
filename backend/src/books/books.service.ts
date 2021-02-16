@@ -10,7 +10,7 @@ export class BooksService {
    * @param $prisma The Prisma database service
    */
   constructor(
-    private $prisma: PrismaService
+    private readonly $prisma: PrismaService
   ) {}
 
   /**
@@ -18,13 +18,12 @@ export class BooksService {
    *
    * @param bookWhereUniqueInput Input which specifies the book to be found
    */
-  public async findOne(bookWhereUniqueInput: Prisma.BookWhereUniqueInput): Promise<Book | null> {
-    return this.$prisma.book.findUnique({
-      where: bookWhereUniqueInput,
-      include: {
-        author: true
-      }
-    });
+  public async findOne(params: {
+    where: Prisma.BookWhereUniqueInput;
+    include?: Prisma.BookInclude;
+  }): Promise<Book | null> {
+    const { where, include } = params;
+    return this.$prisma.book.findUnique({ where, include });
   }
 
   /**
