@@ -1,3 +1,5 @@
+import { JoinPipe } from './../join.pipe';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,8 +12,16 @@ import { DetailsComponent } from './details/details.component';
 import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
-  declarations: [ BookComponent, DetailsComponent, CommentComponent ],
+  declarations: [
+    BookComponent,
+    DetailsComponent,
+    CommentComponent
+  ],
   providers: [ ApiService ],
-  imports: [ CommonModule, CrystalLightboxModule ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    CrystalLightboxModule
+  ]
 })
 export class BookModule { }

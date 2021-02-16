@@ -1,8 +1,15 @@
 <h1>{{ title }}</h1>
 <h2 *ngFor="let author of authors">
-  <a>{{ author.firstName }} {{ author.lastName }}</a>
+  <a ngClass="['btn', 'btn-link']" [routerLink]="['/author', author.id]">{{ author.firstName }} {{ author.lastName }}</a>
 </h2>
 <p>ISBN: {{ isbn }}</p>
-<img [src]="coverUrl" lightbox />
-<p>Price: ${{ price }}</p>
+<img
+  width="305"
+  height="450"
+  [src]="coverUrl"
+  alt="{{ title }} cover"
+  decoding="async"
+  lightbox />
+<p>Price: {{ price | currency }}</p>
+<p>Genres: {{ genreReal }}</p>
 <p>{{ description }}</p>

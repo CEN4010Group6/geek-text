@@ -21,14 +21,16 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { StorefrontComponent } from './storefront/storefront.component';
+import { StorefrontModule } from './storefront/storefront.module';
+import { AuthorModule } from './author/author.module';
+import { JoinPipe } from './join.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     NotFoundComponent,
-    StorefrontComponent
+    JoinPipe,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,9 @@ import { StorefrontComponent } from './storefront/storefront.component';
       enabled: (process.env.NODE_ENV === 'production')
     }),
     AppRoutingModule,
-    BookModule
+    StorefrontModule,
+    BookModule,
+    AuthorModule
   ],
   providers: [
     ApiService,
