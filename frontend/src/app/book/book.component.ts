@@ -21,13 +21,9 @@ export class BookComponent implements OnInit {
   public ngOnInit(): void {
     this.$route.params.subscribe(params => {
       let httpParams = new HttpParams();
-      httpParams = httpParams.set('include', btoa(JSON.stringify({rating: true})));
-      console.log(httpParams);
+      httpParams = httpParams.set('include', btoa(JSON.stringify({author: true, rating: true})));
       this.$apiService.getBookById(params.bookId, httpParams)
-        .subscribe(res => {
-          this.book = res
-           console.log(res)
-        })
+        .subscribe(res => this.book = res )
     });
   }
 }
