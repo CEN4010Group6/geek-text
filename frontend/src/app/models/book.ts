@@ -1,5 +1,6 @@
 import { Author } from './author';
 import { Rating } from './rating';
+import { Genre } from './genre';
 
 export interface Book {
   id: string;
@@ -11,6 +12,7 @@ export interface Book {
   coverUrl?: string;
   publisher?: string;
   rating?: Rating[];
+  genre?: Genre[];
   createdAt: Date;
   updatedAt: Date;
 }
