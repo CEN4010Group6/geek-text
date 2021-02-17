@@ -5,14 +5,14 @@ import { Genre } from './genre';
 export interface Book {
   id: string;
   title: string;
-  author: Author[];
+  authors: Author[];
   isbn: number;
   description: string;
   price: number;
   coverUrl?: string;
   publisher?: string;
-  rating?: Rating[];
-  genre?: Genre[];
+  ratings?: Rating[];
+  genres?: Genre[];
   createdAt: Date;
   updatedAt: Date;
 }

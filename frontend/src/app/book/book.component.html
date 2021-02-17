@@ -1,9 +1,11 @@
 <app-book-details
+  *ngIf="book"
   [title]="book.title"
-  [authors]="book.author"
+  [authors]="book.authors"
   [isbn]="book.isbn"
   [description]="book.description"
   [price]="book.price"
   [coverUrl]="book.coverUrl"
+  [genres]="book.genres"
 ></app-book-details>
 <hr />

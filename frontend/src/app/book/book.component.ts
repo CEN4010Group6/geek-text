@@ -11,7 +11,7 @@ import { Book } from '../models/book';
   styleUrls: ['./book.component.scss']
 })
 export class BookComponent implements OnInit {
-  public book: Book = {} as Book;
+  public book?: Book;
 
   constructor(
     private $route: ActivatedRoute,
@@ -21,9 +21,15 @@ export class BookComponent implements OnInit {
   public ngOnInit(): void {
     this.$route.params.subscribe(params => {
       let httpParams = new HttpParams();
-      httpParams = httpParams.set('include', btoa(JSON.stringify({author: true, rating: true})));
+
+      httpParams = httpParams.set('include', btoa(JSON.stringify({
+        authors: true,
+        ratings: true,
+        genres: true
+      })));
+
       this.$apiService.getBookById(params.bookId, httpParams)
-        .subscribe(res => this.book = res )
+        .subscribe(res => this.book = res);
     });
   }
 }

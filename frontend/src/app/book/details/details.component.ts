@@ -16,13 +16,13 @@ export class DetailsComponent implements OnInit {
   @Input() public description: string = '';
   @Input() public price: number = 0.00;
   @Input() public coverUrl?: string;
-  @Input() public genre?: Genre[];
+  @Input() public genres?: Genre[];
 
   public genreReal?: string;
 
   constructor(private $api: ApiService) {}
 
   public ngOnInit(): void {
-    this.genreReal = this.genre?.map(val => val.name).join(', ');
+    this.genreReal = this.genres?.map(val => val.name).join(', ');
   }
 }
