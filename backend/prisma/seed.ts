@@ -83,7 +83,15 @@ async function main() {
           description: "Harper Lee was born in 1926 in Monroeville, Alabama. She is the author of the acclaimed To Kill a Mockingbird and Go Set a Watchman, which became a phenomenal #1 New York Times bestseller when it was published in July 2015. Ms. Lee received the Pulitzer Prize, the Presidential Medal of Freedom, and numerous other literary awards and honors. She died on February 19, 2016."
         }
       },
-      publisher: { create: { name: 'HarperCollins Publishers' }},
+      publisher: {
+        create: {
+          name: 'HarperCollins Publishers LLC' ,
+          city: 'New York',
+          state: 'NY',
+          website: 'http://www.harpercollins.com/'
+        }
+      },
+      publishYear: 2015,
       description: "Nominated as one of America’s best-loved novels by PBS’s The Great American Read\nHarper Lee's Pulitzer Prize-winning masterwork of honor and injustice in the deep South—and the heroism of one man in the face of blind and violent hatred\nOne of the best-loved stories of all time, To Kill a Mockingbird has been translated into more than forty languages, sold more than forty million copies worldwide, served as the basis for an enormously popular motion picture, and was voted one of the best novels of the twentieth century by librarians across the country. A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice, it views a world of great beauty and savage inequities through the eyes of a young girl, as her father—a crusading local lawyer—risks everything to defend a black man unjustly accused of a terrible crime.",
       genres: { connect: { id: 1 }},
       price: 17.99,
@@ -112,6 +120,7 @@ async function main() {
           }) as Author).id
         }
       },
+      publishYear: 2015,
       coverUrl: 'https://upload.wikimedia.org/wikipedia/en/4/4e/US_cover_of_Go_Set_a_Watchman.jpg',
       publisher: {
         connect: { name: 'HarperCollins Publishers' }
@@ -143,8 +152,14 @@ async function main() {
         }
       },
       publisher: {
-        create: { name: 'Dover Publications' }
+        create: {
+          name: 'Dover Publications',
+          city: 'Mineola',
+          state: 'NY',
+          website: 'https://doverpublications.com/'
+        }
       },
+      publishYear: 2002,
       description: "Discussed and debated from time immemorial, the concept of personal liberty went without codification until the 1859 publication of On Liberty. John Stuart Mill's complete and resolute dedication to the cause of freedom inspired this treatise, an enduring work through which the concept remains well known and studied.\nThe British economist, philosopher, and ethical theorist's argument does not focus on \"the so-called Liberty of the Will…but Civil, or Social Liberty: the nature and limits of the power which can be legitimately exercised by society over the individual.\" Mill asks and answers provocative questions relating to the boundaries of social authority and individual sovereignty. In powerful and persuasive prose, he declares that there is \"one very simple principle\" regarding the use of coercion in society — one may only coerce others either to defend oneself or to defend others from harm.\nThe new edition offers students of political science and philosophy, in an inexpensive volume, one of the most influential studies on the nature of individual liberty and its role in a democratic society.",
       genres: {
         connect: {
@@ -174,9 +189,12 @@ async function main() {
       description: faker.lorem.paragraphs(2),
       publisher: {
         create: {
-          name: faker.company.companyName()
+          name: faker.company.companyName(),
+          city: faker.address.city(),
+          state: faker.address.stateAbbr()
         }
       },
+      publishYear: 2009,
       genres: {
         connect: {
           id: faker.random.number({ min: 1, max: 10 })

@@ -17,6 +17,7 @@ model User {
   firstName String?
   middleName String?
   lastName String?
+  nickName String? @unique
   profilePicture String?
   transactions Transaction[]
   shippingAddresses Address[] @relation("ShippingAddress")
@@ -31,12 +32,14 @@ model Book {
   title String @unique
   authors Author[]
   publisher Publisher
+  publishYear Int
   isbn Int @unique
   description String
   genres Genre[]
   price Float
   ratings Rating[]
   coverUrl String?
+  coverDataUri String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("books")
@@ -58,7 +61,9 @@ model Author {
 model Publisher {
   id String @id @default(uuid())
   name String @unique
-  // City? State?
+  city String
+  state String
+  website String?
   @@map("publishers")
 }
 
