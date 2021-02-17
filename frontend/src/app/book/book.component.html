@@ -1,11 +1,16 @@
-<app-book-details
-  *ngIf="book"
-  [title]="book.title"
-  [authors]="book.authors"
-  [isbn]="book.isbn"
-  [description]="book.description"
-  [price]="book.price"
-  [coverUrl]="book.coverUrl"
-  [genres]="book.genres"
-></app-book-details>
+<div *ngIf="book">
+  <h1>{{ book.title }}</h1>
+  <h2 *ngFor="let author of book.authors; index as i">
+    <a ngClass="['btn, btn-link]" [routerLink]="['/author', author.id]">{{  authorName(author) }}</a><span *ngIf="i < book.authors.length - 1">, </span>
+  </h2>
+  <img width="198" height="298" [src]="book.coverUrl" alt="{{ book.title }} Book Cover" lightbox />
+  <p>Price: {{ book.price | currency }}</p>
+  <p>Genres: {{ genres }}</p>
+  <p>Average User Reviews: {{ averageReviews }}</p>
+  <br />
+  <p>{{ book.description }}</p>
+</div>
 <hr />
+<span *ngIf="book && book.ratings">
+  {{ book.ratings | json }}
+</span>

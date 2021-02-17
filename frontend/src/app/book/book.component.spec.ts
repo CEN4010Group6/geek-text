@@ -1,26 +1,25 @@
+import { Author } from './../models/author';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ApiService } from '../api.service';
 import { BookComponent } from './book.component';
-import { DetailsComponent } from './details/details.component';
-import { JoinPipe } from '../join.pipe';
 
 describe('BookComponent', () => {
   let component: BookComponent;
   let fixture: ComponentFixture<BookComponent>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule ],
-      declarations: [ BookComponent, DetailsComponent, JoinPipe ],
+      declarations: [ BookComponent ],
       providers: [ ApiService ]
     })
     .compileComponents();
   });
 
-  beforeEach(() => {
+  beforeAll(() => {
     fixture = TestBed.createComponent(BookComponent);
     component = fixture.componentInstance;
     component.book = {
@@ -30,7 +29,7 @@ describe('BookComponent', () => {
       coverUrl: "https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg",
       isbn: 9780061120084,
       price: 17.99,
-      author: [
+      authors: [
         {
           id: '702ff0b2-e6b4-437f-a3df-a9604ea03e25',
           firstName: 'Harper',
@@ -40,8 +39,14 @@ describe('BookComponent', () => {
           updatedAt: new Date()
         }
       ],
-      genre: [
-        { id: '702ff0b2-e6b4-437f-a3df-a9604ea03e25', name: 'Fiction' }
+      genres: [
+        { id: 1, name: 'Fiction' }
+      ],
+      ratings: [
+        { id: 'a', value: 5, description: 'abcd', createdAt: new Date(), updatedAt: new Date() },
+        {
+          id: 'b', value: 2, description: 'abcd', createdAt: new Date(), updatedAt: new Date()
+        }
       ],
       createdAt: new Date(),
       updatedAt: new Date()
@@ -51,5 +56,20 @@ describe('BookComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should correctly display book authors names', () => {
+    if(component.book?.authors) {
+      let author = component.book.authors[0];
+      expect(component.authorName(author)).toBe('Harper Lee');
+    }
+  });
+
+  it('should correctly display the genres of the book', () => {
+    expect(component.genres).toBe('Fiction');
+  })
+
+  it('should correctly display an average of reviews', () => {
+    expect(component.averageReviews).toBe(3.5);
   });
 });
