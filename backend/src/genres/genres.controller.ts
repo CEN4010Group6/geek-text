@@ -1,8 +1,11 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Genre, Prisma } from '@prisma/client';
+
 import { GenresService } from './genres.service';
 import { UtilityService } from '../utility/utility.service';
 
+@ApiTags('genres')
 @Controller('genres')
 export class GenresController {
     /**

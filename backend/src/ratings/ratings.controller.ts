@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Rating, Prisma } from '@prisma/client';
 
 import { RatingsService } from './ratings.service';
 
+@ApiTags('ratings')
 @Controller('ratings')
 export class RatingsController {
   /**

@@ -1,9 +1,11 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 import { UtilityService } from '../utility/utility.service';
 
 import { BooksService } from './books.service';
 
+@ApiTags('books')
 @Controller('books')
 export class BooksController {
   /**
@@ -102,31 +104,5 @@ export class BooksController {
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<Book> {
     return this.$booksService.delete({id: id} as Prisma.BookWhereUniqueInput);
-  }
-
-  /**
-   * Find a book or books by the author's first, middle, and/or last name.
-   *
-   * @param firstName
-   * @param lastName
-   * @param middleName
-   */
-  @Get('by-author')
-  public async findByAuthor(
-    @Query('firstName') firstName?: string,
-    @Query('lastName') lastName?: string,
-    @Query('middleName') middleName?: string
-  ): Promise<Book[]> {
-    return this.$booksService.findAll({
-      select: {
-        authors: {
-          where: {
-            firstName: firstName,
-            middleName: middleName,
-            lastName: lastName
-          }
-        }
-      }
-    });
   }
 }

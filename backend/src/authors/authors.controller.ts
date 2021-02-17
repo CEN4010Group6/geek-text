@@ -1,8 +1,11 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Author, Prisma } from '@prisma/client';
+
 import { AuthorsService } from './authors.service';
 import { UtilityService } from '../utility/utility.service';
 
+@ApiTags('authors')
 @Controller('authors')
 export class AuthorsController {
   /**
