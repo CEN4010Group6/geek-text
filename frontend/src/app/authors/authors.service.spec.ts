@@ -15,8 +15,10 @@ describe('AuthorService', () => {
     updatedAt: new Date()
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeAll(() => {
+    TestBed.configureTestingModule({
+      providers: [ AuthorsService ]
+    });
     service = TestBed.inject(AuthorsService);
   });
 

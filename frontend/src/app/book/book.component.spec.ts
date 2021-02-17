@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { ApiService } from '../api.service';
 import { BookComponent } from './book.component';
+import { AuthorsService } from '../authors/authors.service';
 
 describe('BookComponent', () => {
   let component: BookComponent;
@@ -14,7 +15,7 @@ describe('BookComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule ],
       declarations: [ BookComponent ],
-      providers: [ ApiService ]
+      providers: [ ApiService, AuthorsService ]
     })
     .compileComponents();
   });
