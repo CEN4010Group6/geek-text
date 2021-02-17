@@ -58,8 +58,8 @@ jobs:
         restore-keys: |
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-
+    - run: ./bin/gh-helper.sh
     - run: npm ci
-    - run: [[ ! -z "$DATABASE_URL" ]] && cp .env.example .env || echo 'DATABASE_URL was properly set'
     - run: npm run prisma:migrate
     - run: npm run prisma:seed
     - run: npm test
