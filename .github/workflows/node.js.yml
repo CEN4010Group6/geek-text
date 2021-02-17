@@ -60,6 +60,6 @@ jobs:
           ${{ runner.OS }}-
     - run: npm ci
     - run: [[ ! -z "$DATABASE_URL" ]] && cp .env.example .env || echo 'DATABASE_URL was properly set'
-    - run: npm run migrate
-    - run: npm run seed
+    - run: npm run prisma:migrate
+    - run: npm run prisma:seed
     - run: npm test
