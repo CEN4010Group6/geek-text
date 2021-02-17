@@ -18,8 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate": "prisma migrate deploy --preview-feature",
-    "seed": "prisma db seed --preview-feature"
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy --preview-feature",
+    "prisma:seed": "prisma db seed --preview-feature",
+    "prisma:migrate-dev": "prisma migrate dev --preview-feature"
   },
   "repository": {
     "type": "git",

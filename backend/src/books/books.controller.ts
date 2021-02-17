@@ -52,17 +52,17 @@ export class BooksController {
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   public async findOne(
     @Param('id') id: string,
+    @Query('select') select: Prisma.BookSelect,
     @Query('include') include: Prisma.BookInclude
   ): Promise<Book | null> {
+    if(select) {
+      select = this.$utilityService.convertBtoO(select as string);
+    }
     if(include) {
       include = this.$utilityService.convertBtoO(include as string);
     }
-    return this.$booksService.findOne({
-      where: {
-        id: id
-      },
-      include
-    });
+    const query = { where: { id: id }, select, include };
+    return this.$booksService.findOne(query);
   }
 
   /**

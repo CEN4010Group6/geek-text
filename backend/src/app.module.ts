@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { EncryptionService } from './encryption/encryption.service';
 import { UtilityService } from './utility/utility.service';
 import { AuthorsModule } from './authors/authors.module';
+import { GenresModule } from './genres/genres.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { AuthorsModule } from './authors/authors.module';
     AuthModule,
     RatingsModule,
     UsersModule,
-    AuthorsModule
+    AuthorsModule,
+    GenresModule
   ],
   controllers: [ AppController ],
   providers: [

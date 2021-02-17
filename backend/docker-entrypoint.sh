@@ -5,16 +5,19 @@ if [[ $NODE_ENV == 'development' ]]; then
     echo "Updating 'node_modules'"
     npm install --no-optional
   fi
+  if [ "$(( $(date +"%s") - $(stat -c "%Y" ./db/dev.db) ))" -gt "7200" ]; then
+    rm -f ./dev/db
+  fi
 fi
 
-npx prisma generate
+npm run generate
 
-npx prisma migrate deploy --preview-feature
+npm run migrate
 
 if [[ $NODE_ENV == 'development' ]]; then
   npm run seed
   npm run start:dev
 else
   npm prune
-  npm run start
+  npm run start:prod
 fi

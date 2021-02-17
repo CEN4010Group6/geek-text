@@ -1,20 +1,23 @@
 // Core Angular imports
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, Route } from '@angular/router';
+import { List } from 'immutable';
 
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BookComponent } from './book/book.component';
 import { StorefrontComponent } from './storefront/storefront.component';
+import { AuthorsComponent } from './authors/authors.component';
 
-// Array of routes used in the top-level
-const routes: Routes = [
+// List of routes used in the top-level
+const routes: List<Route> = List([
   { path: 'book/:bookId', component: BookComponent },
+  { path: 'authors/:authorId', component: AuthorsComponent },
   { path: '', component: StorefrontComponent },
   { path: '**', component: NotFoundComponent }
-];
+]);
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [ RouterModule.forRoot(routes.toArray()) ],
+  exports: [ RouterModule ]
 })
 export class AppRoutingModule { }
