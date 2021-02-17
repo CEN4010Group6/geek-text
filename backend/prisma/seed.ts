@@ -157,6 +157,43 @@ async function main() {
     }
   }));
 
+  const bookCount = await client.book.count();
+
+  for(let i = bookCount; i < 30; i++) {
+    const newBook = {
+      title: faker.commerce.productName(),
+      price: faker.random.float({ min: 2.00, max: 20.00 }),
+      isbn: faker.random.number({ min: 1000000000000, max: 9999999999999}),
+      authors: {
+        create: [{
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+          description: faker.lorem.paragraph()
+        }]
+      },
+      description: faker.lorem.paragraphs(2),
+      publisher: {
+        create: {
+          name: faker.company.companyName()
+        }
+      },
+      genres: {
+        connect: {
+          id: faker.random.number({ min: 1, max: 10 })
+        }
+      },
+      coverUrl: faker.image.imageUrl(395, 595, 'books')
+    }
+
+    books = books.push(await client.book.upsert({
+      where: {
+        title: newBook.title
+      },
+      update: {},
+      create: newBook
+    }));
+  }
+
   for(let i = 0; i < 10; i++) {
     const randomUserNumber = faker.random.number({min: 0, max: 10});
     const randomBookNumber = faker.random.number({min: 0, max: 51});
