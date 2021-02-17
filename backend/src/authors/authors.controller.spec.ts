@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthorsController } from './authors.controller';
 import { AuthorsService } from './authors.service';
-import { UtilityService } from './../utility/utility.service';
+import { UtilityService } from '../utility/utility.service';
 
 describe('AuthorsController', () => {
   let controller: AuthorsController;
@@ -18,10 +18,6 @@ describe('AuthorsController', () => {
     }).compile();
 
     controller = module.get<AuthorsController>(AuthorsController);
-  });
-
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
   });
 
   it('should be defined', () => {

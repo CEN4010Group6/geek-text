@@ -19,8 +19,8 @@ model User {
   lastName String?
   profilePicture String?
   transactions Transaction[]
-  shippingAddress Address[] @relation("ShippingAddress")
-  creditCard CreditCard[]
+  shippingAddresses Address[] @relation("ShippingAddress")
+  creditCards CreditCard[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("users")
@@ -33,9 +33,9 @@ model Book {
   publisher Publisher
   isbn Int @unique
   description String
-  genre Genre[]
+  genres Genre[]
   price Float
-  rating Rating[]
+  ratings Rating[]
   coverUrl String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,6 +65,7 @@ model Publisher {
 model Genre {
   id Int @id @default(autoincrement())
   name String @unique
+  books Book[]
   @@map("genres")
 }
 
@@ -96,10 +97,8 @@ model Address {
 
 model Transaction {
   id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  books Book[] // @relation(fields: [booksId], references: [id])
-  booksId String
+  user User
+  books Book[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("transactions")
@@ -120,8 +119,7 @@ model CreditCard {
 
 model SavedShoppingCart {
   id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
+  user User
   books Book[]
   @@map("saved_shopping_carts")
 }

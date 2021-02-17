@@ -1,6 +1,6 @@
-import { AuthorsService } from './authors.service';
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Author, Prisma } from '@prisma/client';
+import { AuthorsService } from './authors.service';
 import { UtilityService } from '../utility/utility.service';
 
 @Controller('authors')

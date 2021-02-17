@@ -61,17 +61,8 @@ export class BooksController {
     if(include) {
       include = this.$utilityService.convertBtoO(include as string);
     }
-<<<<<<< HEAD
-    return this.$booksService.findOne({
-      where: {
-        id: id
-      },
-      include
-    });
-=======
     const query = { where: { id: id }, select, include };
     return this.$booksService.findOne(query);
->>>>>>> 5ea5ef2 (Adjusting backend endpoints to allow for angular HttpClient parameters.)
   }
 
   /**

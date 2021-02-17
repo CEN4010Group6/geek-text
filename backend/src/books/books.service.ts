@@ -20,12 +20,6 @@ export class BooksService {
    */
   public async findOne(params: {
     where: Prisma.BookWhereUniqueInput;
-<<<<<<< HEAD
-    include?: Prisma.BookInclude;
-  }): Promise<Book | null> {
-    const { where, include } = params;
-    return this.$prisma.book.findUnique({ where, include });
-=======
     select?: Prisma.BookSelect;
     include?: Prisma.BookInclude;
   }): Promise<Book | null> {
@@ -44,7 +38,6 @@ export class BooksService {
     } else {
       throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
     }
->>>>>>> 5ea5ef2 (Adjusting backend endpoints to allow for angular HttpClient parameters.)
   }
 
   /**

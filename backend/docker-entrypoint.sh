@@ -5,11 +5,12 @@ if [[ $NODE_ENV == 'development' ]]; then
     echo "Updating 'node_modules'"
     npm install --no-optional
   fi
+  rm -f ./db/dev.db
 fi
 
 npx prisma generate
 
-npx prisma migrate deploy --preview-feature
+npm run migrate
 
 if [[ $NODE_ENV == 'development' ]]; then
   npm run seed
