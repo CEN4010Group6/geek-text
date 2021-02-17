@@ -6,12 +6,12 @@ import { List } from 'immutable';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BookComponent } from './book/book.component';
 import { StorefrontComponent } from './storefront/storefront.component';
-import { AuthorComponent } from './author/author.component';
+import { AuthorsComponent } from './authors/authors.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
   { path: 'book/:bookId', component: BookComponent },
-  { path: 'author/:authorId', component: AuthorComponent },
+  { path: 'authors/:authorId', component: AuthorsComponent },
   { path: '', component: StorefrontComponent },
   { path: '**', component: NotFoundComponent }
 ]);

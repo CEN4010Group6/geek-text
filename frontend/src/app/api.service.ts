@@ -7,7 +7,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { Book } from './models/book';
 
-const httpOptions = {
+const defaultHttpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
@@ -37,8 +37,8 @@ export class ApiService {
    * @param endpoint
    */
   public get(endpoint: string, params?: HttpParams): Observable<any> {
-    const options = { params: params, ...httpOptions };
-    return this.http.get(this.REST_API_ENTRYPOINT + endpoint, httpOptions);
+    const options = { params: params, ...defaultHttpOptions };
+    return this.http.get(this.REST_API_ENTRYPOINT + endpoint, options);
   }
 
   /**
@@ -47,8 +47,8 @@ export class ApiService {
    * @param data
    */
   public post(endpoint: string, data: any, params?: HttpParams): Observable<any> {
-    const options = { params: params, ...httpOptions };
-    return this.http.post(this.REST_API_ENTRYPOINT + endpoint, data, httpOptions);
+    const options = { params: params, ...defaultHttpOptions };
+    return this.http.post(this.REST_API_ENTRYPOINT + endpoint, data, options);
   }
 
   /**
@@ -57,8 +57,8 @@ export class ApiService {
    * @param data
    */
   public put(endpoint: string, data: any, params?: HttpParams): Observable<any> {
-    const options = { params: params, ...httpOptions };
-    return this.http.put(this.REST_API_ENTRYPOINT + endpoint, data, httpOptions);
+    const options = { params: params, ...defaultHttpOptions };
+    return this.http.put(this.REST_API_ENTRYPOINT + endpoint, data, options);
   }
 
   /**
@@ -66,19 +66,7 @@ export class ApiService {
    * @param endpoint
    */
   public delete(endpoint: string, params?: HttpParams): Observable<any> {
-    const options = { params: params, ...httpOptions };
-    return this.http.delete(this.REST_API_ENTRYPOINT, httpOptions);
-  }
-
-  /**
-   * Get a book by its Id from the backend.
-   * @param id The Id of the requested book.
-   */
-  public getBookById(id: string, params?: HttpParams): Observable<Book> {
-    const options = { params: params, ...httpOptions };
-    return this.http.get<Book>(
-      this.REST_API_ENTRYPOINT + '/books/' + id,
-      options
-    );
+    const options = { params: params, ...defaultHttpOptions };
+    return this.http.delete(this.REST_API_ENTRYPOINT, options);
   }
 }

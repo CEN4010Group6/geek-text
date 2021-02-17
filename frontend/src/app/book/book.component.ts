@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 
 import { ApiService } from '../api.service';
+import { AuthorsService } from '../authors/authors.service';
 import { Author, Book, Genre, Rating } from '../models';
 
 @Component({
@@ -15,7 +16,8 @@ export class BookComponent implements OnInit {
 
   constructor(
     private $route: ActivatedRoute,
-    private $apiService: ApiService
+    private $apiService: ApiService,
+    private $authorsService: AuthorsService
   ) {}
 
   public ngOnInit(): void {
@@ -25,20 +27,17 @@ export class BookComponent implements OnInit {
       httpParams = httpParams.set('include', btoa(JSON.stringify({
         authors: true,
         ratings: true,
-        genres: true
+        genres: true,
+        publisher: true
       })));
 
-      this.$apiService.getBookById(params.bookId, httpParams)
+      this.$apiService.get(`/books/${ params.bookId }`, httpParams)
         .subscribe(res => this.book = res);
     });
   }
 
   public authorName(author: Author): string {
-    if(author.middleName) {
-      return `${ author.firstName } ${ author.middleName } ${ author.lastName }`;
-    } else {
-      return `${ author.firstName } ${ author.lastName }`;
-    }
+    return this.$authorsService.authorName(author);
   }
 
   public get genres(): string {

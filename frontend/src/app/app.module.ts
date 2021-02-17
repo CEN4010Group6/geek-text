@@ -22,7 +22,7 @@ import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { StorefrontModule } from './storefront/storefront.module';
-import { AuthorModule } from './author/author.module';
+import { AuthorsModule } from './authors/authors.module';
 import { JoinPipe } from './join.pipe';
 
 @NgModule({
@@ -45,7 +45,7 @@ import { JoinPipe } from './join.pipe';
     AppRoutingModule,
     StorefrontModule,
     BookModule,
-    AuthorModule
+    AuthorsModule
   ],
   providers: [
     ApiService,

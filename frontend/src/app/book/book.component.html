@@ -1,14 +1,38 @@
 <div *ngIf="book">
   <h1>{{ book.title }}</h1>
   <h2 *ngFor="let author of book.authors; index as i">
-    <a ngClass="['btn, btn-link]" [routerLink]="['/author', author.id]">{{  authorName(author) }}</a><span *ngIf="i < book.authors.length - 1">, </span>
+    <a [routerLink]="['/authors', author.id]">{{  authorName(author) }}</a><span *ngIf="i < book.authors.length - 1">, </span>
   </h2>
   <img width="198" height="298" [src]="book.coverUrl" alt="{{ book.title }} Book Cover" lightbox />
   <p>Price: {{ book.price | currency }}</p>
   <p>Genres: {{ genres }}</p>
+  <p>Published: {{ book.publishYear }}
+    <span *ngIf="book.publisher"> by
+      <div *ngIf="book.publisher.website; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <a [href]="book.publisher.website">{{ book.publisher.name }}</a>
+      </ng-template>
+      <ng-template #elseBlock>
+        {{ book.publisher.name }}
+      </ng-template>
+    </span>
   <p>Average User Reviews: {{ averageReviews }}</p>
+  <button [ngClass]="['btn', 'btn-primary']">Add To Cart</button>
   <br />
   <p>{{ book.description }}</p>
+  <br />
+  <div *ngIf="(book.authors.length == 1); then thenBlock else elseBlock"></div>
+  <ng-template #thenBlock>
+    <h2>About the Author</h2>
+    <p>{{ book.authors[0].description }}</p>
+  </ng-template>
+  <ng-template #elseBlock>
+    <h2>About the Authors</h2>
+    <div *ngFor="let author of book.authors">
+      <h3>{{ authorName(author) }}</h3>
+      <p>{{ author.description }}</p>
+    </div>
+  </ng-template>
 </div>
 <hr />
 <span *ngIf="book && book.ratings">

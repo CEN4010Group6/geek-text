@@ -4,23 +4,23 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { ApiService } from '../api.service';
 
-import { AuthorComponent } from './author.component';
+import { AuthorsComponent } from './authors.component';
 
-describe('AuthorComponent', () => {
-  let component: AuthorComponent;
-  let fixture: ComponentFixture<AuthorComponent>;
+describe('AuthorsComponent', () => {
+  let component: AuthorsComponent;
+  let fixture: ComponentFixture<AuthorsComponent>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthorComponent ],
+      declarations: [ AuthorsComponent ],
       imports: [ HttpClientModule, RouterTestingModule ],
       providers: [ ApiService ]
     })
     .compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AuthorComponent);
+  beforeAll(() => {
+    fixture = TestBed.createComponent(AuthorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

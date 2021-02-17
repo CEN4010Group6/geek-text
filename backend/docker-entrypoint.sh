@@ -5,7 +5,7 @@ if [[ $NODE_ENV == 'development' ]]; then
     echo "Updating 'node_modules'"
     npm install --no-optional
   fi
-  if [ "$(( $(date +"%s") - $(stat -c "%Y" ./dev.db) ))" -gt "7200" ]; then
+  if [ "$(( $(date +"%s") - $(stat -c "%Y" ./db/dev.db) ))" -gt "7200" ]; then
     rm -f ./dev/db
   fi
 fi

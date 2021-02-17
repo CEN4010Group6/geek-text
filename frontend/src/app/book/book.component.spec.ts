@@ -29,6 +29,7 @@ describe('BookComponent', () => {
       coverUrl: "https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg",
       isbn: 9780061120084,
       price: 17.99,
+      publishYear: 2005,
       authors: [
         {
           id: '702ff0b2-e6b4-437f-a3df-a9604ea03e25',
@@ -56,13 +57,6 @@ describe('BookComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should correctly display book authors names', () => {
-    if(component.book?.authors) {
-      let author = component.book.authors[0];
-      expect(component.authorName(author)).toBe('Harper Lee');
-    }
   });
 
   it('should correctly display the genres of the book', () => {

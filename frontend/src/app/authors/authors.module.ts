@@ -4,14 +4,15 @@ import { RouterModule } from '@angular/router';
 
 import { ApiService } from '../api.service';
 
-import { AuthorComponent } from './author.component';
+import { AuthorsComponent } from './authors.component';
+import { AuthorsService } from './authors.service';
 
 @NgModule({
-  declarations: [ AuthorComponent ],
-  providers: [ ApiService ],
   imports: [
     CommonModule,
     RouterModule
-  ]
+  ],
+  declarations: [ AuthorsComponent ],
+  providers: [ ApiService, AuthorsService ]
 })
-export class AuthorModule { }
+export class AuthorsModule { }

@@ -123,7 +123,7 @@ async function main() {
       publishYear: 2015,
       coverUrl: 'https://upload.wikimedia.org/wikipedia/en/4/4e/US_cover_of_Go_Set_a_Watchman.jpg',
       publisher: {
-        connect: { name: 'HarperCollins Publishers' }
+        connect: { name: 'HarperCollins Publishers LLC' }
       },
       genres: {
         connect: {
