@@ -4,6 +4,8 @@ services:
     build: ./backend
     environment:
       NODE_ENV: development
+    ports:
+      - "5555:5555"
     volumes:
       - ./backend:/app
       - database:/app/db

@@ -15,8 +15,7 @@ RUN apk --no-cache --virtual build add python make g++ && \
   npm cache clean --force && \
   apk del build
 
-COPY ./package-lock.json /tmp/package-lock.json
-
 EXPOSE 3000
+EXPOSE 5555
 
 ENTRYPOINT ["./docker-entrypoint.sh"]

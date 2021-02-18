@@ -4,3 +4,5 @@ Dockerfile
 db/dev.db
 .env.example
 .env
+bin
+dist
