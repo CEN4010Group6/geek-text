@@ -7,11 +7,14 @@ import { ApiService } from '../api.service';
 
 import { BookComponent } from './book.component';
 import { DetailsComponent } from './details/details.component';
-import { CommentComponent } from './comment/comment.component';
+import { ReviewComponent } from './review/review.component';
+import { RouterModule } from '@angular/router';
+import { RatingModule } from 'ng-starrating';
+// import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
-  declarations: [ BookComponent, DetailsComponent, CommentComponent ],
+  declarations: [ BookComponent, DetailsComponent, ReviewComponent ],
   providers: [ ApiService ],
-  imports: [ CommonModule, CrystalLightboxModule ]
+  imports: [ RouterModule, CommonModule, CrystalLightboxModule, RatingModule ]
 })
 export class BookModule { }
