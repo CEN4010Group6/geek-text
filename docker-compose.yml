@@ -6,7 +6,6 @@ services:
       NODE_ENV: development
     volumes:
       - ./backend:/app
-      - node_modules_backend:/app/node_modules
       - database:/app/db
 
   frontend:
@@ -16,7 +15,6 @@ services:
       REST_API_ENTRYPOINT: /api
     volumes:
       - ./frontend:/app
-      - node_modules_frontend:/app/node_modules
 
   nginx:
     build: ./nginx
@@ -49,6 +47,4 @@ services:
 volumes:
   database: {}
   nginx_cache: {}
-  node_modules_backend: {}
-  node_modules_frontend: {}
   redis_cache: {}
