@@ -14,7 +14,6 @@ import {
 import * as faker from 'faker';
 import * as argon2 from 'argon2';
 import { List, Map } from 'immutable';
-import { fake } from 'faker';
 
 const client = new PrismaClient();
 
