@@ -13,11 +13,11 @@ export class StorefrontComponent implements OnInit {
   public books: Book[] = [];
 
   constructor(
-    private $api: ApiService
+    private $apiService: ApiService
   ) { }
 
   ngOnInit(): void {
-    this.$api.get('/books')
+    this.$apiService.get('/books')
       .subscribe(res => this.books = res);
   }
 

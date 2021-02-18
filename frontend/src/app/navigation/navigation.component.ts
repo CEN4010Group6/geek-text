@@ -9,16 +9,15 @@ export class NavigationComponent implements OnInit {
 
   private collapsed = true;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  public get isCollapsed(): boolean {
+  public isCollapsed(): boolean {
     return this.collapsed;
   }
 
-  public set toggleCollapsed(isCollapsed: boolean) {
-    this.collapsed = !isCollapsed
+  public toggleCollapsed() {
+    this.collapsed = !this.collapsed;
   }
 }

@@ -5,10 +5,13 @@ import { PrismaService } from '../prisma/prisma.service';
 describe('BooksService', () => {
   let service: BooksService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
-      providers: [BooksService, PrismaService],
+      providers: [
+        BooksService,
+        PrismaService
+      ],
     }).compile();
 
     service = module.get<BooksService>(BooksService);

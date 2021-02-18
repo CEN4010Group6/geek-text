@@ -1,23 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class BooksService {
-  constructor(private $prisma: PrismaService) {}
+  /**
+   * Books service constructor
+   *
+   * @param $prisma The Prisma database service
+   */
+  constructor(
+    private readonly $prisma: PrismaService
+  ) {}
 
   /**
    * Find a single Book in the `books` table
    *
    * @param bookWhereUniqueInput Input which specifies the book to be found
    */
-  async findOne(bookWhereUniqueInput: Prisma.BookWhereUniqueInput): Promise<Book | null> {
-    return this.$prisma.book.findUnique({
-      where: bookWhereUniqueInput,
-      include: {
-        author: true
-      }
-    });
+  public async findOne(params: {
+    where: Prisma.BookWhereUniqueInput;
+    select?: Prisma.BookSelect;
+    include?: Prisma.BookInclude;
+  }): Promise<Book | null> {
+    const { where, select, include } = params;
+
+    if(!include) {
+      return this.$prisma.book.findUnique({
+        where,
+        select
+      }) as unknown as Book;
+    } else if (!select && include) {
+      return this.$prisma.book.findUnique({
+        where,
+        include
+      }) as unknown as Book;
+    } else {
+      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
+    }
   }
 
   /**
@@ -25,23 +45,38 @@ export class BooksService {
    *
    * @param params Parameters to match against the `books` table entries
    */
-  async findAll(params: {
+  public async findAll(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.BookWhereUniqueInput;
     where?: Prisma.BookWhereInput;
     orderBy?: Prisma.BookOrderByInput;
     select?: Prisma.BookSelect;
+    include?: Prisma.BookInclude;
   }): Promise<Book[]> {
-    const { skip, take, cursor, where, orderBy, select } = params;
-    return this.$prisma.book.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-      select
-    }) as unknown as Book[];
+    const { skip, take, cursor, where, orderBy, select, include } = params;
+
+    if(!include) {
+      return this.$prisma.book.findMany({
+        skip,
+        take,
+        cursor,
+        where,
+        orderBy,
+        select
+      }) as unknown as Book[];
+    } else if(!select && include) {
+      return this.$prisma.book.findMany({
+        skip,
+        take,
+        cursor,
+        where,
+        orderBy,
+        include
+      }) as unknown as Book[];
+    } else {
+      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
+    }
   }
 
   /**
@@ -49,7 +84,7 @@ export class BooksService {
    *
    * @param data The Book data to be created
    */
-  async createBook(data: Prisma.BookCreateInput): Promise<Book> {
+  public async create(data: Prisma.BookCreateInput): Promise<Book> {
     return this.$prisma.book.create({
       data
     });
@@ -60,7 +95,7 @@ export class BooksService {
    *
    * @param params Updated Book data
    */
-  async updateBook(params: {
+  public async update(params: {
     where: Prisma.BookWhereUniqueInput;
     data: Prisma.BookUpdateInput;
   }): Promise<Book> {
@@ -76,7 +111,7 @@ export class BooksService {
    *
    * @param where The unique identifier(s) of the Book to be removed
    */
-  async deleteBook(where: Prisma.BookWhereUniqueInput): Promise<Book> {
+  public async delete(where: Prisma.BookWhereUniqueInput): Promise<Book> {
     return this.$prisma.book.delete({
       where
     });

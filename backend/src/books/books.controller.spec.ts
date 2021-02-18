@@ -2,14 +2,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BooksController } from './books.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { BooksService } from './books.service';
+import { UtilityService } from '../utility/utility.service';
 
 describe('BooksController', () => {
   let controller: BooksController;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PrismaService, BooksService],
-      controllers: [BooksController],
+      providers: [
+        PrismaService,
+        BooksService,
+        UtilityService
+      ],
+      controllers: [ BooksController ],
     }).compile();
 
     controller = module.get<BooksController>(BooksController);

@@ -7,7 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 // 3rd party Angular components
-import { NgbModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 // Site imports
 import { AppRoutingModule } from './app-routing.module';
@@ -18,25 +21,31 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { StorefrontComponent } from './storefront/storefront.component';
+import { StorefrontModule } from './storefront/storefront.module';
+import { AuthorsModule } from './authors/authors.module';
+import { JoinPipe } from './join.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     NotFoundComponent,
-    StorefrontComponent
+    JoinPipe,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    NgbCollapseModule,
+    LoadingBarHttpClientModule,
+    LoadingBarRouterModule,
+    LoadingBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: (process.env.NODE_ENV === 'production')
     }),
     AppRoutingModule,
-    BookModule
+    StorefrontModule,
+    BookModule,
+    AuthorsModule
   ],
   providers: [
     ApiService,

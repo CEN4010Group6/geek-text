@@ -4,10 +4,10 @@ services:
     build: ./backend
     environment:
       NODE_ENV: development
-      DATABASE_URL: "file:/app/db/dev.db"
+    ports:
+      - "5555:5555"
     volumes:
       - ./backend:/app
-      - /app/node_modules
       - database:/app/db
 
   frontend:
@@ -17,7 +17,6 @@ services:
       REST_API_ENTRYPOINT: /api
     volumes:
       - ./frontend:/app
-      - /app/node_modules
 
   nginx:
     build: ./nginx
@@ -32,6 +31,11 @@ services:
       - backend
       - frontend
 
+  redis-cache:
+    image: redis:alpine
+    volumes:
+      - redis_cache:/data
+
   # db-migration:
   #   image: backend
   #   command: npm run seed
@@ -45,3 +49,4 @@ services:
 volumes:
   database: {}
   nginx_cache: {}
+  redis_cache: {}

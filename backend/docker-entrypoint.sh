@@ -1,20 +1,10 @@
 #!/bin/sh
 
-if [[ $NODE_ENV == 'development' ]]; then
-  if ! diff -q ./package-lock.json /tmp/package-lock.json; then
-    echo "Updating 'node_modules'"
-    npm install --no-optional
-  fi
+if [ -f ./db/dev.db && "$(( $(date +"%s") - $(stat -c "%Y" ./db/dev.db) ))" -gt "7200" ]; then
+  rm -f ./dev/db
 fi
 
-npx prisma generate
-
-npx prisma migrate deploy --preview-feature
-
-if [[ $NODE_ENV == 'development' ]]; then
-  npm run seed
-  npm run start:dev
-else
-  npm prune
-  npm run start
-fi
+npm run prisma:migrate
+npm run prisma:generate
+npm run prisma:seed
+npm run start:dev

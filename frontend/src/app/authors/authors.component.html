@@ -1,0 +1,10 @@
+<div *ngIf="author">
+  <h1>{{ authorName(author) }}</h1>
+  <h2>About the Author</h2>
+  <p>{{ author.description }}</p>
+  <hr />
+  <h2>Books by this author:</h2>
+  <div *ngFor="let book of author.books">
+    <a [routerLink]="['/book', book.id]">{{ book.title }}</a>
+  </div>
+</div>

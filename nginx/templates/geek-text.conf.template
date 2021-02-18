@@ -16,7 +16,6 @@ server {
   # include h5bp/basic.conf;
 
   location /api {
-    rewrite ^/api/(.*)? /$1 break;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -29,10 +28,10 @@ server {
     proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
     # proxy_cache_bypass $http_upgrade;
     proxy_redirect off;
-    proxy_pass http://docker-backend/;
+    proxy_pass http://docker-backend;
   }
 
-  location / {
+  location /sockjs-node/ {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -43,7 +42,7 @@ server {
     proxy_pass http://docker-frontend;
   }
 
-  location ^~ /sockjs-node/ {
+  location ^~ / {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -53,4 +52,6 @@ server {
     proxy_redirect off;
     proxy_pass http://docker-frontend;
   }
+
+
 }

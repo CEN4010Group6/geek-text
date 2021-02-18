@@ -18,13 +18,22 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "prisma db seed --preview-feature"
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy --preview-feature",
+    "prisma:seed": "prisma db seed --preview-feature",
+    "prisma:migrate-dev": "prisma migrate dev --preview-feature"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CEN4010Group6/geek-text.git"
   },
-  "author": "",
+  "author": "Joseph R. Quinn <423821+quinnjr@users.noreply.github.com>",
+  "contributors": [
+    "Paulo Pinto",
+    "Arturo Presa",
+    "Nicholas Prieto",
+    "John Quitto"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/CEN4010Group6/geek-text/issues"
@@ -33,17 +42,25 @@
   "dependencies": {
     "@nestjs/common": "^7.6.11",
     "@nestjs/core": "^7.6.11",
+    "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.11",
-    "@prisma/client": "^2.16.0",
+    "@nestjs/swagger": "^4.7.13",
+    "@prisma/client": "^2.16.1",
+    "@types/passport-local": "^1.0.33",
     "argon2": "^0.27.1",
     "class-transformer": "^0.3.2",
     "class-validator": "^0.13.1",
+    "dotenv": "^8.2.0",
+    "immutable": "^4.0.0-rc.12",
+    "ioredis": "^4.22.0",
     "passport": "^0.4.1",
-    "prisma": "^2.16.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.3"
+    "rxjs": "^6.6.3",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.4",
@@ -53,6 +70,7 @@
     "@types/faker": "^5.1.6",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.25",
+    "@types/passport-jwt": "^3.0.4",
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
@@ -62,6 +80,7 @@
     "faker": "^5.3.1",
     "jest": "^26.6.3",
     "prettier": "^2.1.2",
+    "prisma": "^2.16.1",
     "supertest": "^6.0.0",
     "ts-jest": "^26.5.0",
     "ts-loader": "^8.0.8",
