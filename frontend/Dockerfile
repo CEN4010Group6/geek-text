@@ -12,8 +12,6 @@ RUN npm install -g @angular/cli && \
   npm install --no-optional && \
   npm cache clean --force
 
-COPY ./package-lock.json /tmp/package-lock.json
-
 EXPOSE 4200
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check", "--watch", "--live-reload"]
