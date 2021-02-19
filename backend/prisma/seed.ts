@@ -56,8 +56,18 @@ async function main() {
           country: faker.address.country(),
           zipcode: faker.address.zipCode()
         }
+      },
+      roles: {
+        connectOrCreate: {
+          where: {
+            name: 'Admin'
+          },
+          create: {
+            name: 'Admin'
+          }
+        }
       }
-    },
+    }
   }));
 
   for(let genre of ['Fiction', 'Fantasy', 'Romance', 'Philosophy', 'Young Adult', 'Self-Help', 'Sci-fi', 'Non-Fiction', 'Biography', 'Mystery']) {
@@ -96,6 +106,13 @@ async function main() {
       price: 17.99,
       coverUrl: 'https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg',
       isbn: 9780061120084,
+      ratings: {
+        create: [{
+          value: 3,
+          description: faker.lorem.paragraph(),
+          userId: users.get(0)?.id || 'abcd'
+        }]
+      }
     }
   }));
 
@@ -212,10 +229,9 @@ async function main() {
   }
 
   for(let i = 0; i < 10; i++) {
-    const randomUserNumber = faker.random.number({min: 0, max: 10});
-    const randomBookNumber = faker.random.number({min: 0, max: 51});
+    const randomBookNumber = faker.random.number({min: 0, max: 32});
 
-    const user = users.get(randomUserNumber);
+    const user = users.get(0);
     const book = books.get(randomBookNumber);
 
     if(user && book) {
