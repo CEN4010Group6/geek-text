@@ -42,9 +42,9 @@ jobs:
       matrix:
         node-version: [14.x]
     env:
-      JWT_SECRET: "${{ secrets.JWT_SECRET }}"
-      SECRET_KEY: "${{ secrets.SECRET_KEY }}"
-      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
     - uses: actions/checkout@v2
@@ -61,7 +61,6 @@ jobs:
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-
     - run: npm ci
-    - run: sqlite3 ./db/dev.db ".databases"
     - run: DATABASE_URL=file:../db/dev.db npm run prisma:migrate
-    - run: npm run prisma:seed
-    - run: npm test
+    - run: DATABASE_URL=file:../db/dev.db npm run prisma:seed
+    - run: DATABASE_URL=file:../db.dev.db npm test
