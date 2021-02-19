@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
+
 import { UtilityService } from '../utility/utility.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles, Role } from '../roles.decorator';
 
 import { BooksService } from './books.service';
 
@@ -81,6 +84,8 @@ export class BooksController {
    * @param postData The Book data to be created
    */
   @Post('')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.BookCreateInput
   ): Promise<Book> {
@@ -94,6 +99,8 @@ export class BooksController {
    * @param bookData The updated information of the Book
    */
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
     @Body() postData: Book
@@ -110,6 +117,8 @@ export class BooksController {
    * @param id The UUID of the Book to be removed
    */
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<Book> {
     return this.$booksService.delete({id: id} as Prisma.BookWhereUniqueInput);
   }

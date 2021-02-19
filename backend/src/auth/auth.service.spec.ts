@@ -8,7 +8,7 @@ import { jwtConstants } from './constants'
 describe('AuthService', () => {
   let service: AuthService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         UsersModule,

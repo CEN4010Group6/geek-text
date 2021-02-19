@@ -1,9 +1,12 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Genre, Prisma } from '@prisma/client';
 
-import { GenresService } from './genres.service';
 import { UtilityService } from '../utility/utility.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles, Role } from '../roles.decorator';
+
+import { GenresService } from './genres.service';
 
 @ApiTags('genres')
 @Controller('genres')
@@ -32,6 +35,8 @@ export class GenresController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @ApiQuery({ name: 'skip', type: Number, required: false })
+  @ApiQuery({ name: 'take', type: Number, required: false })
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
@@ -76,6 +81,8 @@ export class GenresController {
    * @param postData The Genre to be created
    */
   @Post('')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.GenreCreateInput
   ): Promise<Genre> {

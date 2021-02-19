@@ -5,6 +5,8 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
+import { LocalAuth } from './dto/local-auth';
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -23,22 +25,22 @@ export class AuthController {
    * @param email The user's email
    * @param password The user's password
    */
-  @UseGuards(LocalAuthGuard)
   @Post('login')
+  @UseGuards(LocalAuthGuard)
+  @ApiBody({ type: LocalAuth })
   public async login(
-    @Body('email') email: string,
-    @Body('password') password: string
+    @Body() localAuth: LocalAuth
   ): Promise<any> {
-    return this.$authService.login(email, password);
+    return this.$authService.login(localAuth.email, localAuth.password);
   }
 
   /**
    * @TODO
    * Refreshes an expired but valid JWT if the expiration occurs within a set time period.
    */
-  @ApiHeader({ name: 'Authorization', required: true })
-  @UseGuards(JwtAuthGuard)
   @Post('refresh-token')
+  @UseGuards(JwtAuthGuard)
+  @ApiHeader({ name: 'Bearer', required: true })
   public async refreshToken(): Promise<any> {
 
   }

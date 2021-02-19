@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Prisma, User } from '@prisma/client';
-import { AuthGuard } from '@nestjs/passport';
+
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles, Role } from '../roles.decorator';
 
 import { UsersService } from './users.service';
 
@@ -24,7 +26,8 @@ export class UsersController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async findAll(@Query() query: {
     skip?: number;
     take?: number;
@@ -84,6 +87,8 @@ export class UsersController {
    * @param id The UUID of the User to be removed
    */
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<User> {
     return this.$usersService.delete({id: id} as Prisma.UserWhereUniqueInput);
   }

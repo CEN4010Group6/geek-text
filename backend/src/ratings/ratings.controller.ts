@@ -1,6 +1,9 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Rating, Prisma } from '@prisma/client';
+
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles, Role } from '../roles.decorator';
 
 import { RatingsService } from './ratings.service';
 
@@ -50,6 +53,8 @@ export class RatingsController {
    * @param postData The Rating data to be created
    */
   @Post('')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.RatingCreateInput
   ): Promise<Rating> {
@@ -63,6 +68,8 @@ export class RatingsController {
    * @param postData The updated information of the Rating
    */
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
     @Body() postData: Prisma.RatingCreateInput
@@ -79,6 +86,8 @@ export class RatingsController {
    * @param id The UUID of the Rating to be removed
    */
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<Rating> {
     return this.$ratingsService.delete({id: id} as Prisma.RatingWhereUniqueInput);
   }

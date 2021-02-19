@@ -3,6 +3,7 @@ declare var process: any;
 import { Injectable } from '@angular/core';
 
 import { CustomErrorHandlerService } from './custom-error-handler.service';
+import { BrowserError } from './models/browser-error';
 
 @Injectable({
   providedIn: 'root'

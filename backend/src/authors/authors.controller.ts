@@ -1,9 +1,12 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Author, Prisma } from '@prisma/client';
 
-import { AuthorsService } from './authors.service';
 import { UtilityService } from '../utility/utility.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles, Role } from './../roles.decorator';
+
+import { AuthorsService } from './authors.service';
 
 @ApiTags('authors')
 @Controller('authors')
@@ -32,6 +35,7 @@ export class AuthorsController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @ApiHeader({ name: 'Bearer', required: true })
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
@@ -78,6 +82,8 @@ export class AuthorsController {
    * @param postData The Author data to be created
    */
   @Post('')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.AuthorCreateInput
   ): Promise<Author> {
@@ -91,6 +97,8 @@ export class AuthorsController {
    * @param postData The updated information of the Author
    */
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
     @Body() postData: Author
@@ -107,6 +115,8 @@ export class AuthorsController {
    * @param id The UUID of the Author to be removed
    */
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<Author> {
     return this.$authorsService.delete({ id: id } as Prisma.AuthorWhereUniqueInput)
   }

@@ -1,7 +1,9 @@
 #!/bin/sh
 
-if [ -f ./db/dev.db && "$(( $(date +"%s") - $(stat -c "%Y" ./db/dev.db) ))" -gt "7200" ]; then
-  rm -f ./dev/db
+if [ -f ./db/dev.db ]; then
+  if [ "$(( $(date +"%s") - $(stat -c "%Y" ./db/dev.db) ))" -gt "7200" ]; then
+    rm -f ./dev/db
+  fi
 fi
 
 npm run prisma:migrate

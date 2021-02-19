@@ -38,7 +38,6 @@ async function bootstrap() {
     .addTag('genres')
     .addTag('ratings')
     .addTag('users')
-    .addBasicAuth()
     .addBearerAuth()
     .build();
 

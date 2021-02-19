@@ -49,11 +49,11 @@ import { JoinPipe } from './join.pipe';
   ],
   providers: [
     ApiService,
-    // LoggerService,
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: CustomErrorHandlerService
-    // }
+    LoggerService,
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandlerService
+    }
   ],
   bootstrap: [ AppComponent ]
 })
