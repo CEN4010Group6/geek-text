@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
-import { ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Author, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
@@ -8,7 +7,6 @@ import { Roles, Role } from './../roles.decorator';
 
 import { AuthorsService } from './authors.service';
 
-@ApiTags('authors')
 @Controller('authors')
 export class AuthorsController {
   /**
@@ -35,7 +33,6 @@ export class AuthorsController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @ApiHeader({ name: 'Bearer', required: true })
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,

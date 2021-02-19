@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Request, Query, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiHeader, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -7,7 +6,6 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 
 import { LocalAuth } from './dto/local-auth';
 
-@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   /**
@@ -27,7 +25,6 @@ export class AuthController {
    */
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  @ApiBody({ type: LocalAuth })
   public async login(
     @Body() localAuth: LocalAuth
   ): Promise<any> {
@@ -40,7 +37,6 @@ export class AuthController {
    */
   @Post('refresh-token')
   @UseGuards(JwtAuthGuard)
-  @ApiHeader({ name: 'Bearer', required: true })
   public async refreshToken(): Promise<any> {
 
   }

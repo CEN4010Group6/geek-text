@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Genre, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
@@ -8,7 +7,6 @@ import { Roles, Role } from '../roles.decorator';
 
 import { GenresService } from './genres.service';
 
-@ApiTags('genres')
 @Controller('genres')
 export class GenresController {
     /**
@@ -35,8 +33,6 @@ export class GenresController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @ApiQuery({ name: 'skip', type: Number, required: false })
-  @ApiQuery({ name: 'take', type: Number, required: false })
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,

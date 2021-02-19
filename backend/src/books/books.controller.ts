@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client';
-import { ApiTags } from '@nestjs/swagger';
 
 import { UtilityService } from '../utility/utility.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -8,7 +7,6 @@ import { Roles, Role } from '../roles.decorator';
 
 import { BooksService } from './books.service';
 
-@ApiTags('books')
 @Controller('books')
 export class BooksController {
   /**

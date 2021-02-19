@@ -1,14 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import * as pkg from '../package.json';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
 
 class BrowserError implements Error {
-  @ApiProperty()
   name: string;
-  @ApiProperty()
   message: string;
-  @ApiProperty()
   createdAt: Date;
 }
 
@@ -37,7 +33,6 @@ export class AppController {
    * @param messageBody
    */
   @Post('logs')
-  @ApiBody({ type: BrowserError })
   public async logError(@Body() messageBody: BrowserError) {
     console.log(messageBody);
   }
