@@ -5,7 +5,9 @@ import TerserWebpackPlugin from 'terser-webpack-plugin';
 import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
 
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export default {
   plugins: [

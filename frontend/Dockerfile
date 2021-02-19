@@ -10,7 +10,9 @@ COPY . .
 
 RUN npm install -g @angular/cli && \
   npm install --no-optional && \
-  npm cache clean --force
+  npm cache clean --force && \
+  [ ! -d "node_modules/dotenv" ] && echo 'Tell Joseph about this' && \
+  npm install dotenv
 
 EXPOSE 4200
 
