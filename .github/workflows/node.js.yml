@@ -3,6 +3,8 @@ name: Node.js CI
 on:
   push:
     branches: [main, develop]
+  pull_request:
+    branches: [develop]
 
 jobs:
   frontend:
@@ -58,10 +60,8 @@ jobs:
         restore-keys: |
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-
-    - run: ./bin/gh-helper.sh
     - run: npm ci
+    - run: sqlite3 ./db/dev.db ".databases;"
     - run: DATABASE_URL=file:../db/dev.db npm run prisma:migrate
-      env:
-        DATABASE_URL: "${{ secrets.DATABASE_URL }}"
     - run: npm run prisma:seed
     - run: npm test
