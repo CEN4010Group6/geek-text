@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuar
 import { Book, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles, Role } from '../roles.decorator';
 
 import { BooksService } from './books.service';
+import { Public } from '../public.decorator';
 
 @Controller('books')
 export class BooksController {
@@ -33,6 +33,7 @@ export class BooksController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
@@ -61,6 +62,7 @@ export class BooksController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findOne(
     @Param('id') id: string,
     @Query('select') select: Prisma.BookSelect,
@@ -82,7 +84,6 @@ export class BooksController {
    * @param postData The Book data to be created
    */
   @Post('')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.BookCreateInput
@@ -97,7 +98,6 @@ export class BooksController {
    * @param bookData The updated information of the Book
    */
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
@@ -115,7 +115,6 @@ export class BooksController {
    * @param id The UUID of the Book to be removed
    */
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<Book> {
     return this.$booksService.delete({id: id} as Prisma.BookWhereUniqueInput);

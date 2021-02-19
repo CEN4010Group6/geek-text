@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import * as pkg from '../package.json';
+import { Public } from './public.decorator';
 
 class BrowserError implements Error {
   name: string;
@@ -18,6 +19,7 @@ export class AppController {
    * Root GET method. Returns basic information about the API
    */
   @Get()
+  @Public()
   public async getRoot(): Promise<Object> {
     const authors = [ pkg.author, ...pkg.contributors ];
     return {
@@ -33,6 +35,7 @@ export class AppController {
    * @param messageBody
    */
   @Post('logs')
+  @Public()
   public async logError(@Body() messageBody: BrowserError) {
     console.log(messageBody);
   }

@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuar
 import { Author, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles, Role } from './../roles.decorator';
 
 import { AuthorsService } from './authors.service';
+import { Public } from '../public.decorator';
 
 @Controller('authors')
 export class AuthorsController {
@@ -33,6 +33,7 @@ export class AuthorsController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
@@ -61,6 +62,7 @@ export class AuthorsController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findOne(
     @Param('id') id: string,
     @Query('select') select: Prisma.BookSelect,
@@ -79,7 +81,6 @@ export class AuthorsController {
    * @param postData The Author data to be created
    */
   @Post('')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.AuthorCreateInput
@@ -94,7 +95,6 @@ export class AuthorsController {
    * @param postData The updated information of the Author
    */
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
@@ -112,7 +112,6 @@ export class AuthorsController {
    * @param id The UUID of the Author to be removed
    */
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<Author> {
     return this.$authorsService.delete({ id: id } as Prisma.AuthorWhereUniqueInput)

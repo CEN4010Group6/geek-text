@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import argon2 from 'argon2';
-import { isEmail } from 'class-validator';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -43,12 +42,6 @@ export class UsersService {
   }): Promise<User[]> {
     let { skip, take, cursor, where, orderBy, select } = params;
 
-    if(!select) {
-      select = { passwordHash: false };
-    } else {
-      select.passwordHash = false;
-    }
-
     let users = await this.$prisma.user.findMany({
       skip,
       take,
@@ -59,11 +52,8 @@ export class UsersService {
     });
 
     for(let user of users) {
-      if(user && user.hasOwnProperty('passwordHash')) {
-        // @ts-ignore
-        // @TODO: Find a better way of doing this...
-        delete user.passwordHash
-      }
+      // @ts-ignore
+      delete user.passwordHash;
     }
 
     return users as User[];
@@ -85,7 +75,12 @@ export class UsersService {
       passwordHash: passwordHash,
     };
 
-    return this.$prisma.user.create({ data: newUser });
+    let user = await this.$prisma.user.create({ data: newUser });
+
+    // @ts-ignore
+    delete user.passwordHash;
+
+    return user;
   }
 
   /**
@@ -103,10 +98,15 @@ export class UsersService {
       data.passwordHash = await argon2.hash(data.passwordHash as string);
     }
 
-    return this.$prisma.user.update({
+    let user = await this.$prisma.user.update({
       data,
       where
     });
+
+    // @ts-ignore
+    delete user.passwordHash;
+
+    return user;
   }
 
   /**
@@ -115,8 +115,13 @@ export class UsersService {
    * @param where The unique identifier(s) of the User to be removed
    */
   public async delete(where: Prisma.UserWhereUniqueInput): Promise<User> {
-    return this.$prisma.user.delete({
+    let user = await this.$prisma.user.delete({
       where
     });
+
+    // @ts-ignore
+    delete user.passwordHash;
+
+    return user;
   }
 }

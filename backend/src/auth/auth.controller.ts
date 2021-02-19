@@ -5,6 +5,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 import { LocalAuth } from './dto/local-auth';
+import { Public } from '../public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +25,7 @@ export class AuthController {
    * @param password The user's password
    */
   @Post('login')
-  @UseGuards(LocalAuthGuard)
+  @Public()
   public async login(
     @Body() localAuth: LocalAuth
   ): Promise<any> {
@@ -36,7 +37,7 @@ export class AuthController {
    * Refreshes an expired but valid JWT if the expiration occurs within a set time period.
    */
   @Post('refresh-token')
-  @UseGuards(JwtAuthGuard)
+  @Public()
   public async refreshToken(): Promise<any> {
 
   }

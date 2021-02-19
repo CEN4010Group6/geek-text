@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuar
 import { Genre, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles, Role } from '../roles.decorator';
 
 import { GenresService } from './genres.service';
+import { Public } from '../public.decorator';
 
 @Controller('genres')
 export class GenresController {
@@ -33,6 +33,7 @@ export class GenresController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
@@ -60,6 +61,7 @@ export class GenresController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findOne(
     @Param('id') id: number,
     @Query('include') include: Prisma.GenreInclude
@@ -77,7 +79,6 @@ export class GenresController {
    * @param postData The Genre to be created
    */
   @Post('')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.GenreCreateInput
@@ -92,6 +93,7 @@ export class GenresController {
    * @param postData The updated information of the Genre
    */
   @Put(':id')
+  @Roles(Role.Admin)
   public async update(
     @Param('id') id: number,
     @Body() postData: Genre
@@ -108,6 +110,7 @@ export class GenresController {
    * @param id The UUID of the Genre to be removed
    */
   @Delete(':id')
+  @Roles(Role.Admin)
   public async delete(@Param('id') id: number): Promise<Genre> {
     return this.$genresService.delete({ id: id } as Prisma.GenreWhereUniqueInput)
   }

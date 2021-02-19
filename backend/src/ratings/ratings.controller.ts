@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Rating, Prisma } from '@prisma/client';
 
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Public } from '../public.decorator';
 import { Roles, Role } from '../roles.decorator';
 
 import { RatingsService } from './ratings.service';
@@ -24,6 +24,7 @@ export class RatingsController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0; s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findAll(@Query() query: {
     skip?: number;
     take?: number;
@@ -41,6 +42,7 @@ export class RatingsController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Public()
   public async findOne(@Param('id') id: string): Promise<Rating | null> {
     return this.$ratingsService.findOne({id: id} as Prisma.BookWhereUniqueInput);
   }
@@ -51,7 +53,6 @@ export class RatingsController {
    * @param postData The Rating data to be created
    */
   @Post('')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async create(
     @Body() postData: Prisma.RatingCreateInput
@@ -66,7 +67,6 @@ export class RatingsController {
    * @param postData The updated information of the Rating
    */
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
@@ -84,7 +84,6 @@ export class RatingsController {
    * @param id The UUID of the Rating to be removed
    */
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @Roles(Role.Admin)
   public async delete(@Param('id') id: string): Promise<Rating> {
     return this.$ratingsService.delete({id: id} as Prisma.RatingWhereUniqueInput);
