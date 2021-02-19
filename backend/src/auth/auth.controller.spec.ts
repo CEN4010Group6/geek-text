@@ -3,7 +3,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
 import { UsersModule } from '../users/users.module';
 
 import 'dotenv/config';
@@ -16,7 +15,7 @@ describe('AuthController', () => {
       imports: [
         UsersModule,
         JwtModule.register({
-          secret: jwtConstants.JWT_SECRET,
+          secret: process.env.JWT_SECRET,
           signOptions: { expiresIn: '7200s' }
         })
       ],
