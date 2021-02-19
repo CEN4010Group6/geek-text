@@ -60,7 +60,7 @@ jobs:
           ${{ runner.OS }}-
     - run: ./bin/gh-helper.sh
     - run: npm ci
-    - run: npm run prisma:migrate
+    - run: DATABASE_URL=file:../db/dev.db npm run prisma:migrate
       env:
         DATABASE_URL: "${{ secrets.DATABASE_URL }}"
     - run: npm run prisma:seed
