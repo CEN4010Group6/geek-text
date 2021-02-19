@@ -20,7 +20,7 @@ export class GenresController {
   ) {}
 
   /**
-   * GET request to all records in the `Genres` table.
+   * GET request to all records in the `genres` table.
    *
    * @param skip
    * @param take
@@ -51,6 +51,12 @@ export class GenresController {
     return this.$genresService.findAll(query);
   }
 
+  /**
+   * GET request to find a Genre by an id
+   *
+   * @param id Id of the Genre to be found
+   * @param include
+   */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   public async findOne(
@@ -64,6 +70,11 @@ export class GenresController {
     return this.$genresService.findOne(query);
   }
 
+  /**
+   * POST request to create a new Genre in the `genres` table
+   *
+   * @param postData The Genre to be created
+   */
   @Post('')
   public async create(
     @Body() postData: Prisma.GenreCreateInput
@@ -71,6 +82,12 @@ export class GenresController {
     return this.$genresService.create(postData);
   }
 
+  /**
+   * PUT request to update a Genre in the `genres` table
+   *
+   * @param id The Id of the Genre to be updated
+   * @param postData The updated information of the Genre
+   */
   @Put(':id')
   public async update(
     @Param('id') id: number,
@@ -82,6 +99,11 @@ export class GenresController {
     });
   }
 
+  /**
+   * DELETE request to remove a Genre from the `genres` table
+   *
+   * @param id The UUID of the Genre to be removed
+   */
   @Delete(':id')
   public async delete(@Param('id') id: number): Promise<Genre> {
     return this.$genresService.delete({ id: id } as Prisma.GenreWhereUniqueInput)

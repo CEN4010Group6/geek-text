@@ -13,7 +13,9 @@ export class UsersController {
    *
    * @param $usersService The database connection to the `users` table
    */
-  constructor(private readonly $usersService: UsersService) {}
+  constructor(
+    private readonly $usersService: UsersService
+  ) {}
 
   /**
    * GET request to find all records in the `users` table.

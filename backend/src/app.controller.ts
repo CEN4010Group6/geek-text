@@ -5,9 +5,12 @@ import * as pkg from '../package.json';
 @Controller('')
 export class AppController {
   constructor(
-    private readonly $prisma: PrismaService
+    private readonly $prismaService: PrismaService
   ) {}
 
+  /**
+   * Root GET method. Returns basic information about the API
+   */
   @Get()
   public async getRoot(): Promise<Object> {
     const authors = [ pkg.author, ...pkg.contributors ];
@@ -19,8 +22,11 @@ export class AppController {
     }
   }
 
+  /**
+   * POST method for adding logging infomation to the database.
+   * @param messageBody
+   */
   @Post('logs')
-  public async logError(@Body() messageBody: any) {
-
+  public async logError(@Body() messageBody: Error) {
   }
 }

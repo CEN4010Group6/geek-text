@@ -19,10 +19,16 @@ export class AuthService {
    * @param $prisma Prisma database service
    */
   constructor(
-    private $usersService: UsersService,
-    private $jwtService: JwtService
+    private readonly $usersService: UsersService,
+    private readonly $jwtService: JwtService
   ) {}
 
+  /**
+   * Validates a user against the database using BasicAuth
+   *
+   * @param email The user's email address
+   * @param password The user's password
+   */
   public async validateUser(
     email: string,
     password: string
@@ -37,6 +43,13 @@ export class AuthService {
     return null;
   }
 
+  /**
+   * Performs the login action for a user and
+   * assigns them a valid JWT
+   *
+   * @param email The user's email address
+   * @param password The user's password
+   */
   public async login(email: string, password: string): Promise<any> {
     const user = await this.$usersService.findOne({ email: email });
 

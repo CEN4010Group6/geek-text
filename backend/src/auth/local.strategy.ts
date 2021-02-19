@@ -12,12 +12,18 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
    *
    * @param $authService
    */
-  constructor(private $authService: AuthService) {
+  constructor(private readonly $authService: AuthService) {
     super({
       usernameField: 'email'
     });
   }
 
+  /**
+   * Validates a local user against the database
+   *
+   * @param username
+   * @param password
+   */
   public async validate(
     username: string,
     password: string

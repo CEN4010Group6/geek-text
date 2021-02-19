@@ -22,7 +22,13 @@ export class BooksController {
   /**
    * GET request to find all records in the `books` table.
    *
-   * @param query Query parameters to alter the `WHERE` SQL clause
+   * @param skip
+   * @param take
+   * @param cursor
+   * @param where
+   * @param orderBy
+   * @param select
+   * @param include
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
@@ -46,9 +52,11 @@ export class BooksController {
   }
 
   /**
-   * GET request to find a book by a string UUID
+   * GET request to find a Book by a string UUID
    *
-   * @param id The UUID of the requested Book
+   * @param id
+   * @param select
+   * @param include
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')

@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Author, Prisma } from '@prisma/client';
 
 import { AuthorsService } from './authors.service';
@@ -20,7 +20,7 @@ export class AuthorsController {
   ) {}
 
   /**
-   * GET request to all records in the `authors` table.
+   * GET request to find all records in the `authors` table.
    *
    * @param skip
    * @param take
@@ -51,10 +51,18 @@ export class AuthorsController {
     return this.$authorsService.findAll(query);
   }
 
+  /**
+   * Get request to find a User by a string UUID
+   *
+   * @param id The UUID of the requested User
+   * @param select
+   * @param include
+   */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   public async findOne(
     @Param('id') id: string,
+    @Query('select') select: Prisma.BookSelect,
     @Query('include') include: Prisma.AuthorInclude
   ): Promise<Author | null> {
     if(include) {
@@ -64,6 +72,11 @@ export class AuthorsController {
     return this.$authorsService.findOne(query);
   }
 
+  /**
+   * POST request to update an Author in the `authors` table
+   *
+   * @param postData The Author data to be created
+   */
   @Post('')
   public async create(
     @Body() postData: Prisma.AuthorCreateInput
@@ -71,6 +84,12 @@ export class AuthorsController {
     return this.$authorsService.create(postData);
   }
 
+  /**
+   * PUT request to update an Author in the `authors` table
+   *
+   * @param id The UUID of the Author to be updated
+   * @param postData The updated information of the Author
+   */
   @Put(':id')
   public async update(
     @Param('id') id: string,
@@ -82,6 +101,11 @@ export class AuthorsController {
     });
   }
 
+  /**
+   * DELETE request to remove an Author from the `authors` table
+   *
+   * @param id The UUID of the Author to be removed
+   */
   @Delete(':id')
   public async delete(@Param('id') id: string): Promise<Author> {
     return this.$authorsService.delete({ id: id } as Prisma.AuthorWhereUniqueInput)

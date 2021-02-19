@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    *
    * @param $authService The Authentiacation service
    */
-  constructor(private $authService: AuthService) {
+  constructor(private readonly $authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -22,6 +22,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /**
+   * Validates the JWT token
+   *
+   * @param payload the token to validate
+   */
   public async validate(payload: any): Promise<any> {
     return { userId: payload.sub, username: payload.email }
 

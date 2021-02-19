@@ -12,7 +12,9 @@ export class RatingsController {
    *
    * @param $ratingsService The database connection to the `ratings` table
    */
-  constructor(private readonly $ratingsService: RatingsService) {}
+  constructor(
+    private readonly $ratingsService: RatingsService
+  ) {}
 
   /**
    * GET request to find all records in the `ratings` table
