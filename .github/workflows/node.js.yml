@@ -61,7 +61,7 @@ jobs:
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-
     - run: npm ci
-    - run: sqlite3 ./db/dev.db ".databases;"
+    - run: sqlite3 ./db/dev.db ".databases"
     - run: DATABASE_URL=file:../db/dev.db npm run prisma:migrate
     - run: npm run prisma:seed
     - run: npm test
