@@ -3,8 +3,8 @@ import { StorageMap } from '@ngx-pwa/local-storage';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService } from './api.service';
-import { User } from './models/user';
+import { ApiService } from '../api.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +17,22 @@ export class AuthService {
     private readonly $apiService: ApiService,
     private readonly $storage: StorageMap
   ) {
-    this.currentUserSubject = new BehaviorSubject<User>(this.$storage.get('user'));
+    this.currentUserSubject = new BehaviorSubject<User>(this.$storage.get('accessToken'));
   }
 
   public get currentUser(): User {
     return this.currentUserSubject.value;
   }
 
-  public login(formData: any): Observable<User> {
-    return this.$apiService.post('', formData)
+  public login(formData: {
+    email: string;
+    password: string;
+  }): Observable<User> {
+    return this.$apiService.post('/api/auth/login', formData)
       .pipe(
-        map(user => {
-          this.$storage.set('user', user).subscribe(() => this.currentUserSubject.next(user));
-          return user;
+        map(auth => {
+          this.$storage.set('accessToken', auth.accessToken).subscribe(() => this.currentUserSubject.next(auth.accessToken));
+          return auth;
         })
       );
   }

@@ -3,9 +3,9 @@ declare var process: any;
 // Core Angular Imports
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // 3rd party Angular components
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,19 +26,16 @@ import { StorefrontModule } from './storefront/storefront.module';
 import { AuthorsModule } from './authors/authors.module';
 import { JoinPipe } from './join.pipe';
 import { LoginComponent } from './login/login.component';
+import { AuthModule } from './auth/auth.module';
+import { JwtInterceptor } from './jwt.interceptor';
+import { ErrorInterceptor } from './error.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavigationComponent,
-    NotFoundComponent,
-    JoinPipe,
-    LoginComponent,
-  ],
-  imports: [
+    imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbModule,
     LoadingBarHttpClientModule,
     LoadingBarRouterModule,
@@ -49,7 +46,15 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     StorefrontModule,
     BookModule,
-    AuthorsModule
+    AuthorsModule,
+    AuthModule
+  ],
+  declarations: [
+    AppComponent,
+    NavigationComponent,
+    NotFoundComponent,
+    JoinPipe,
+    LoginComponent,
   ],
   providers: [
     ApiService,
@@ -57,6 +62,16 @@ import { LoginComponent } from './login/login.component';
     {
       provide: ErrorHandler,
       useClass: CustomErrorHandlerService
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
     }
   ],
   bootstrap: [ AppComponent ]
