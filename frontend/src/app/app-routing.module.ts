@@ -8,9 +8,11 @@ import { BookComponent } from './book/book.component';
 import { StorefrontComponent } from './storefront/storefront.component';
 import { ReviewComponent } from './book/review/review.component';
 import { AuthorsComponent } from './authors/authors.component';
+import { LoginComponent } from './login/login.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
+  { path: 'login', component: LoginComponent },
   { path: 'book/:bookId', component: BookComponent },
   { path: 'book/review/:bookId', component: ReviewComponent},
   { path: 'authors/:authorId', component: AuthorsComponent },

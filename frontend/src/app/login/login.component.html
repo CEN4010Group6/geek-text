@@ -1,0 +1,30 @@
+<div class="text-center" *ngIf="loginForm">
+  <form class="form-login" [formGroup]="loginForm" (ngSubmit)="submit()">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <input
+      formControlName="email"
+      type="email"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && loginForm.controls.email.errors }"
+      id="email"
+      placeholder="Email Address"
+      required
+      autofocus
+    />
+    <input
+      formControlName="password"
+      type="password"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && loginForm.controls.password.errors }"
+      id="password"
+      placeholder="Password"
+      required
+      autofocus
+    />
+    <br />
+    <div class="btn-group btn-group-lg btn-group-expanded" role="group">
+      <button type="button" class="btn btn-danger" (click)="back()">Cancel</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
