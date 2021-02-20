@@ -28,7 +28,7 @@ export class AuthService {
     email: string;
     password: string;
   }): Observable<User> {
-    return this.$apiService.post('/api/auth/login', formData)
+    return this.$apiService.post('/auth/login', formData)
       .pipe(
         map(auth => {
           this.$storage.set('accessToken', auth.accessToken).subscribe(() => this.currentUserSubject.next(auth.accessToken));

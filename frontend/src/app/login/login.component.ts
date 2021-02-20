@@ -23,14 +23,13 @@ export class LoginComponent implements OnInit {
     private readonly $route: ActivatedRoute,
     private readonly $router: Router,
     private readonly $location: Location,
-    private readonly $storage: StorageMap,
     private readonly $authService: AuthService
   ) {}
 
   public ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: [ '', Validators.required, Validators.email ],
-      password: ['', Validators.required, Validators.minLength(8) ]
+      email: [ '', Validators.required ],
+      password: ['', Validators.required ]
     });
 
     this.returnUrl = this.$route.snapshot.queryParams['returnUrl'] || '/';
@@ -44,6 +43,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     if(this.loginForm?.invalid) {
+      console.log(this.loginForm)
       return;
     }
 
