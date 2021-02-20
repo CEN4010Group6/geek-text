@@ -3,16 +3,13 @@ import * as webpack from 'webpack';
 // @ts-ignore
 import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
-
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import DotenvPlugin from 'dotenv-webpack';
 
 export default {
   plugins: [
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV,
-      REST_API_ENTRYPOINT: process.env.REST_API_ENTRYPOINT
+    new DotenvPlugin({
+      safe: true,
+      systemvars: true
     }),
     new SriPlugin({
       hashFuncNames: [ 'sha256' ],
