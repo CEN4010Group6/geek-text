@@ -37,7 +37,7 @@ model Book {
   isbn Int @unique
   description String
   genres Genre[]
-  price Decimal
+  price Float
   ratings Rating[]
   coverUrl String?
   coverDataUri String?

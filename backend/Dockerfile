@@ -6,11 +6,11 @@ ENV DATABASE_URL "file:/app/db/dev.db"
 
 WORKDIR /app
 
-COPY . .
+# COPY . .
 
 RUN apk --no-cache --virtual build add python make g++ && \
   npm install -g @nestjs/cli node-gyp && \
-  npm install --no-optional && \
+  # npm install --no-optional && \
   npm uninstall -g node-gyp && \
   npm cache clean --force && \
   apk del build

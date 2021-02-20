@@ -9,11 +9,9 @@ WORKDIR /app
 COPY . .
 
 RUN npm install -g @angular/cli && \
-  npm install --no-optional && \
-  npm cache clean --force && \
-  if [ ! -d "node_modules/dotenv" ]; then echo 'Tell Joseph about this'; fi && \
-  npm install dotenv --no-optional
+  # npm install --no-optional && \
+  npm cache clean --force
 
 EXPOSE 4200
 
-ENTRYPOINT ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check", "--watch", "--live-reload"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
