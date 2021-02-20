@@ -5,6 +5,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { FormsModule } from '@angular/forms';
 
 // 3rd party Angular components
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,6 +25,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { StorefrontModule } from './storefront/storefront.module';
 import { AuthorsModule } from './authors/authors.module';
 import { JoinPipe } from './join.pipe';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -31,10 +33,12 @@ import { JoinPipe } from './join.pipe';
     NavigationComponent,
     NotFoundComponent,
     JoinPipe,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     NgbModule,
     LoadingBarHttpClientModule,
     LoadingBarRouterModule,
