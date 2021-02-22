@@ -31,6 +31,31 @@ async function main() {
 
   users = users.push(await client.user.upsert({
     where: {
+      email: ''
+    },
+    update: {},
+    create: {
+      id: '0',
+      email: '',
+      passwordHash: await argon2.hash("87!k5HELaXpCm*%"),
+      firstName: '',
+      lastName: '',
+      nickName: 'Anonymous',
+      roles: {
+        connectOrCreate: {
+          where: {
+            name: 'Anonymous'
+          },
+          create: {
+            name: 'Anonymous'
+          }
+        }
+      }
+    }
+  }));
+
+  users = users.push(await client.user.upsert({
+    where: {
       email: 'john.doe@gmail.com'
     },
     update: {},

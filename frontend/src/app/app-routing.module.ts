@@ -12,14 +12,9 @@ import { LoginComponent } from './login/login.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
-<<<<<<< HEAD
   { path: 'login', component: LoginComponent },
-  { path: 'book/:bookId', component: BookComponent },
-  { path: 'book/review/:bookId', component: ReviewComponent},
-=======
   { path: 'books/:bookId', component: BookComponent },
   { path: 'books/:bookId/review', component: ReviewComponent},
->>>>>>> a777d0a (Modifying Book module to Books module. Modifying Review component. Adding StarRating component.)
   { path: 'authors/:authorId', component: AuthorsComponent },
   { path: '', component: StorefrontComponent },
   { path: '**', component: NotFoundComponent }
