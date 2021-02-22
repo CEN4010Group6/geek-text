@@ -4,7 +4,10 @@ import { HttpParams } from '@angular/common/http';
 
 import { ApiService } from '../api.service';
 import { AuthorsService } from '../authors/authors.service';
-import { Author, Book, Genre, Rating } from '../models';
+import { Author } from '../models/author';
+import { Book } from '../models/book';
+import { Genre } from '../models/genre';
+import { Review } from '../models/review';
 
 @Component({
   selector: 'app-book',
@@ -26,7 +29,7 @@ export class BookComponent implements OnInit {
 
       httpParams = httpParams.set('include', btoa(JSON.stringify({
         authors: true,
-        ratings: true,
+        reviews: true,
         genres: true,
         publisher: true
       })));
@@ -49,9 +52,9 @@ export class BookComponent implements OnInit {
   }
 
   public get averageReviews(): number {
-    if(this.book?.ratings && this.book.ratings.length) {
-      return this.book.ratings.map((rating: Rating) => rating.value)
-        .reduce((acc, val) => acc + val ) / this.book.ratings.length
+    if(this.book?.reviews) {
+      return this.book.reviews.map((review: Review) => review.value)
+        .reduce((acc, val) => acc + val ) / this.book.reviews.length
     }
     return 0;
   }

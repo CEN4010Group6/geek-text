@@ -23,6 +23,7 @@ CREATE TABLE "books" (
     "updatedAt" DATETIME NOT NULL,
     "transactionId" TEXT,
     "publisherId" TEXT NOT NULL,
+    "sold" INTEGER DEFAULT 0,
     FOREIGN KEY ("publisherId") REFERENCES "publishers" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY ("transactionId") REFERENCES "transactions" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );

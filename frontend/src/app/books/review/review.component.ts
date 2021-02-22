@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { List } from 'immutable';
 
 
@@ -13,13 +14,15 @@ import { Book } from '../../models/book';
 })
 export class ReviewComponent implements OnInit {
 
+  public reviewForm?: FormGroup;
   public book?: Book;
   public rating: number = 5;
   private _titles = List(['Poor', 'Below Average', 'Average', 'Above Average', 'Excellent']);
 
   constructor(
     private readonly $router: ActivatedRoute,
-    private readonly $api: ApiService
+    private readonly $api: ApiService,
+    private readonly $formBuilder: FormBuilder
   ) {}
 
   public ngOnInit(): void {
@@ -27,6 +30,16 @@ export class ReviewComponent implements OnInit {
       this.$api.get(`/books/${ params.bookId }`)
         .subscribe(res => this.book = res);
     });
+
+    this.reviewForm = this.$formBuilder.group({
+      'rating': [5, Validators.required],
+      'postAs': ['realName', Validators.required],
+      'description': ['', Validators.required]
+    });
+  }
+
+  public onSubmit() {
+
   }
 
   public get titles(): string[] {

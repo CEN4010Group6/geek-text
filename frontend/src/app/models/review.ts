@@ -1,4 +1,6 @@
-export interface Rating {
+import { User } from './user';
+
+export interface Review {
   id: string;
   value: number;
   description: string;
@@ -6,4 +8,5 @@ export interface Rating {
   updatedAt: Date;
   userId?: string;
   bookId?: string;
+  user?: User,
 }

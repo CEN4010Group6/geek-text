@@ -6,7 +6,7 @@ import {
   Author,
   CreditCard,
   Genre,
-  Rating,
+  Review,
   Address,
   Transaction,
   Prisma
@@ -39,6 +39,7 @@ async function main() {
       passwordHash: hash,
       firstName: 'John',
       lastName: 'Doe',
+      nickName: '',
       creditCards: {
         create: {
           encryptedCreditCardNumber: cc,
@@ -106,7 +107,7 @@ async function main() {
       price: 17.99,
       coverUrl: 'https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg',
       isbn: 9780061120084,
-      ratings: {
+      reviews: {
         create: [{
           value: 3,
           description: faker.lorem.paragraph(),
@@ -235,7 +236,7 @@ async function main() {
     const book = books.get(randomBookNumber);
 
     if(user && book) {
-      const _rating = await client.rating.create({
+      const _review = await client.review.create({
         data: {
           value: faker.random.number({min: 0, max: 5}),
           description: faker.lorem.paragraph(),

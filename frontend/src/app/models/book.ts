@@ -1,5 +1,5 @@
 import { Author } from './author';
-import { Rating } from './rating';
+import { Review } from './review';
 import { Genre } from './genre';
 import { Publisher } from './publisher';
 
@@ -14,7 +14,7 @@ export interface Book {
   coverDataUri?: string;
   publisher?: Publisher;
   publishYear: number;
-  ratings?: Rating[];
+  reviews?: Review[];
   genres?: Genre[];
   createdAt: Date;
   updatedAt: Date;

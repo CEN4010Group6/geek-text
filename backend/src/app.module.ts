@@ -6,7 +6,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { BooksModule } from './books/books.module';
 import { AuthModule } from './auth/auth.module';
 import { CacheService } from './cache/cache.service';
-import { RatingsModule } from './ratings/ratings.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
 import { EncryptionService } from './encryption/encryption.service';
 import { UtilityService } from './utility/utility.service';
@@ -19,7 +19,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
   imports: [
     BooksModule,
     AuthModule,
-    RatingsModule,
+    ReviewsModule,
     UsersModule,
     AuthorsModule,
     GenresModule

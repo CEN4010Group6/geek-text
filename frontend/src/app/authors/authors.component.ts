@@ -3,7 +3,8 @@ import { HttpParams } from '@angular/common/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { ApiService } from '../api.service';
-import { Author, Book } from '../models';
+import { Book } from '../models/book';
+import { Author } from '../models/author';
 
 import { AuthorsService } from './authors.service';
 

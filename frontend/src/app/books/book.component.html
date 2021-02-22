@@ -46,8 +46,14 @@
       <p>{{ author.description }}</p>
     </div>
   </ng-template>
+  <hr />
+  <h2>Reviews</h2>
+  <ul class="list-unstyled" *ngFor="let review of book.reviews">
+    <li class="media">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1">By: {{ review.user | json }}</h5>
+        <p>{{ review.description }}</p>
+      </div>
+    </li>
+  </ul>
 </div>
-<hr />
-<span *ngIf="book && book.ratings">
-  {{ book.ratings | json }}
-</span>
