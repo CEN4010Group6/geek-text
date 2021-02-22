@@ -10,14 +10,27 @@
     <span *ngIf="book.publisher"> by
       <div *ngIf="book.publisher.website; then thenBlock else elseBlock"></div>
       <ng-template #thenBlock>
-        <a [href]="book.publisher.website">{{ book.publisher.name }}</a>
+        <a [href]="book?.publisher?.website">{{ book.publisher.name }}</a>
       </ng-template>
       <ng-template #elseBlock>
         {{ book.publisher.name }}
       </ng-template>
     </span>
-  <p>Average User Reviews: {{ averageReviews }}</p>
-  <button [ngClass]="['btn', 'btn-primary']">Add To Cart</button> | <a [ngClass]="['btn', 'btn-info']" [routerLink]="['/book/review', book.id]">Leave a review</a>
+  <p>Average User Reviews:
+    <!-- <bar-rating
+      [rate]="averageReviews"
+      [max]="5"
+      [readOnly]="true"
+      [theme]="'fontawesome'"
+    ></bar-rating> -->
+    <app-star-rating
+      [rating]="averageReviews"
+      [max]="5"
+      [readOnly]="true"
+    >
+    </app-star-rating>
+  </p>
+  <button [ngClass]="['btn', 'btn-primary']">Add To Cart</button> | <a [ngClass]="['btn', 'btn-info']" [routerLink]="['./review']">Leave a review</a>
   <br />
   <p>{{ book.description }}</p>
   <br />

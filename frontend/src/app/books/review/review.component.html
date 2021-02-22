@@ -1,0 +1,41 @@
+<div class="row" *ngIf="book">
+  <div class="col-12 text-center">
+    <h1>{{ book.title }}</h1>
+    <h2 *ngFor="let author of book.authors">
+      {{ author.firstName }} {{ author.lastName }}
+    </h2>
+    <p>ISBN: {{ book.isbn }}</p>
+    <img [src]="book.coverUrl" lightbox />
+    <p>Price: ${{ book.price }}</p>
+    <form #ratingForm="ngForm">
+      <div class="row">
+      <div class="col-12 text-center">
+        <!--<bar-rating
+          name="rating"
+          [(ngModel)]="rating"
+          [max]="5"
+          [titles]="titles"
+          [showText]="true"
+          [theme]="'fontawesome'"
+          [required]="true"
+        ></bar-rating>-->
+        <app-star-rating
+          name="rating"
+          [(ngModel)]="rating"
+          [max]="5"
+          [titles]="titles"
+          [showText]="true"
+          [required]="true"
+        >
+
+        </app-star-rating>
+      </div>
+      </div>
+      <div class="row col-12">
+        <textarea type="text" id="comments" class="form-control" rows="10" cols="100"></textarea>
+        <label for="comments">comments</label>
+      </div>
+      <button class="btn btn-primary">submit</button>
+    </form>
+  </div>
+</div>

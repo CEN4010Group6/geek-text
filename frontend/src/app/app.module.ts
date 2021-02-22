@@ -17,7 +17,7 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApiService } from './api.service';
-import { BookModule } from './book/books.module';
+import { BooksModule } from './books/books.module';
 import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { LoggerService } from './logger.service';
@@ -31,7 +31,7 @@ import { JwtInterceptor } from './jwt.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
 
 @NgModule({
-    imports: [
+  imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -45,7 +45,7 @@ import { ErrorInterceptor } from './error.interceptor';
     }),
     AppRoutingModule,
     StorefrontModule,
-    BookModule,
+    BooksModule,
     AuthorsModule,
     AuthModule
   ],

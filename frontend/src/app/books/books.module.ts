@@ -1,26 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { CrystalLightboxModule } from '@crystalui/angular-lightbox';
-import { RatingModule } from 'ng-starrating';
 
 import { ApiService } from '../api.service';
 
 import { BookComponent } from './book.component';
 import { ReviewComponent } from './review/review.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
+import { RateTitlePipe } from './star-rating/rate-title.pipe';
 
 @NgModule({
-  declarations: [
-    BookComponent,
-    ReviewComponent
-  ],
-  providers: [ ApiService ],
   imports: [
     CommonModule,
     RouterModule,
-    CrystalLightboxModule,
-    RatingModule
-  ]
+    FormsModule,
+    CrystalLightboxModule
+  ],
+  declarations: [
+    BookComponent,
+    ReviewComponent,
+    StarRatingComponent,
+    RateTitlePipe
+  ],
+  providers: [ ApiService ],
+  exports: [ StarRatingComponent ]
 })
-export class BookModule { }
+export class BooksModule { }

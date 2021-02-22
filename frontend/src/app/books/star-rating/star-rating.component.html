@@ -1,0 +1,20 @@
+<div class="rating" [ngClass]="{ 'readonly': readOnly }">
+  <div class="units" (mouseleave)="reset()">
+    <div class="unit" *ngFor="let ctx of contexts">
+      <span
+        [ngClass]="{
+          'active': ctx.active,
+          'selected': ctx.selected
+        }"
+        (mouseenter)="ctx.enter()"
+        (click)="ctx.click($event)"
+      >
+        <i
+          class="fas"
+          [ngClass]="{ 'fa-star': !ctx.fraction, 'fa-star-half-alt': ctx.fraction }"
+        ></i>
+      </span>
+    </div>
+  </div>
+  <div *ngIf="showText" class="show-text">{{ nextRating | rateTitle: titles }}</div>
+</div>

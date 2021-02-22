@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StarRatingComponent } from 'ng-starrating';
-import { ApiService } from 'src/app/api.service';
-import { Book } from 'src/app/models/book';
+import { List } from 'immutable';
+
+
+import { ApiService } from '../../api.service';
+import { Book } from '../../models/book';
 
 @Component({
   selector: 'app-book-review',
@@ -12,9 +14,8 @@ import { Book } from 'src/app/models/book';
 export class ReviewComponent implements OnInit {
 
   public book?: Book;
-  public starValue = 5;
-  public totalstars = 5;
-  public readFlag = false;
+  public rating: number = 5;
+  private _titles = List(['Poor', 'Below Average', 'Average', 'Above Average', 'Excellent']);
 
   constructor(
     private readonly $router: ActivatedRoute,
@@ -28,9 +29,7 @@ export class ReviewComponent implements OnInit {
     });
   }
 
-  public onRate($event:{
-    oldValue: any,
-    newValue: any,
-    starRating: StarRatingComponent}) {
+  public get titles(): string[] {
+    return this._titles.toArray();
   }
 }
