@@ -9,6 +9,7 @@ import { ApiService } from '../api.service';
 
 import { BookComponent } from './book.component';
 import { ReviewComponent } from './review/review.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { RateTitlePipe } from './star-rating/rate-title.pipe';
 
@@ -18,7 +19,8 @@ import { RateTitlePipe } from './star-rating/rate-title.pipe';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    CrystalLightboxModule
+    CrystalLightboxModule,
+    NgbModule
   ],
   declarations: [
     BookComponent,
@@ -26,7 +28,6 @@ import { RateTitlePipe } from './star-rating/rate-title.pipe';
     StarRatingComponent,
     RateTitlePipe
   ],
-  providers: [ ApiService ],
-  exports: [ StarRatingComponent ]
+  providers: [ ApiService ]
 })
 export class BooksModule { }

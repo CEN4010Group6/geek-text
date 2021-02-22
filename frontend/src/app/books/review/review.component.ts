@@ -38,6 +38,10 @@ export class ReviewComponent implements OnInit {
     });
   }
 
+  public reset() {
+
+  }
+
   public onSubmit() {
 
   }

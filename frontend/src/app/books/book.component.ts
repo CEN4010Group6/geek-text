@@ -16,6 +16,7 @@ import { Review } from '../models/review';
 })
 export class BookComponent implements OnInit {
   public book?: Book;
+  public activeTab = 1;
 
   constructor(
     private $route: ActivatedRoute,
