@@ -2,10 +2,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RatingModule } from 'ng-starrating';
-
 import { ReviewComponent } from './review.component';
 import { ApiService } from 'src/app/api.service';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StarRatingComponent } from '../star-rating/star-rating.component';
 
 describe('ReviewComponent', () => {
   let component: ReviewComponent;
@@ -13,9 +14,9 @@ describe('ReviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpClientModule, RatingModule ],
+      imports: [ RouterTestingModule, HttpClientModule, NgbNavModule, ReactiveFormsModule ],
       providers: [ ApiService ],
-      declarations: [ ReviewComponent ]
+      declarations: [ ReviewComponent, StarRatingComponent ]
     })
     .compileComponents();
   });

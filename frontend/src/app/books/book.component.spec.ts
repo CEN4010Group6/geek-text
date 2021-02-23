@@ -6,6 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../api.service';
 import { BookComponent } from './book.component';
 import { AuthorsService } from '../authors/authors.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 describe('BookComponent', () => {
   let component: BookComponent;
@@ -13,8 +16,8 @@ describe('BookComponent', () => {
 
   beforeAll(async () => {
     await TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpClientModule ],
-      declarations: [ BookComponent ],
+      imports: [ RouterTestingModule, HttpClientModule, NgbModule, ReactiveFormsModule ],
+      declarations: [ BookComponent, StarRatingComponent ],
       providers: [ ApiService, AuthorsService ]
     })
     .compileComponents();
@@ -44,7 +47,7 @@ describe('BookComponent', () => {
       genres: [
         { id: 1, name: 'Fiction' }
       ],
-      ratings: [
+      reviews: [
         { id: 'a', value: 5, description: 'abcd', createdAt: new Date(), updatedAt: new Date() },
         {
           id: 'b', value: 2, description: 'abcd', createdAt: new Date(), updatedAt: new Date()
