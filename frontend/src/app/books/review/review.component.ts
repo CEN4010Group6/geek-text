@@ -39,11 +39,10 @@ export class ReviewComponent implements OnInit {
   }
 
   public reset() {
-
+    this.reviewForm?.reset();
   }
 
   public onSubmit() {
-
   }
 
   public get titles(): string[] {

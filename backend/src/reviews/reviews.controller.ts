@@ -53,7 +53,7 @@ export class ReviewsController {
    * @param postData The Review data to be created
    */
   @Post('')
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   public async create(
     @Body() postData: Prisma.ReviewCreateInput
   ): Promise<Review> {
@@ -67,7 +67,7 @@ export class ReviewsController {
    * @param postData The updated information of the Review
    */
   @Put(':id')
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   public async update(
     @Param('id') id: string,
     @Body() postData: Prisma.ReviewCreateInput
@@ -84,7 +84,7 @@ export class ReviewsController {
    * @param id The UUID of the Review to be removed
    */
   @Delete(':id')
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   public async delete(@Param('id') id: string): Promise<Review> {
     return this.$reviewsService.delete({id: id} as Prisma.ReviewWhereUniqueInput);
   }
