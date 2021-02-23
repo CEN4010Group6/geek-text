@@ -35,11 +35,21 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<User | null> {
-    const user = await this.$usersService.findOne({ email: email });
+    const user = await this.$usersService.findOne({
+      where: {
+        email: email
+      },
+      select: {
+        id: true,
+        email: true,
+        passwordHash: true,
+        roles: true
+      }
+    });
 
     if(user && argon2.verify(user.passwordHash, password)) {
-      delete user.passwordHash;
-      return user;
+      const { passwordHash, ...result } = user;
+      return result;
     }
 
     return null;
@@ -52,16 +62,15 @@ export class AuthService {
    * @param email The user's email address
    * @param password The user's password
    */
-  public async login(email: string, password: string): Promise<any> {
-    const user = await this.$usersService.findOne({ email: email });
+  public async login(user: any): Promise<any> {
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      roles: user.roles
+    };
 
-    if(user && argon2.verify(user.passwordHash, password)) {
-      const payload = { username: user.email, sub: user.id };
-      return {
-        accessToken: this.$jwtService.sign(payload)
-      }
-    }
-
-    return null;
+    return {
+      accessToken: this.$jwtService.sign(payload)
+    };
   }
 }

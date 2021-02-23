@@ -20,10 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: this.$configService.get<string>('JWT_SECRET'),
-      issuer: 'geek-text',
-      audience: 'geek-text',
+      secretOrKey: $configService.get<string>('JWT_SECRET')
     });
   }
 
@@ -33,11 +30,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @param payload the token to validate
    */
   public async validate(payload: any): Promise<any> {
-    const user = await this.$prismaService.user.findUnique({
-      where: {
-        id: payload.userId,
-      }
-    });
-    return user;
+    return {
+      userId: payload.sub,
+      email: payload.email,
+      roles: payload.roles
+    };
   }
 }

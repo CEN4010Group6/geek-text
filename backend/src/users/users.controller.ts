@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Public } from '../public.decorator';
 import { Roles, Role } from '../roles.decorator';
 
@@ -24,7 +24,7 @@ export class UsersController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
   public async findAll(@Query() query: {
     skip?: number;
     take?: number;
@@ -43,7 +43,7 @@ export class UsersController {
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   public async findOne(@Param('id') id: string): Promise<User | null> {
-    return this.$usersService.findOne({id: id} as Prisma.UserWhereUniqueInput);
+    return this.$usersService.findOne({ where: { id: id }});
   }
 
   /**

@@ -28,8 +28,8 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
       port: 6379,
       max: 50
     }),
-    BooksModule,
     AuthModule,
+    BooksModule,
     ReviewsModule,
     UsersModule,
     AuthorsModule,
@@ -43,10 +43,6 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard
     },
     {
       provide: APP_INTERCEPTOR,
