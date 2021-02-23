@@ -1,15 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from 'crypto';
 
 @Injectable()
 export class EncryptionService {
-  private key: Buffer;
+  public key: Buffer;
 
   /**
    * Encryption Service constructor
    */
-  constructor() {
-    this.key = scryptSync(process.env.SECRET_KEY as string, 'salt', 32) as Buffer;
+  constructor(
+    private readonly $configService: ConfigService
+  ) {
+    const secret = this.$configService.get<string>('SECRET_KEY') as string;
+    this.key = scryptSync(secret, 'salt', 32) as Buffer;
   }
 
   /**

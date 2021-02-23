@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import argon2 from 'argon2';
@@ -19,6 +20,7 @@ export class AuthService {
    * @param $prisma Prisma database service
    */
   constructor(
+    private readonly $configService: ConfigService,
     private readonly $usersService: UsersService,
     private readonly $jwtService: JwtService
   ) {}
