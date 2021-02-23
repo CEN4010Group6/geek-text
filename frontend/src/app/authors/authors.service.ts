@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Author } from '../models';
+import { Author } from '../models/author';
 
 @Injectable()
 export class AuthorsService {

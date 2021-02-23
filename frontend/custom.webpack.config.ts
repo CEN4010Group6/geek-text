@@ -4,8 +4,22 @@ import * as webpack from 'webpack';
 import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
 import DotenvPlugin from 'dotenv-webpack';
+import CopyPlugin from 'copy-webpack-plugin';
 
 export default {
+  module: {
+    rules: [
+      {
+        test: /\.(eot|svg|ttf|woff|woff2?)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '/assets/webfonts/[name].[ext]'
+          }
+        }
+      }
+    ]
+  },
   plugins: [
     new DotenvPlugin({
       safe: true,

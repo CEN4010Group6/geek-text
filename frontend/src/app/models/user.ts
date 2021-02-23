@@ -1,1 +1,3 @@
-export interface User {}
+export interface User {
+  profilePicture?: string;
+}

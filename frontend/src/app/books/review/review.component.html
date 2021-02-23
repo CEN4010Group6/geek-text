@@ -1,0 +1,40 @@
+<div class="row" *ngIf="book && reviewForm">
+  <div class="col-12 text-center">
+    <h1>{{ book.title }}</h1>
+    <h2 *ngFor="let author of book.authors">
+      {{ author.firstName }} {{ author.lastName }}
+    </h2>
+    <p>ISBN: {{ book.isbn }}</p>
+    <img [src]="book.coverUrl" lightbox />
+    <p>Price: ${{ book.price }}</p>
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" class="text-center">
+      <div class="form-group row">
+        <label for="rating">Rating:&nbsp;</label>
+        <app-star-rating name="rating" [rating]="rating" [max]="5" [titles]="titles" [showText]="true"></app-star-rating>
+      </div>
+      <div class="form-group row">
+        <label for="comments">Comments:</label>
+        <textarea type="text" id="comments" class="form-control" rows="10" cols="100" formControlName="description"></textarea>
+      </div>
+      <div class="form-group row">
+        Post As:&nbsp;
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="realName" formControlName="postAs" [value]="'realName'" />
+          <label class="form-check-label" for="realName">Real Name</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="nickName" formControlName="postAs" [value]="'nickName'" />
+          <label class="form-check-label" for="nickName">Nickname</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="anonymous" formControlName="postAs" [value]="'anonymous'" />
+          <label class="form-check-label" for="anonymous">Anonymously</label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <button class="btn btn-primary" type="submit" [disabled]="!reviewForm.valid">Submit</button>
+        <button class="btn btn-secondary" type="button" (click)="reset()">Reset</button>
+      </div>
+    </form>
+  </div>
+</div>

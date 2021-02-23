@@ -11,17 +11,20 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
-  private currentUserSubject: BehaviorSubject<User>
+  private currentUserSubject?: BehaviorSubject<string>;
 
   constructor(
     private readonly $apiService: ApiService,
     private readonly $storage: StorageMap
   ) {
-    this.currentUserSubject = new BehaviorSubject<User>(this.$storage.get('accessToken'));
+    this.$storage.get('accessToken')
+      .subscribe(token => {
+        this.currentUserSubject = new BehaviorSubject<string>(token as string);
+      });
   }
 
-  public get currentUser(): User {
-    return this.currentUserSubject.value;
+  public get currentUser(): string {
+    return this.currentUserSubject?.value || '';
   }
 
   public login(formData: {
@@ -31,7 +34,7 @@ export class AuthService {
     return this.$apiService.post('/auth/login', formData)
       .pipe(
         map(auth => {
-          this.$storage.set('accessToken', auth.accessToken).subscribe(() => this.currentUserSubject.next(auth.accessToken));
+          this.$storage.set('accessToken', auth.accessToken).subscribe(() => this.currentUserSubject?.next(auth.accessToken));
           return auth;
         })
       );
@@ -39,6 +42,6 @@ export class AuthService {
 
   public logout() {
     this.$storage.delete('user')
-      .subscribe(() => this.currentUserSubject.next(null as unknown as User));
+      .subscribe(() => this.currentUserSubject?.next(null as unknown as string));
   }
 }
