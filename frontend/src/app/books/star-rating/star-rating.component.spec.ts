@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RateTitlePipe } from './rate-title.pipe';
 
 import { StarRatingComponent } from './star-rating.component';
 
@@ -8,7 +9,7 @@ describe('StarRatingComponent', () => {
 
   beforeAll(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StarRatingComponent ]
+      declarations: [ StarRatingComponent, RateTitlePipe ]
     })
     .compileComponents();
   });

@@ -7,6 +7,8 @@ import { ApiService } from 'src/app/api.service';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
+import { RateTitlePipe } from '../star-rating/rate-title.pipe';
+import { BooksModule } from '../books.module';
 
 describe('ReviewComponent', () => {
   let component: ReviewComponent;
@@ -16,7 +18,7 @@ describe('ReviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule, NgbNavModule, ReactiveFormsModule ],
       providers: [ ApiService ],
-      declarations: [ ReviewComponent, StarRatingComponent ]
+      declarations: [ ReviewComponent, StarRatingComponent, RateTitlePipe ]
     })
     .compileComponents();
   });

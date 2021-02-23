@@ -9,6 +9,8 @@ import { AuthorsService } from '../authors/authors.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StarRatingComponent } from './star-rating/star-rating.component';
+import { BooksModule } from './books.module';
+import { RateTitlePipe } from './star-rating/rate-title.pipe';
 
 describe('BookComponent', () => {
   let component: BookComponent;
@@ -17,7 +19,7 @@ describe('BookComponent', () => {
   beforeAll(async () => {
     await TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule, NgbModule, ReactiveFormsModule ],
-      declarations: [ BookComponent, StarRatingComponent ],
+      declarations: [ BookComponent, StarRatingComponent, RateTitlePipe ],
       providers: [ ApiService, AuthorsService ]
     })
     .compileComponents();
