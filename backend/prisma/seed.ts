@@ -86,10 +86,34 @@ async function main() {
       roles: {
         connectOrCreate: {
           where: {
-            name: 'Admin'
+            name: 'admin'
           },
           create: {
-            name: 'Admin'
+            name: 'admin'
+          }
+        }
+      }
+    }
+  }));
+
+  users = users.push(await client.user.upsert({
+    where: {
+      email: 'jane.doe@gmail.com'
+    },
+    update: {},
+    create: {
+      email: 'jane.doe@gmail.com',
+      passwordHash: hash,
+      firstName: 'Jane',
+      lastName: 'Doe',
+      nickName: 'Janey',
+      roles: {
+        connectOrCreate: {
+          where: {
+            name: 'user'
+          },
+          create: {
+            name: 'user'
           }
         }
       }

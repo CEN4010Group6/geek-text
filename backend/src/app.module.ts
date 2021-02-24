@@ -45,6 +45,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
       useClass: JwtAuthGuard
     },
     {
+      provide: APP_GUARD,
+      useClass: RolesGuard
+    },
+    {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor
     }
