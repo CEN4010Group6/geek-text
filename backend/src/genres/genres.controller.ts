@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Genre, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
@@ -44,11 +44,14 @@ export class GenresController {
     @Query('include') include?: Prisma.GenreInclude
   ): Promise<Genre[]> {
     if(select) {
-      select = this.$utilityService.convertBtoO(select as string);
+      select = await this.$utilityService.convertBtoO(select as string);
     }
     if(include) {
-      include = this.$utilityService.convertBtoO(include as string);
+      include = await this.$utilityService.convertBtoO(include as string);
     }
+    if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
+    if(where) where = await this.$utilityService.convertBtoO(where as string);
+    if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
     const query = { skip, take, cursor, where, orderBy, select, include };
     return this.$genresService.findAll(query);
   }
@@ -64,11 +67,13 @@ export class GenresController {
   @Public()
   public async findOne(
     @Param('id') id: number,
+    @Query('select') select: Prisma.GenreSelect,
     @Query('include') include: Prisma.GenreInclude
   ): Promise<Genre | null> {
     if(include) {
-      include = this.$utilityService.convertBtoO(include as string);
+      include = await this.$utilityService.convertBtoO(include as string);
     }
+    if(select) select = await this.$utilityService.convertBtoO(select as string);
     const query = { where: { id: id }, include };
     return this.$genresService.findOne(query);
   }

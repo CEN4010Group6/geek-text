@@ -7,7 +7,7 @@ export class UtilityService {
    *
    * @param input Input Base64 encoded JSON object
    */
-  public convertBtoO(input: string): any {
+  public async convertBtoO(input: string): Promise<any> {
     return JSON.parse(Buffer.from(input, 'base64').toString());
   }
 }

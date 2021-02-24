@@ -1,3 +1,4 @@
+import { UtilityService } from './../utility/utility.service';
 import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -14,6 +15,7 @@ export class UsersController {
    * @param $usersService The database connection to the `users` table
    */
   constructor(
+    private readonly $utilityService: UtilityService,
     private readonly $usersService: UsersService
   ) {}
 
@@ -25,13 +27,21 @@ export class UsersController {
   @Get()
   // @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Roles(Role.Admin)
-  public async findAll(@Query() query: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByInput;
-  }): Promise<User[]> {
+  public async findAll(
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+    @Query('cursor') cursor?: Prisma.UserWhereUniqueInput,
+    @Query('where') where?: Prisma.UserWhereInput,
+    @Query('orderBy') orderBy?: Prisma.UserOrderByInput,
+    @Query('select') select?: Prisma.UserSelect,
+    @Query('include') include?: Prisma.UserInclude
+  ): Promise<User[]> {
+    if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
+    if(where) where = await this.$utilityService.convertBtoO(where as string);
+    if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
+    if(select) select = await this.$utilityService.convertBtoO(select as string);
+    if(include) include = await this.$utilityService.convertBtoO(include as string);
+    const query = { skip, take, cursor, where, orderBy, select, include };
     return this.$usersService.findAll(query);
   }
 

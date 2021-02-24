@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Author, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
@@ -6,6 +6,7 @@ import { Roles, Role } from './../roles.decorator';
 
 import { AuthorsService } from './authors.service';
 import { Public } from '../public.decorator';
+import { observable } from 'rxjs';
 
 @Controller('authors')
 export class AuthorsController {
@@ -44,10 +45,19 @@ export class AuthorsController {
     @Query('include') include?: Prisma.AuthorInclude
   ): Promise<Author[]> {
     if(select) {
-      select = this.$utilityService.convertBtoO(select as string);
+      select = await this.$utilityService.convertBtoO(select as string);
     }
     if(include) {
-      include = this.$utilityService.convertBtoO(include as string);
+      include = await this.$utilityService.convertBtoO(include as string);
+    }
+    if(cursor) {
+      cursor = await this.$utilityService.convertBtoO(cursor as string);
+    }
+    if(where) {
+      where = await this.$utilityService.convertBtoO(where as string);
+    }
+    if(orderBy) {
+      orderBy = await this.$utilityService.convertBtoO(orderBy as string);
     }
     const query = { skip, take, cursor, where, orderBy, select, include };
     return this.$authorsService.findAll(query);
@@ -69,7 +79,10 @@ export class AuthorsController {
     @Query('include') include: Prisma.AuthorInclude
   ): Promise<Author | null> {
     if(include) {
-      include = this.$utilityService.convertBtoO(include as string);
+      include = await this.$utilityService.convertBtoO(include as string);
+    }
+    if(select) {
+      select = await this.$utilityService.convertBtoO(select as string);
     }
     const query = { where: { id: id }, include };
     return this.$authorsService.findOne(query);

@@ -16,8 +16,9 @@ describe('UtilitiesService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should convert a base64 string representing an object into an object', () => {
-    const obj = service.convertBtoO('eyJyYXRpbmciOnRydWV9');
+  it('should convert a base64 string representing an object into an object', async () => {
+    expect.assertions(1);
+    const obj = await service.convertBtoO('eyJyYXRpbmciOnRydWV9');
     expect(obj).toStrictEqual({"rating": true});
   });
 });
