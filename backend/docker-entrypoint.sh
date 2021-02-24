@@ -10,18 +10,13 @@ if [ ! -w "./db" ]; then
   exit 1
 fi
 
-if [ ! -d "./node_modules" ]; then
-  echo "Installing `node_modules`..."
-  npm ci
-fi
-
-if [ ! -w "./node_modules" ]; then
-  echo "`node_modules` is not writable. Please fix the permissions on the directory"
+if [ ! -w "./node_modules" ] || [ ! -d "./node_modules" ]; then
+  echo "`node_modules` is not writable. Please fix the permissions on the directory to be writable on the host machine"
   exit 1
 fi
 
 for i in `find node_modules -type d -user root`; do
-  echo "$i is not controlled by the host machine. Please reinstall `node_modules`.\n"
+  echo "$i is not controlled by the host machine. Please reinstall `node_modules`."
   exit 1
 done
 

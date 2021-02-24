@@ -6,7 +6,7 @@ if [ ! -f .env ] && [ ! - z "$REST_API_ENTRYPOINT" ] && [ "NODE_ENV" == "develop
 fi
 
 if [ ! -w "./node_modules" ]; then
-  echo "`node_modules` is not writable. Please fix the permissions on the directory"
+  echo "`node_modules` is not writable. Please fix the permissions on the directory to be writeable on the host machine"
   exit 1
 fi
 

@@ -8,17 +8,6 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  if(!process.env.DATABASE_URL) {
-    throw new Error('Environment variable `DATABASE_URL` is not defined.');
-  }
-
-  if(!process.env.JWT_SECRET) {
-    throw new Error('Environment variable `JWT_SECRET` is not defined.');
-  }
-
-  if(!process.env.SECRET_KEY) {
-    throw new Error('Environment variable `SECRET_KEY` is not defined.');
-  }
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['log', 'error', 'warn']
