@@ -281,6 +281,9 @@ async function main() {
   for(let i = 0; i < 10; i++) {
     const randomBookNumber = faker.random.number({min: 0, max: 32});
 
+    const posted = ['anonymous', 'nickName', 'realName']
+    const postedNum = faker.random.number({ min:0, max: 2 });
+
     const user = users.get(0);
     const book = books.get(randomBookNumber);
 
@@ -289,6 +292,7 @@ async function main() {
         data: {
           value: faker.random.number({min: 0, max: 5}),
           description: faker.lorem.paragraph(),
+          postedAs: posted[postedNum],
           userId: user.id,
           bookId: book.id
         }

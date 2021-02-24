@@ -4,6 +4,7 @@ export interface Review {
   id: string;
   value: number;
   description: string;
+  postedAs: string;
   createdAt: Date;
   updatedAt: Date;
   userId?: string;

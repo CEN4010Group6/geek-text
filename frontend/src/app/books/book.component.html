@@ -91,7 +91,11 @@
           <div class="media-body">
             <div class="card">
               <div class="card-body">
-                <h5 class="mt-0 mb-1 card-title">By: {{ review.user }}</h5>
+                <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">By:&nbsp;
+                  <span *ngSwitchCase="'anonymous'">Anonymous</span>
+                  <span *ngSwitchCase="'realName'">{{ review.user?.firstName }} {{ review.user?.lastName }}</span>
+                  <span *ngSwitchCase="'nickName'">{{ review.user?.nickName }}</span>
+                </h5>
                 <p>{{ review.description }}</p>
               </div>
             </div>
