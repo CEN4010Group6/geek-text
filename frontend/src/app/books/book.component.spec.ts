@@ -50,9 +50,9 @@ describe('BookComponent', () => {
         { id: 1, name: 'Fiction' }
       ],
       reviews: [
-        { id: 'a', value: 5, description: 'abcd', createdAt: new Date(), updatedAt: new Date() },
+        { id: 'a', value: 5, description: 'abcd', postedAs: 'anyonymous', createdAt: new Date(), updatedAt: new Date() },
         {
-          id: 'b', value: 2, description: 'abcd', createdAt: new Date(), updatedAt: new Date()
+          id: 'b', value: 2, description: 'abcd', postedAs: 'realName', createdAt: new Date(), updatedAt: new Date()
         }
       ],
       createdAt: new Date(),
