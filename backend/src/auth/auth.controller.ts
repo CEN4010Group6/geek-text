@@ -24,12 +24,13 @@ export class AuthController {
    * @param email The user's email
    * @param password The user's password
    */
-  @Post('login')
+  @UseGuards(LocalAuthGuard)
   @Public()
+  @Post('login')
   public async login(
-    @Body() localAuth: LocalAuth
+    @Request() req
   ): Promise<any> {
-    return this.$authService.login(localAuth.email, localAuth.password);
+    return this.$authService.login(req.user);
   }
 
   /**

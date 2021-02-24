@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -13,10 +14,19 @@ describe('AuthController', () => {
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
+        ConfigModule.forRoot(),
         UsersModule,
-        JwtModule.register({
-          secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '7200s' }
+        JwtModule.registerAsync({
+          imports: [ ConfigModule ],
+          inject: [ ConfigService ],
+          useFactory: async (configService: ConfigService) => {
+            return {
+              secret: configService.get<string>('JWT_SECRET'),
+              signOptions: {
+                expiresIn: '7200s'
+              }
+            }
+          }
         })
       ],
       controllers: [ AuthController ],

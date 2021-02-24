@@ -1,11 +1,12 @@
-import { APP_GUARD } from '@nestjs/core';
-import { Module } from '@nestjs/common';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { CacheModule, CacheInterceptor, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import * as redisStore from 'cache-manager-redis-store';
 
 import { AppController } from './app.controller';
 import { PrismaService } from './prisma/prisma.service';
 import { BooksModule } from './books/books.module';
 import { AuthModule } from './auth/auth.module';
-import { CacheService } from './cache/cache.service';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
 import { EncryptionService } from './encryption/encryption.service';
@@ -17,8 +18,18 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
-    BooksModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true
+    }),
+    CacheModule.register({
+      store: redisStore,
+      host: 'redis-cache',
+      port: 6379,
+      max: 50
+    }),
     AuthModule,
+    BooksModule,
     ReviewsModule,
     UsersModule,
     AuthorsModule,
@@ -27,7 +38,6 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
   controllers: [ AppController ],
   providers: [
     PrismaService,
-    CacheService,
     EncryptionService,
     UtilityService,
     {
@@ -37,6 +47,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     {
       provide: APP_GUARD,
       useClass: RolesGuard
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor
     }
   ],
 })

@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EncryptionService } from './encryption.service';
 
-import 'dotenv/config';
+// import 'dotenv/config';
 
 describe('EncryptionService', () => {
   let service: EncryptionService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ EncryptionService ],
+      imports: [ ConfigModule.forRoot() ],
+      providers: [ EncryptionService, ConfigService ],
     }).compile();
 
     service = module.get<EncryptionService>(EncryptionService);
@@ -17,6 +19,10 @@ describe('EncryptionService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('shold have a valid key', () => {
+    expect(service.key).toBeDefined();
+  })
 
   it('should encrypt a string', async () => {
     expect.assertions(3);

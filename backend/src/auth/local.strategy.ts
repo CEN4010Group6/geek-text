@@ -12,7 +12,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
    *
    * @param $authService
    */
-  constructor(private readonly $authService: AuthService) {
+  constructor(
+    private readonly $authService: AuthService
+  ) {
     super({
       usernameField: 'email'
     });
@@ -25,10 +27,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
    * @param password
    */
   public async validate(
-    username: string,
+    email: string,
     password: string
   ): Promise<User> {
-    const user = await this.$authService.validateUser(username, password);
+    const user = await this.$authService.validateUser(email, password);
 
     if(!user) {
       throw new UnauthorizedException();

@@ -19,10 +19,13 @@ export class UsersService {
    *
    * @param userWhereInput Input which specifies the book to be found
    */
-  public async findOne(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<any | null> {
-    let user = await this.$prisma.user.findFirst({
-      where: userWhereUniqueInput
-    });
+  public async findOne(params: {
+    where: Prisma.UserWhereUniqueInput;
+    select?: Prisma.UserSelect;
+  }): Promise<any | null> {
+    const { where, select } = params;
+
+    let user = await this.$prisma.user.findFirst({ where, select });
 
     return user;
   }
