@@ -55,7 +55,7 @@ export class BookComponent implements OnInit {
   }
 
   public get averageReviews(): number {
-    if(this.book?.reviews) {
+    if(this.book?.reviews && this.book.reviews.length > 0) {
       return this.book.reviews.map((review: Review) => review.value)
         .reduce((acc, val) => acc + val ) / this.book.reviews.length
     }

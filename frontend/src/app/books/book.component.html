@@ -79,29 +79,34 @@
   <div class="row">
     <div class="col-12">
       <h2>Reviews of this Book</h2>
-      <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
-        <li class="media">
-          <div *ngIf="review.user?.profilePicture; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock>
-            <img class="mr-3" [src]="review.user?.profilePicture" />
-          </ng-template>
-          <ng-template #elseBlock>
-            <i class="fas fa-user" style="width: 64px; height: 64px;"></i>
-          </ng-template>
-          <div class="media-body">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">By:&nbsp;
-                  <span *ngSwitchCase="'anonymous'">Anonymous</span>
-                  <span *ngSwitchCase="'realName'">{{ review.user?.firstName }} {{ review.user?.lastName }}</span>
-                  <span *ngSwitchCase="'nickName'">{{ review.user?.nickName }}</span>
-                </h5>
-                <p>{{ review.description }}</p>
+      <div *ngIf="book.reviews && book.reviews.length">
+        <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
+          <li class="media">
+            <div *ngIf="review.user?.profilePicture; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock>
+              <img class="mr-3" [src]="review.user?.profilePicture" />
+            </ng-template>
+            <ng-template #elseBlock>
+              <i class="fas fa-user" style="width: 64px; height: 64px;"></i>
+            </ng-template>
+            <div class="media-body">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">By:&nbsp;
+                    <span *ngSwitchCase="'anonymous'">Anonymous</span>
+                    <span *ngSwitchCase="'realName'">{{ review.user?.firstName }} {{ review.user?.lastName }}</span>
+                    <span *ngSwitchCase="'nickName'">{{ review.user?.nickName }}</span>
+                  </h5>
+                  <p>{{ review.description }}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="book.reviews && !book.reviews.length">
+        <h4>There are currently no reviews of this product.</h4>
+      </div>
     </div>
   </div>
 </div>

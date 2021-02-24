@@ -5,6 +5,6 @@
   <hr />
   <h2>Books by this author:</h2>
   <div *ngFor="let book of author.books">
-    <a [routerLink]="['/book', book.id]">{{ book.title }}</a>
+    <a [routerLink]="['/books', book.id]">{{ book.title }}</a>
   </div>
 </div>
