@@ -2,7 +2,7 @@ declare var process: any;
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { Book } from './models/book';
@@ -68,5 +68,9 @@ export class ApiService {
   public delete(endpoint: string, params?: HttpParams): Observable<any> {
     const options = { params: params, ...defaultHttpOptions };
     return this.http.delete(this.REST_API_ENTRYPOINT, options);
+  }
+
+  public async prepareJsonForApi(obj: Object): Promise<string > {
+    return btoa(JSON.stringify(obj));
   }
 }

@@ -25,15 +25,17 @@ export class BookComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.$route.params.subscribe(params => {
+    this.$route.params.subscribe(async params => {
       let httpParams = new HttpParams();
 
-      httpParams = httpParams.set('include', btoa(JSON.stringify({
+      const query = await this.$apiService.prepareJsonForApi({
         authors: true,
         reviews: true,
         genres: true,
         publisher: true
-      })));
+      });
+
+      httpParams = httpParams.set('include', query);
 
       this.$apiService.get(`/books/${ params.bookId }`, httpParams)
         .subscribe(res => this.book = res);

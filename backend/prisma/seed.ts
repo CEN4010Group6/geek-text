@@ -38,7 +38,7 @@ async function main() {
       id: '0',
       email: '',
       passwordHash: await argon2.hash("87!k5HELaXpCm*%"),
-      firstName: '',
+      firstName: 'Anonymous',
       lastName: '',
       nickName: 'Anonymous',
       roles: {
