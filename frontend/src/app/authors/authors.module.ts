@@ -6,13 +6,17 @@ import { ApiService } from '../api.service';
 
 import { AuthorsComponent } from './authors.component';
 import { AuthorsService } from './authors.service';
+import { BooksModule } from '../books/books.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    BooksModule
   ],
-  declarations: [ AuthorsComponent ],
+  declarations: [
+    AuthorsComponent
+  ],
   providers: [ ApiService, AuthorsService ]
 })
 export class AuthorsModule { }

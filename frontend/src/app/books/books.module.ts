@@ -28,6 +28,7 @@ import { RateTitlePipe } from './star-rating/rate-title.pipe';
     StarRatingComponent,
     RateTitlePipe
   ],
-  providers: [ ApiService ]
+  providers: [ ApiService ],
+  exports: [ StarRatingComponent ]
 })
 export class BooksModule { }

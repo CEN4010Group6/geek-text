@@ -1,3 +1,4 @@
+import { IsDataURI } from 'class-validator';
 import {
   PrismaClient,
   User,
@@ -14,6 +15,8 @@ import {
 import * as faker from 'faker';
 import * as argon2 from 'argon2';
 import { List, Map } from 'immutable';
+import * as dataURIs from './data_uri.json';
+import { fake } from 'faker';
 
 const client = new PrismaClient();
 
@@ -58,13 +61,15 @@ async function main() {
     where: {
       email: 'john.doe@gmail.com'
     },
-    update: {},
+    update: {
+      nickName: 'JDoe'
+    },
     create: {
       email: 'john.doe@gmail.com',
       passwordHash: hash,
       firstName: 'John',
       lastName: 'Doe',
-      nickName: '',
+      nickName: 'JDoe',
       creditCards: {
         create: {
           encryptedCreditCardNumber: cc,
@@ -100,7 +105,9 @@ async function main() {
     where: {
       email: 'jane.doe@gmail.com'
     },
-    update: {},
+    update: {
+      nickName: 'Janey'
+    },
     create: {
       email: 'jane.doe@gmail.com',
       passwordHash: hash,
@@ -132,7 +139,10 @@ async function main() {
     where: {
       title: 'To Kill a Mockingbird',
     },
-    update: {},
+    update: {
+      coverDataUri: dataURIs.toKillAMockingBird,
+      sold: faker.random.number()
+    },
     create: {
       title: 'To Kill a Mockingbird',
       authors: {
@@ -155,6 +165,7 @@ async function main() {
       genres: { connect: { id: 1 }},
       price: 17.99,
       coverUrl: 'https://prodimage.images-bn.com/pimages/9780061120084_p0_v4_s600x595.jpg',
+      coverDataUri: dataURIs.toKillAMockingBird,
       isbn: 9780061120084,
       reviews: {
         create: [{
@@ -162,7 +173,8 @@ async function main() {
           description: faker.lorem.paragraph(),
           userId: users.get(0)?.id || 'abcd'
         }]
-      }
+      },
+      sold: faker.random.number()
     }
   }));
 
@@ -170,7 +182,10 @@ async function main() {
     where: {
       title: 'Go Set A Watchman'
     },
-    update: {},
+    update: {
+      coverDataUri: dataURIs.goSetAWatchman,
+      sold: faker.random.number()
+    },
     create: {
       title: 'Go Set A Watchman',
       authors: {
@@ -188,6 +203,7 @@ async function main() {
       },
       publishYear: 2015,
       coverUrl: 'https://upload.wikimedia.org/wikipedia/en/4/4e/US_cover_of_Go_Set_a_Watchman.jpg',
+      coverDataUri: dataURIs.goSetAWatchman,
       publisher: {
         connect: { name: 'HarperCollins Publishers LLC' }
       },
@@ -198,7 +214,8 @@ async function main() {
       },
       description: "Go Set a Watchman is a novel by Harper Lee written before the Pulitzer Prize–winning To Kill a Mockingbird, her first and only other published novel (1960). Although initially promoted as a sequel by its publisher, it is now accepted as being a first draft of To Kill a Mockingbird with many passages being used again.",
       isbn: 9780062409850,
-      price: 5.99
+      price: 5.99,
+      sold: faker.random.number()
     }
   }))
 
@@ -266,7 +283,8 @@ async function main() {
           id: faker.random.number({ min: 1, max: 10 })
         }
       },
-      coverUrl: faker.image.imageUrl(395, 595, 'books')
+      coverUrl: faker.image.imageUrl(395, 595, 'books'),
+      sold: faker.random.number({max: 50})
     }
 
     books = books.push(await client.book.upsert({

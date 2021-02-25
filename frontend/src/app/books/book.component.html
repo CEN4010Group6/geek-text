@@ -10,7 +10,13 @@
                 <a [routerLink]="['/authors', author.id]">{{ authorName(author) }}</a><span *ngIf="i < book.authors.length - 1">,
                 </span>
               </h2>
-              <img width="198" height="298" [src]="book.coverUrl" [alt]="book.title" lightbox />
+              <div *ngIf="book.coverDataUri; then thenBookBlock else elseBookBlock"></div>
+              <ng-template #thenBookBlock>
+                <img width="198" height="298" [src]="book.coverDataUri" [alt]="book.title" lightbox />
+              </ng-template>
+              <ng-template #elseBookBlock>
+                <img width="198" height="298" [src]="book.coverUrl" [alt]="book.title" lightbox />
+              </ng-template>
             </div>
             <div class="col-6">
               <p>Price: {{ book.price | currency }}</p>
@@ -79,8 +85,9 @@
   <div class="row">
     <div class="col-12">
       <h2>Reviews of this Book</h2>
-      <div *ngIf="book.reviews && book.reviews.length">
-        <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
+      <div *ngIf="book.reviews && book.reviews.length; then thenReviewBlock else elseReviewBlock"></div>
+      <ng-template #thenReviewBlock>
+         <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
           <li class="media">
             <div *ngIf="review.user?.profilePicture; then thenBlock else elseBlock"></div>
             <ng-template #thenBlock>
@@ -103,10 +110,10 @@
             </div>
           </li>
         </ul>
-      </div>
-      <div *ngIf="book.reviews && !book.reviews.length">
+      </ng-template>
+      <ng-template #elseReviewBlock>
         <h4>There are currently no reviews of this product.</h4>
-      </div>
+      </ng-template>
     </div>
   </div>
 </div>

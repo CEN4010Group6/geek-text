@@ -84,7 +84,7 @@ export class AuthorsController {
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
     }
-    const query = { where: { id: id }, include };
+    const query = { where: { id: id }, select, include };
     return this.$authorsService.findOne(query);
   }
 

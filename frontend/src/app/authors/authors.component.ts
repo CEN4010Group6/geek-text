@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ApiService } from '../api.service';
 import { Book } from '../models/book';
 import { Author } from '../models/author';
+import { Review } from '../models/review';
 
 import { AuthorsService } from './authors.service';
 
@@ -19,24 +20,53 @@ export class AuthorsComponent implements OnInit {
 
   constructor(
     private readonly $route: ActivatedRoute,
+    private readonly $router: Router,
     private readonly $apiService: ApiService,
     private readonly $authorsService: AuthorsService
   ) {}
 
-  ngOnInit(): void {
-    this.$route.params.subscribe(params => {
+  public ngOnInit(): void {
+    this.$route.params.subscribe(async params => {
       let httpParams = new HttpParams();
 
-      httpParams = httpParams.set('include', btoa(JSON.stringify({
-        books: true
-      })));
+      const select = {
+        firstName: true,
+        middleName: true,
+        lastName: true,
+        description: true,
+        books: {
+          select: {
+            id: true,
+            title: true,
+            genres: true,
+            price: true,
+            reviews: true,
+            coverUrl: true,
+            coverDataUri: true
+          }
+        }
+      }
+
+      httpParams = httpParams.set('select', await this.$apiService.prepareJsonForApi(select));
 
       this.$apiService.get(`/authors/${params.authorId}`, httpParams)
-        .subscribe(res => {console.log(res); this.author = res});
+        .subscribe(res => this.author = res);
     })
+  }
+
+  public async navigate(id: string) {
+    await this.$router.navigate(['/books', id]);
   }
 
   public authorName(author: Author): string {
     return this.$authorsService.authorName(author);
+  }
+
+  public averageReviews(book: Book): number {
+    if(book?.reviews && book.reviews.length > 0) {
+      return book.reviews.map((review: Review) => review.value)
+        .reduce((acc, val) => acc + val ) / book.reviews.length
+    }
+    return 0;
   }
 }

@@ -28,14 +28,35 @@ export class BookComponent implements OnInit {
     this.$route.params.subscribe(async params => {
       let httpParams = new HttpParams();
 
-      const query = await this.$apiService.prepareJsonForApi({
-        authors: true,
-        reviews: true,
+      const select = await this.$apiService.prepareJsonForApi({
+        id: true,
+        title: true,
+        authors: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            middleName: true,
+            description: true
+          }
+        },
+        publisher: {
+          select: {
+            name: true,
+            website: true
+          }
+        },
+        publishYear: true,
+        description: true,
         genres: true,
-        publisher: true
+        price: true,
+        reviews: true,
+        coverUrl: true,
+        coverDataUri: true,
+        sold: true
       });
 
-      httpParams = httpParams.set('include', query);
+      httpParams = httpParams.set('select', select);
 
       this.$apiService.get(`/books/${ params.bookId }`, httpParams)
         .subscribe(res => this.book = res);

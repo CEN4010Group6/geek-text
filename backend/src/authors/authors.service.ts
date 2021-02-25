@@ -1,5 +1,6 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { Author, Prisma } from '@prisma/client';
+import { exception } from 'console';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -19,10 +20,17 @@ export class AuthorsService {
    */
   public async findOne(params: {
     where: Prisma.AuthorWhereUniqueInput;
-    include?: Prisma.AuthorInclude
+    include?: Prisma.AuthorInclude,
+    select?: Prisma.AuthorSelect
   }): Promise<Author | null> {
-    const { where, include } = params;
-    return this.$prisma.author.findUnique({ where, include });
+    const { where, include, select } = params;
+    if(include && !select) {
+      return this.$prisma.author.findUnique({ where, include }) as unknown as Author;
+    } else if(!include && select) {
+      return this.$prisma.author.findUnique({ where, select }) as unknown as Author;
+    } else {
+      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
+    }
   }
 
   /**
