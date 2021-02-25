@@ -9,6 +9,8 @@ services:
     volumes:
       - ./backend:/app
       - database:/app/db
+    depends_on:
+      - redis-cache
 
   frontend:
     build: ./frontend

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 echo "Checking for dotenv..."
 
@@ -7,17 +7,17 @@ if [ ! -f "${PWD}/.env" ] && [ ! - z "$DATABASE_URL" ] && [ "NODE_ENV" == "devel
     exit 1
 fi
 
-echo "Checking for presence of `node_modules` folder and for correct writability of folder..."
+echo "Checking for presence of 'node_modules' folder and for correct writability of folder..."
 
-if [ ! -w "${PWD}/node_modules" ] || [ ! -d "${PWD}/node_modules" ]; then
-  echo "`node_modules` is not writable. Please fix the permissions on the directory to be writable on the host machine"
+if [[ ! -w ${PWD}/node_modules ]] | [[ ! -d ${PWD}/node_modules ]]; then
+  echo "'node_modules' is not writable. Please fix the permissions on the directory to be writable on the host machine"
   exit 1
 fi
 
-echo "Checking `node_modules` permissions..."
+echo "Checking 'node_modules' permissions..."
 
 for i in `find ${PWD}/node_modules -type d -user root`; do
-  echo "$i is not controlled by the host machine. Please reinstall `node_modules`."
+  echo "$i is not controlled by the host machine. Please reinstall 'node_modules'."
   exit 1
 done
 
