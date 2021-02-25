@@ -11,14 +11,14 @@ echo "Checking for presence of 'node_modules' folder and for correct writability
 
 if [[ ! -w ${PWD}/node_modules ]] | [[ ! -d ${PWD}/node_modules ]]; then
   echo "'node_modules' is not writable. Please fix the permissions on the directory to be writable on the host machine"
-  exit 1
+  chmod -R $USER $PWD/node_modules
 fi
 
 echo "Checking 'node_modules' permissions..."
 
 for i in `find ${PWD}/node_modules -type d -user root`; do
-  echo "$i is not controlled by the host machine. Please reinstall 'node_modules'."
-  exit 1
+  echo "$i is not controlled by the host machine. Please correct the file permissions of the folder."
+  chown -R $USER $PWD/node_modules
 done
 
 echo "Checking if database directory is writable..."
