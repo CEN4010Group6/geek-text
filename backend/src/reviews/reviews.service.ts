@@ -18,12 +18,12 @@ export class ReviewsService {
    *
    * @param reviewWhereUniqueInput
    */
-  public async findOne(
-    reviewWhereUniqueInput: Prisma.ReviewWhereUniqueInput
-  ): Promise<Review | null> {
-    return this.$prisma.review.findUnique({
-      where: reviewWhereUniqueInput
-    });
+  public async findOne(params: {
+    where: Prisma.ReviewWhereUniqueInput;
+    select?: Prisma.ReviewSelect;
+  }): Promise<Review | null> {
+    const { where, select } = params;
+    return this.$prisma.review.findUnique({where, select}) as unknown as Review;
   }
 
   /**

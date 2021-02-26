@@ -33,16 +33,14 @@ export class ReviewsController {
     @Query('cursor') cursor?: Prisma.ReviewWhereUniqueInput,
     @Query('where') where?: Prisma.ReviewWhereInput,
     @Query('orderBy') orderBy?: Prisma.ReviewOrderByInput,
-    @Query('select') select?: Prisma.ReviewSelect,
-    @Query('include') include?: Prisma.ReviewInclude
+    @Query('select') select?: Prisma.ReviewSelect
   ): Promise<Review[]> {
     if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
     if(where) where = await this.$utilityService.convertBtoO(where as string);
     if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
     if(select) select = await this.$utilityService.convertBtoO(select as string);
-    if(include) include = await this.$utilityService.convertBtoO(include as string);
 
-    const query = { skip, take, cursor, where, orderBy, select, include };
+    const query = { skip, take, cursor, where, orderBy, select };
 
     return this.$reviewsService.findAll(query);
   }
@@ -55,8 +53,13 @@ export class ReviewsController {
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
-  public async findOne(@Param('id') id: string): Promise<Review | null> {
-    return this.$reviewsService.findOne({id: id} as Prisma.BookWhereUniqueInput);
+  public async findOne(
+    @Param('id') id: string,
+    @Query('select') select?: Prisma.ReviewSelect
+  ): Promise<Review | null> {
+    if(select) select = await this.$utilityService.convertBtoO(select as string);
+    const query = { where: { id: id }, select };
+    return this.$reviewsService.findOne(query);
   }
 
   /**
