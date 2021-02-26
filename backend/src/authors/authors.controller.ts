@@ -42,13 +42,9 @@ export class AuthorsController {
     @Query('where') where?: Prisma.AuthorWhereInput,
     @Query('orderBy') orderBy?: Prisma.AuthorOrderByInput,
     @Query('select') select?: Prisma.AuthorSelect,
-    @Query('include') include?: Prisma.AuthorInclude
   ): Promise<Author[]> {
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
-    }
-    if(include) {
-      include = await this.$utilityService.convertBtoO(include as string);
     }
     if(cursor) {
       cursor = await this.$utilityService.convertBtoO(cursor as string);
@@ -59,7 +55,7 @@ export class AuthorsController {
     if(orderBy) {
       orderBy = await this.$utilityService.convertBtoO(orderBy as string);
     }
-    const query = { skip, take, cursor, where, orderBy, select, include };
+    const query = { skip, take, cursor, where, orderBy, select };
     return this.$authorsService.findAll(query);
   }
 
@@ -75,16 +71,12 @@ export class AuthorsController {
   @Public()
   public async findOne(
     @Param('id') id: string,
-    @Query('select') select: Prisma.BookSelect,
-    @Query('include') include: Prisma.AuthorInclude
+    @Query('select') select?: Prisma.AuthorSelect,
   ): Promise<Author | null> {
-    if(include) {
-      include = await this.$utilityService.convertBtoO(include as string);
-    }
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
     }
-    const query = { where: { id: id }, select, include };
+    const query = { where: { id: id }, select };
     return this.$authorsService.findOne(query);
   }
 

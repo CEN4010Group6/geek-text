@@ -1,12 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
-
-import 'dotenv/config';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -41,5 +39,29 @@ describe('AuthController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('should have a method `login`', () => {
+    expect(controller.login).toBeDefined()
+  });
+
+  it('should login a user when the login method is called', async () => {
+    const request = {
+      user: {
+        email: 'john.doe@gmail.com',
+        password: 'IAmAPassword'
+      }
+    };
+
+    const accessToken = await controller.login(request);
+
+    await expect(accessToken).toBeDefined();
+    await expect(accessToken).toHaveProperty('accessToken');
+    await expect(accessToken.accessToken).toBeDefined()
+    await expect(accessToken.accessToken.length).toBeGreaterThan(0)
+  });
+
+  it('should have a method `refreshToken`', () => {
+    expect(controller.refreshToken).toBeDefined();
   });
 });

@@ -20,17 +20,10 @@ export class AuthorsService {
    */
   public async findOne(params: {
     where: Prisma.AuthorWhereUniqueInput;
-    include?: Prisma.AuthorInclude,
     select?: Prisma.AuthorSelect
   }): Promise<Author | null> {
-    const { where, include, select } = params;
-    if(include && !select) {
-      return this.$prisma.author.findUnique({ where, include }) as unknown as Author;
-    } else if(!include && select) {
-      return this.$prisma.author.findUnique({ where, select }) as unknown as Author;
-    } else {
-      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
-    }
+    const { where, select } = params;
+    return this.$prisma.author.findUnique({ where, select }) as unknown as Author;
   }
 
   /**
@@ -45,31 +38,16 @@ export class AuthorsService {
     where?: Prisma.AuthorWhereInput;
     orderBy?: Prisma.AuthorOrderByInput;
     select?: Prisma.AuthorSelect;
-    include?: Prisma.AuthorInclude;
   }): Promise<Author[]> {
-    const { skip, take, cursor, where, orderBy, select, include } = params;
-
-    if(!include) {
-      return this.$prisma.author.findMany({
-        skip,
-        take,
-        cursor,
-        where,
-        orderBy,
-        select
-      }) as unknown as Author[];
-    } else if(!select && include) {
-      return this.$prisma.author.findMany({
-        skip,
-        take,
-        cursor,
-        where,
-        orderBy,
-        include
-      }) as unknown as Author[];
-    } else {
-      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
-    }
+    const { skip, take, cursor, where, orderBy, select } = params;
+    return this.$prisma.author.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+      select
+    }) as unknown as Author[];
   }
 
   /**
@@ -90,8 +68,7 @@ export class AuthorsService {
     where: Prisma.AuthorWhereUniqueInput;
     data: Prisma.AuthorUpdateInput;
   }): Promise<Author> {
-    const { where, data } = params;
-    return this.$prisma.author.update({ data, where });
+    return this.$prisma.author.update(params);
   }
 
   /**

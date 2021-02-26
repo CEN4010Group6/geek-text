@@ -18,5 +18,8 @@ describe('RolesGuard', () => {
 
   it('should be defined', () => {
     expect(guard).toBeDefined();
+    expect(guard.canActivate).toBeDefined();
+    expect(guard.getAuthenticateOptions).toBeDefined();
+    expect(guard.logIn).toBeDefined();
   });
 });

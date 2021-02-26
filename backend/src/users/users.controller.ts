@@ -25,7 +25,7 @@ export class UsersController {
    * @param query Query parameters to alter the `WHERE` SQL clause
    */
   @Get()
-  // @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Roles(Role.Admin)
   public async findAll(
     @Query('skip') skip?: number,

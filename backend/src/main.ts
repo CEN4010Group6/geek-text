@@ -1,13 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
-import 'dotenv-defaults/config';
-
-import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 
-async function bootstrap() {
+import { AppModule } from './app.module';
+
+export async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['log', 'error', 'warn']
@@ -36,5 +34,8 @@ async function bootstrap() {
   await app.listen(3000);
 }
 
-bootstrap()
-  .catch(console.error);
+if(!(typeof expect === 'function')) {
+  bootstrap().catch(console.error);
+}
+// bootstrap()
+//   .catch(console.error);

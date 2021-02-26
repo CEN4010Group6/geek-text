@@ -38,4 +38,23 @@ describe('AuthService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should validate a user', async () => {
+    expect.assertions(3);
+    await expect(service.validateUser).toBeDefined();
+
+    const user = await service.validateUser('john.doe@gmail.com', 'IAmAPassword');
+
+    await expect(user).toBeDefined();
+    await expect(user?.email).toBe('john.doe@gmail.com');
+  });
+
+  it('should not validate an invalid user', async () => {
+    expect.assertions(2);
+    await expect(service.validateUser).toBeDefined()
+
+    const user = await service.validateUser('john.doe@gmail.com', 'invalid password');
+
+    await expect(user).toBeNull();
+  });
 });
