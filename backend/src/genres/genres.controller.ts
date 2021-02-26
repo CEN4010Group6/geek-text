@@ -40,19 +40,15 @@ export class GenresController {
     @Query('cursor') cursor?: Prisma.GenreWhereUniqueInput,
     @Query('where') where?: Prisma.GenreWhereInput,
     @Query('orderBy') orderBy?: Prisma.GenreOrderByInput,
-    @Query('select') select?: Prisma.GenreSelect,
-    @Query('include') include?: Prisma.GenreInclude
+    @Query('select') select?: Prisma.GenreSelect
   ): Promise<Genre[]> {
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
     }
-    if(include) {
-      include = await this.$utilityService.convertBtoO(include as string);
-    }
     if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
     if(where) where = await this.$utilityService.convertBtoO(where as string);
     if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
-    const query = { skip, take, cursor, where, orderBy, select, include };
+    const query = { skip, take, cursor, where, orderBy, select };
     return this.$genresService.findAll(query);
   }
 
@@ -67,14 +63,10 @@ export class GenresController {
   @Public()
   public async findOne(
     @Param('id') id: number,
-    @Query('select') select: Prisma.GenreSelect,
-    @Query('include') include: Prisma.GenreInclude
+    @Query('select') select?: Prisma.GenreSelect
   ): Promise<Genre | null> {
-    if(include) {
-      include = await this.$utilityService.convertBtoO(include as string);
-    }
     if(select) select = await this.$utilityService.convertBtoO(select as string);
-    const query = { where: { id: id }, include };
+    const query = { where: { id: id }, select };
     return this.$genresService.findOne(query);
   }
 
