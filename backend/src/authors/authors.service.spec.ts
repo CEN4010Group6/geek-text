@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthorsService } from './authors.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -24,8 +25,10 @@ describe('AuthorsService', () => {
     service = module.get<AuthorsService>(AuthorsService);
     database = module.get<PrismaService>(PrismaService);
 
-    if(await database.author.findFirst({ where: { ...mockAuthor }})) {
-      await database.author.delete({where: { ...mockAuthor }});
+    let m;
+
+    if(m = await database.author.findFirst({ where: { firstName: mockAuthor.firstName }})) {
+      await database.author.delete({where: { id: m.id }});
     }
   });
 
