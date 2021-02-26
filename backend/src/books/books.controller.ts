@@ -40,19 +40,15 @@ export class BooksController {
     @Query('cursor') cursor?: Prisma.BookWhereUniqueInput,
     @Query('where') where?: Prisma.BookWhereInput,
     @Query('orderBy') orderBy?: Prisma.BookOrderByInput,
-    @Query('select') select?: Prisma.BookSelect,
-    @Query('include') include?: Prisma.BookInclude
+    @Query('select') select?: Prisma.BookSelect
   ): Promise<Book[]> {
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
     }
-    if(include) {
-      include = await this.$utilityService.convertBtoO(include as string);
-    }
     if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
     if(where) where = await this.$utilityService.convertBtoO(where as string);
     if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
-    const query = { skip, take, cursor, where, orderBy, select, include };
+    const query = { skip, take, cursor, where, orderBy, select };
     return this.$booksService.findAll(query);
   }
 
@@ -68,16 +64,12 @@ export class BooksController {
   @Public()
   public async findOne(
     @Param('id') id: string,
-    @Query('select') select: Prisma.BookSelect,
-    @Query('include') include: Prisma.BookInclude
+    @Query('select') select?: Prisma.BookSelect,
   ): Promise<Book | null> {
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
     }
-    if(include) {
-      include = await this.$utilityService.convertBtoO(include as string);
-    }
-    const query = { where: { id: id }, select, include };
+    const query = { where: { id: id }, select };
     return this.$booksService.findOne(query);
   }
 

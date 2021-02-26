@@ -100,7 +100,7 @@ describe('AuthorsController', () => {
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
     mockAuthor = await controller.delete(mockAuthor.id);
-    let testAuthor = await controller.findOne(mockAuthor.id);
+    const testAuthor = await controller.findOne(mockAuthor.id);
     expect(testAuthor).toBeNull();
   });
 });

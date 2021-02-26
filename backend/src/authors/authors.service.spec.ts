@@ -1,4 +1,3 @@
-import { first } from 'rxjs/operators';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthorsService } from './authors.service';
 import { PrismaService } from '../prisma/prisma.service';
