@@ -19,10 +19,10 @@ export class GenresService {
    */
   public async findOne(params: {
     where: Prisma.GenreWhereUniqueInput;
-    include?: Prisma.GenreInclude
+    select?: Prisma.GenreSelect;
   }): Promise<Genre | null> {
-    const { where, include } = params;
-    return this.$prisma.genre.findUnique({ where, include });
+    const { where, select } = params;
+    return this.$prisma.genre.findUnique({ where, select }) as unknown as Genre;
   }
 
   /**
@@ -37,31 +37,17 @@ export class GenresService {
     where?: Prisma.GenreWhereInput;
     orderBy?: Prisma.GenreOrderByInput;
     select?: Prisma.GenreSelect;
-    include?: Prisma.GenreInclude;
   }): Promise<Genre[]> {
-    const { skip, take, cursor, where, orderBy, select, include } = params;
+    const { skip, take, cursor, where, orderBy, select } = params;
 
-    if(!include) {
-      return this.$prisma.genre.findMany({
-        skip,
-        take,
-        cursor,
-        where,
-        orderBy,
-        select
-      }) as unknown as Genre[];
-    } else if(!select && include) {
-      return this.$prisma.genre.findMany({
-        skip,
-        take,
-        cursor,
-        where,
-        orderBy,
-        include
-      }) as unknown as Genre[];
-    } else {
-      throw new NotAcceptableException("Cannot specifiy both `select` and `include` in the same statement.");
-    }
+    return this.$prisma.genre.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+      select
+    }) as unknown as Genre[];
   }
 
   /**

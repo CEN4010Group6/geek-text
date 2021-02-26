@@ -81,6 +81,7 @@ describe('BooksService', () => {
 
   it('should update an Author in the database', async () => {
     await expect(service.update).toBeDefined();
+    mockBook = await database.book.findFirst({ where: { title: 'Mock Book' }});
     mockBook.title = 'A Mocking Book'
     mockBook = await service.update({
       where: {
@@ -94,6 +95,7 @@ describe('BooksService', () => {
 
   it('should delete an Author from the database', async () => {
     await expect(service.delete).toBeDefined();
+    mockBook = await database.book.findFirst({ where: { title: mockBook.title }})
     mockBook = await service.delete({ id: mockBook.id });
     const noBook = await service.findOne({where : { id: mockBook.id }});
     await expect(noBook).toBeNull();

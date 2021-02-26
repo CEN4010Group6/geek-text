@@ -92,6 +92,7 @@ describe('BooksController', () => {
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
+    mockBook = await database.book.findFirst({ where: { title: 'Mock Book' }})
     mockBook.title = 'A Mocking Book';
     mockBook = await controller.update(mockBook.id, mockBook);
     await expect(mockBook).toBeDefined();
@@ -101,6 +102,7 @@ describe('BooksController', () => {
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
     await expect(mockBook).toBeDefined();
+    mockBook = await database.book.findFirst({ where: { title: mockBook.title }});
     mockBook = await controller.delete(mockBook.id);
     const testBook = await controller.findOne(mockBook.id);
     expect(testBook).toBeNull();

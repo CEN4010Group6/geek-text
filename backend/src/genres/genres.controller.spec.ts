@@ -41,9 +41,9 @@ describe('GenresController', () => {
 
   it('should have a method findAll', async () => {
     const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.GenreSelect;
-    const first = await database.book.findFirst();
+    const first = await database.genre.findFirst();
     const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.GenreWhereUniqueInput;
-    const orderBy = await utility.convertOtoB({ title: 'asc' }) as unknown as Prisma.GenreOrderByInput;
+    const orderBy = await utility.convertOtoB({ name: 'asc' }) as unknown as Prisma.GenreOrderByInput;
     const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.GenreWhereInput;
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
@@ -68,19 +68,23 @@ describe('GenresController', () => {
     mockGenre = await controller.create(mockGenre);
     await expect(mockGenre).toBeDefined();
     await expect(mockGenre.name).toBe('Mockfiction');
+    await database.genre.delete({ where: { id: mockGenre.id } });
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
+    mockGenre = await database.genre.create({ data: mockGenre });
     mockGenre.name = 'Mocknonfiction'
+    expect(mockGenre.id).toBeDefined();
     mockGenre = await controller.update(mockGenre.id, mockGenre);
     await expect(mockGenre).toBeDefined();
-    await expect(mockGenre.title).toBe('Mocknotfiction');
+    await expect(mockGenre.name).toBe('Mocknonfiction');
   });
 
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
-    await expect(mockGenre).toBeDefined();
+    mockGenre = await database.genre.create({ data: mockGenre });
+    await expect(mockGenre.id).toBeDefined();
     mockGenre = await controller.delete(mockGenre.id);
     const testBook = await controller.findOne(mockGenre.id);
     expect(testBook).toBeNull();
