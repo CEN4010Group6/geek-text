@@ -10,7 +10,7 @@ describe('GenresService', () => {
     name: 'Mockfiction'
   }
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         GenresService,
@@ -61,6 +61,7 @@ describe('GenresService', () => {
 
   it('should update an Author in the database', async () => {
     await expect(service.update).toBeDefined();
+    mockGenre = await database.genre.findFirst({ where: { name: 'Mockfiction' }});
     mockGenre.name = 'Mocknonfiction'
     mockGenre = await service.update({
       where: {
@@ -74,8 +75,9 @@ describe('GenresService', () => {
 
   it('should delete an Author from the database', async () => {
     await expect(service.delete).toBeDefined();
+    mockGenre = await database.genre.findFirst({ where: { name: mockGenre.name }});
     mockGenre = await service.delete({ id: mockGenre.id });
-    const noBook = await service.findOne({where : { id: mockGenre.id }});
-    await expect(noBook).toBeNull();
+    const noGenre = await service.findOne({where : { id: mockGenre.id }});
+    await expect(noGenre).toBeNull();
   });
 });

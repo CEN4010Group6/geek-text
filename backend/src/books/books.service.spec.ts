@@ -71,7 +71,7 @@ describe('BooksService', () => {
     await expect(one?.id).toBe(book?.id);
   });
 
-  it('should create a new Author in the database', async () => {
+  it('should create a new Book in the database', async () => {
     await expect(service.create).toBeDefined();
     mockBook = await service.create(mockBook);
     await expect(mockBook).toBeDefined();
@@ -79,7 +79,7 @@ describe('BooksService', () => {
     await expect(mockBook.title).toBe('Mock Book');
   });
 
-  it('should update an Author in the database', async () => {
+  it('should update an Book in the database', async () => {
     await expect(service.update).toBeDefined();
     mockBook = await database.book.findFirst({ where: { title: 'Mock Book' }});
     mockBook.title = 'A Mocking Book'
@@ -93,7 +93,7 @@ describe('BooksService', () => {
     expect(mockBook.title).toBe('A Mocking Book');
   });
 
-  it('should delete an Author from the database', async () => {
+  it('should delete an Book from the database', async () => {
     await expect(service.delete).toBeDefined();
     mockBook = await database.book.findFirst({ where: { title: mockBook.title }})
     mockBook = await service.delete({ id: mockBook.id });
