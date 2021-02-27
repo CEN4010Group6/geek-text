@@ -6,7 +6,7 @@ describe('GenresService', () => {
   let service: GenresService;
   let database: PrismaService;
 
-  let mockGenre: any = {
+  const mockGenre: any = {
     name: 'Mockfiction'
   }
 
@@ -20,9 +20,9 @@ describe('GenresService', () => {
     service = module.get<GenresService>(GenresService);
     database = module.get<PrismaService>(PrismaService);
 
-    let g;
+    let g = await database.genre.findFirst({ where: { name: mockGenre.name } });
 
-    if(g = await database.genre.findFirst({ where: { name: mockGenre.name } })) {
+    if(g?.id) {
       await database.genre.delete({ where: { id: g.id } });
     }
   });
@@ -33,13 +33,13 @@ describe('GenresService', () => {
 
   it('should have a method findAll', async () => {
     await expect(service.findAll).toBeDefined();
-    let all = await service.findAll({});
+    const all = await service.findAll({});
     await expect(all).toBeDefined();
     await expect(all.length).toBeGreaterThan(0);
   });
 
   it('should have a method findOne', async () => {
-    let genre = await database.genre.findFirst();
+    const genre = await database.genre.create({ data: mockGenre });
     await expect(genre?.id).toBeDefined();
     await expect(service.findOne).toBeDefined();
     let one = await service.findOne({
@@ -49,35 +49,40 @@ describe('GenresService', () => {
     });
     await expect(one).toBeDefined();
     await expect(one?.id).toBe(genre?.id);
+    await database.genre.delete({ where: { id: genre.id }});
   });
 
-  it('should create a new Author in the database', async () => {
+  it('should create a new Genre in the database', async () => {
     await expect(service.create).toBeDefined();
-    mockGenre = await service.create(mockGenre);
-    await expect(mockGenre).toBeDefined();
-    await expect(mockGenre.id).toBeDefined();
-    await expect(mockGenre.name).toBe('Mockfiction');
+    const genre = await service.create(mockGenre);
+    await expect(genre).toBeDefined();
+    await expect(genre.id).toBeDefined();
+    await expect(genre.name).toBe('Mockfiction');
+    if(genre.id) {
+      await database.genre.delete({ where: { id: genre.id }});
+    }
   });
 
-  it('should update an Author in the database', async () => {
+  it('should update an Genre in the database', async () => {
     await expect(service.update).toBeDefined();
-    mockGenre = await database.genre.findFirst({ where: { name: 'Mockfiction' }});
-    mockGenre.name = 'Mocknonfiction'
-    mockGenre = await service.update({
+    let mock = await database.genre.create({ data: mockGenre});
+    mock.name = 'Mocknonfiction'
+    mock = await service.update({
       where: {
-        id: mockGenre.id
+        id: mock.id
       },
-      data: mockGenre
+      data: mock
     });
-    expect(mockGenre).toBeDefined();
-    expect(mockGenre.name).toBe('Mocknonfiction');
+    expect(mock).toBeDefined();
+    expect(mock.name).toBe('Mocknonfiction');
+    await database.genre.delete({ where: { id: mock.id }});
   });
 
-  it('should delete an Author from the database', async () => {
+  it('should delete an Genre from the database', async () => {
     await expect(service.delete).toBeDefined();
-    mockGenre = await database.genre.findFirst({ where: { name: mockGenre.name }});
-    mockGenre = await service.delete({ id: mockGenre.id });
-    const noGenre = await service.findOne({where : { id: mockGenre.id }});
+    let mock = await database.genre.create({ data: mockGenre });
+    mock = await service.delete({ id: mock.id });
+    const noGenre = await service.findOne({where : { id: mock.id }});
     await expect(noGenre).toBeNull();
   });
 });

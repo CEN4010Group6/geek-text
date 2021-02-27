@@ -6,7 +6,7 @@ describe('BooksService', () => {
   let service: BooksService;
   let database: PrismaService;
 
-  let mockBook: any = {
+  const mockBook: any = {
     title: 'Mock Book',
     publishYear: 2020,
     isbn: 8675309,
@@ -40,9 +40,9 @@ describe('BooksService', () => {
     service = module.get<BooksService>(BooksService);
     database = module.get<PrismaService>(PrismaService);
 
-    let b;
+    let b = await database.book.findFirst({ where: { title: mockBook.title }});
 
-    if(b = await database.book.findFirst({ where: { title: mockBook.title } })) {
+    if(b?.id) {
       await database.book.delete({ where: { id: b.id } });
     }
   });
@@ -73,31 +73,33 @@ describe('BooksService', () => {
 
   it('should create a new Book in the database', async () => {
     await expect(service.create).toBeDefined();
-    mockBook = await service.create(mockBook);
-    await expect(mockBook).toBeDefined();
-    await expect(mockBook.id).toBeDefined();
-    await expect(mockBook.title).toBe('Mock Book');
+    const mock = await service.create(mockBook);
+    await expect(mock).toBeDefined();
+    await expect(mock.id).toBeDefined();
+    await expect(mock.title).toBe('Mock Book');
+    await database.book.delete({ where: { id: mock.id }});
   });
 
   it('should update an Book in the database', async () => {
     await expect(service.update).toBeDefined();
-    mockBook = await database.book.findFirst({ where: { title: 'Mock Book' }});
-    mockBook.title = 'A Mocking Book'
-    mockBook = await service.update({
+    let mock = await database.book.create({ data: mockBook });
+    mock.title = 'A Mocking Book'
+    mock = await service.update({
       where: {
-        id: mockBook.id
+        id: mock.id
       },
-      data: mockBook
+      data: mock
     });
-    expect(mockBook).toBeDefined();
-    expect(mockBook.title).toBe('A Mocking Book');
+    expect(mock).toBeDefined();
+    expect(mock.title).toBe('A Mocking Book');
+    await database.book.delete({ where: { id: mock.id }});
   });
 
   it('should delete an Book from the database', async () => {
     await expect(service.delete).toBeDefined();
-    mockBook = await database.book.findFirst({ where: { title: mockBook.title }})
-    mockBook = await service.delete({ id: mockBook.id });
-    const noBook = await service.findOne({where : { id: mockBook.id }});
+    let mock = await database.book.create({data: { ...mockBook }});
+    mock = await service.delete({ id: mock.id });
+    const noBook = await service.findOne({where : { id: mock.id }});
     await expect(noBook).toBeNull();
   });
 });

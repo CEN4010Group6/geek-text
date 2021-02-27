@@ -46,11 +46,11 @@ describe('BooksController', () => {
     utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
 
-    let b;
+    let b = await database.book.findFirst({ where: { title: mockBook.title }});
 
-    if(b = await database.book.findFirst({ where: { title: mockBook.title }})) {
+    if(b?.id) {
       await database.book.delete({ where: { id: b.id }});
-    };
+    }
   });
 
   it('should be defined', () => {

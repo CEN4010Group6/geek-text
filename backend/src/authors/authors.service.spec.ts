@@ -6,7 +6,7 @@ describe('AuthorsService', () => {
   let service: AuthorsService;
   let database: PrismaService;
 
-  let mockAuthor: any = {
+  const mockAuthor: any = {
     firstName: 'Mock',
     middleName: 'M',
     lastName: 'McMockface',
@@ -24,10 +24,10 @@ describe('AuthorsService', () => {
     service = module.get<AuthorsService>(AuthorsService);
     database = module.get<PrismaService>(PrismaService);
 
-    let m;
+    let a = await database.author.findFirst({ where: { firstName: mockAuthor.firstName } });
 
-    if(m = await database.author.findFirst({ where: { firstName: mockAuthor.firstName }})) {
-      await database.author.delete({where: { id: m.id }});
+    if(a?.id) {
+      await database.author.delete({where: { id: a.id }});
     }
   });
 
@@ -57,35 +57,36 @@ describe('AuthorsService', () => {
 
   it('should create a new Author in the database', async () => {
     await expect(service.create).toBeDefined();
-    mockAuthor = await service.create(mockAuthor);
-    await expect(mockAuthor).toBeDefined();
-    await expect(mockAuthor.id).toBeDefined();
-    await expect(mockAuthor.firstName).toBe('Mock');
-    await expect(mockAuthor.middleName).toBe('M');
-    await expect(mockAuthor.lastName).toBe('McMockface');
-    await expect(mockAuthor.createdAt).toBeDefined();
-    await expect(mockAuthor.updatedAt).toBeDefined();
+    let mock = await service.create(mockAuthor);
+    await expect(mock).toBeDefined();
+    await expect(mock.id).toBeDefined();
+    await expect(mock.firstName).toBe('Mock');
+    await expect(mock.middleName).toBe('M');
+    await expect(mock.lastName).toBe('McMockface');
+    await expect(mock.createdAt).toBeDefined();
+    await expect(mock.updatedAt).toBeDefined();
   });
 
   it('should update an Author in the database', async () => {
     await expect(service.update).toBeDefined();
-    mockAuthor = await database.author.findFirst({ where: { firstName: 'Mock' } });
-    mockAuthor.middleName = 'R'
-    mockAuthor = await service.update({
+    let mock = await database.author.create({ data: { ...mockAuthor }});
+    mock.middleName = 'R'
+    mock = await service.update({
       where: {
-        id: mockAuthor.id
+        id: mock.id
       },
-      data: mockAuthor
+      data: mock
     });
-    expect(mockAuthor).toBeDefined();
-    expect(mockAuthor.middleName).toBe('R');
+    await expect(mock).toBeDefined();
+    await expect(mock.middleName).toBe('R');
+    await database.author.delete({ where: { id: mock.id }});
   });
 
   it('should delete an Author from the database', async () => {
     await expect(service.delete).toBeDefined();
-    mockAuthor = await database.author.findFirst({ where: { id: mockAuthor.id }});
-    mockAuthor = await service.delete({ id: mockAuthor.id });
-    const noAuthor = await service.findOne({where : { id: mockAuthor.id }});
+    let mock = await database.author.create({ data: { ...mockAuthor }});
+    mock = await service.delete({ id: mock.id });
+    const noAuthor = await service.findOne({where : { id: mock.id }});
     await expect(noAuthor).toBeNull();
   });
 });

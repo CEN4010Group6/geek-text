@@ -7,7 +7,7 @@ export class UtilityService {
    *
    * @param input Input Base64 encoded JSON object
    */
-  public async convertBtoO(input: string): Promise<any> {
+  public async convertBtoO<T>(input: string): Promise<T> {
     return JSON.parse(Buffer.from(input, 'base64').toString());
   }
 
@@ -16,7 +16,7 @@ export class UtilityService {
    *
    * @param input Input Object
    */
-  public async convertOtoB(input: any): Promise<string> {
+  public async convertOtoB<T>(input: T): Promise<string> {
     return Buffer.from(JSON.stringify(input)).toString('base64');
   }
 }

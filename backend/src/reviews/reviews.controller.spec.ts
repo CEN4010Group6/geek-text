@@ -11,7 +11,7 @@ describe('ReviewsController', () => {
   let database: PrismaService;
   let utility: UtilityService;
 
-  let mockReview: any = {
+  const mockReview: any = {
     value: 5,
     description: '',
     postedAs: 'anonymous'
@@ -46,8 +46,8 @@ describe('ReviewsController', () => {
   });
 
   it('should have a method findAll', async () => {
+    const first = await database.review.create({ data: mockReview });
     const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.ReviewSelect;
-    const first = await database.review.findFirst();
     const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.ReviewWhereUniqueInput;
     const orderBy = await utility.convertOtoB({ value: 'asc' }) as unknown as Prisma.ReviewOrderByInput;
     const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.ReviewWhereInput;
@@ -64,33 +64,36 @@ describe('ReviewsController', () => {
   it('should have a method findOne', async () => {
     const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.ReviewSelect;
     await expect(controller.findOne).toBeDefined();
-    const review = await database.review.findFirst();
+    const review = await database.review.create({ data: mockReview })
     const findOne = await controller.findOne(review?.id as string, select);
     await expect(findOne).toBeDefined();
   });
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
-    mockReview = await controller.create(mockReview);
+    let mock = mockReview;
+    mock = await controller.create(mock);
     await expect(mockReview).toBeDefined();
     await expect(mockReview.value).toBe(5);
+    await database.review.delete({ where: { id: mock.id }});
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
-    mockReview = await database.review.findFirst({ where: { userId: user.id }})
-    mockReview.value = 3;
-    mockReview = await controller.update(mockReview.id, mockReview);
-    await expect(mockReview).toBeDefined();
-    await expect(mockReview.value).toBe(3);
+    let mock = mockReview;
+    mock = await database.review.create({ data: mock });
+    mock.value = 3;
+    mock = await controller.update(mock.id, mock);
+    await expect(mock).toBeDefined();
+    await expect(mock.value).toBe(3);
   });
 
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
-    await expect(mockReview).toBeDefined();
-    mockReview = await database.review.findFirst({ where: { userId: user.id }});
-    mockReview = await controller.delete(mockReview.id);
-    const testBook = await controller.findOne(mockReview.id);
+    let mock = mockReview;
+    mock = await database.review.create({ data: mock });
+    mock = await controller.delete(mock.id);
+    const testBook = await controller.findOne(mock.id);
     expect(testBook).toBeNull();
   });
 });

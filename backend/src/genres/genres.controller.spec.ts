@@ -10,9 +10,9 @@ describe('GenresController', () => {
   let utility: UtilityService;
   let database: PrismaService;
 
-  let mockGenre: any = {
+  const mockGenre: any = {
     name: 'Mockfiction'
-  }
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,9 +28,9 @@ describe('GenresController', () => {
     utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
 
-    let g;
+    let g = await database.genre.findFirst({ where: { name: mockGenre.name }})
 
-    if(g = await database.genre.findFirst({ where: { name: mockGenre.name }})) {
+    if(g) {
       await database.genre.delete({ where: { id: g.id }});
     }
   });
@@ -65,28 +65,29 @@ describe('GenresController', () => {
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
-    mockGenre = await controller.create(mockGenre);
-    await expect(mockGenre).toBeDefined();
-    await expect(mockGenre.name).toBe('Mockfiction');
-    await database.genre.delete({ where: { id: mockGenre.id } });
+    let mock = await controller.create(mockGenre);
+    await expect(mock).toBeDefined();
+    await expect(mock.name).toBe('Mockfiction');
+    await database.genre.delete({ where: { id: mock.id } });
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
-    mockGenre = await database.genre.create({ data: mockGenre });
+    let mock = await database.genre.create({ data: mockGenre });
     mockGenre.name = 'Mocknonfiction'
-    expect(mockGenre.id).toBeDefined();
-    mockGenre = await controller.update(mockGenre.id, mockGenre);
+    expect(mock.id).toBeDefined();
+    mock = await controller.update(mock.id, mock);
     await expect(mockGenre).toBeDefined();
     await expect(mockGenre.name).toBe('Mocknonfiction');
+    await database.genre.delete({ where: { id: mock.id }});
   });
 
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
-    mockGenre = await database.genre.create({ data: mockGenre });
-    await expect(mockGenre.id).toBeDefined();
-    mockGenre = await controller.delete(mockGenre.id);
-    const testBook = await controller.findOne(mockGenre.id);
-    expect(testBook).toBeNull();
+    let mock = await database.genre.create({ data: mockGenre });
+    await expect(mock.id).toBeDefined();
+    mock = await controller.delete(mock.id);
+    const noGenre = await controller.findOne(mock.id);
+    expect(noGenre).toBeNull();
   });
 });

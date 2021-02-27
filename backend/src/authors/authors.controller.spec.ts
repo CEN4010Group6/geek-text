@@ -10,7 +10,7 @@ describe('AuthorsController', () => {
   let database: PrismaService;
   let utility: UtilityService;
 
-  let mockAuthor: any = {
+  const mockAuthor: any = {
     firstName: 'Mock',
     middleName: 'M',
     lastName: 'McMockface',
@@ -31,21 +31,11 @@ describe('AuthorsController', () => {
     database = module.get<PrismaService>(PrismaService);
     utility = module.get<UtilityService>(UtilityService);
 
-    let m = await database.author.findFirst({
-      where: {
-        firstName: mockAuthor.firstName,
-        middleName: mockAuthor.middleName,
-        lastName: mockAuthor.lastName
-      }
-   });
+    let a = await database.author.findFirst({where: { firstName: mockAuthor.firstName }});
 
-    if(m) {
-      await database.author.delete({
-        where: {
-          id: m.id
-        }
-      });
-    };
+    if(a?.id) {
+      await database.author.delete({ where: { id: a.id }});
+    }
   });
 
   it('should be defined', async () => {
@@ -78,29 +68,37 @@ describe('AuthorsController', () => {
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
-    mockAuthor = await controller.create(mockAuthor);
-    await expect(mockAuthor).toBeDefined();
-    await expect(mockAuthor.id).toBeDefined();
-    await expect(mockAuthor.firstName).toBe('Mock');
-    await expect(mockAuthor.middleName).toBe('M');
-    await expect(mockAuthor.lastName).toBe('McMockface');
-    await expect(mockAuthor.createdAt).toBeDefined();
-    await expect(mockAuthor.updatedAt).toBeDefined();
+    let mock = mockAuthor;
+    mock = await controller.create(mock);
+    await expect(mock).toBeDefined();
+    await expect(mock.id).toBeDefined();
+    await expect(mock.firstName).toBe('Mock');
+    await expect(mock.middleName).toBe('M');
+    await expect(mock.lastName).toBe('McMockface');
+    await expect(mock.createdAt).toBeDefined();
+    await expect(mock.updatedAt).toBeDefined();
+    await database.author.delete({ where: { id: mock.id }});
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
-    mockAuthor.middleName = 'R';
-    mockAuthor = await controller.update(mockAuthor.id, mockAuthor);
-    await expect(mockAuthor).toBeDefined();
-    await expect(mockAuthor.firstName).toBe('Mock');
-    await expect(mockAuthor.middleName).toBe('R');
+    let mock = mockAuthor;
+    mock = await database.author.create({ data: { ...mock }});
+    mock.middleName = 'R';
+    mock = await controller.update(mock.id, mock);
+    await expect(mock).toBeDefined();
+    await expect(mock.firstName).toBe('Mock');
+    await expect(mock.middleName).toBe('R');
+    await database.author.delete({where: { id: mock.id }});
   });
 
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
-    mockAuthor = await controller.delete(mockAuthor.id);
-    const testAuthor = await controller.findOne(mockAuthor.id);
+    let mock = mockAuthor;
+    mock = await database.author.create({ data: { ...mock }});
+    expect(mock.id).toBeDefined();
+    mock = await controller.delete(mock.id);
+    const testAuthor = await controller.findOne(mock.id);
     expect(testAuthor).toBeNull();
   });
 });
