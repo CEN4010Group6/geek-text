@@ -43,6 +43,16 @@ export class ReviewComponent implements OnInit {
   }
 
   public onSubmit() {
+    // get rating value and set it to form
+    this.reviewForm?.patchValue({'rating': this.rating});
+
+    // console log form vlaue before submit
+    console.log('review form value', this.reviewForm?.value);
+
+    // submit reviews data to backend
+    this.$api.post('/reviews/create', this.reviewForm?.value).subscribe(
+      (response) => console.log('review create response success case +++', response),
+      (error) =>  console.log('review create error case ---', error));
   }
 
   public get titles(): string[] {
