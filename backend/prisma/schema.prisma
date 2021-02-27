@@ -125,11 +125,13 @@ model CreditCard {
   @@map("credit_cards")
 }
 
-model SavedShoppingCart {
+model ShoppingCart {
   id String @id @default(uuid())
   user User
   books Book[]
-  @@map("saved_shopping_carts")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("shopping_carts")
 }
 
 model Role {
