@@ -5,6 +5,7 @@ import { UtilityService } from '../utility/utility.service';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import * as argon2 from 'argon2';
+import faker from 'faker';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -13,11 +14,12 @@ describe('UsersController', () => {
 
   let mockUser: any = {
     email: 'a@b.com',
+    passwordHash: '',
     firstName: 'Mock',
     middleName: 'M',
     lastName: 'McMockface',
-    nickName: 'McMockface'
-  };
+    nickName: faker.name.jobArea()
+  }
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -29,12 +31,27 @@ describe('UsersController', () => {
     database = module.get<PrismaService>(PrismaService);
     utility = module.get<UtilityService>(UtilityService);
 
-    const hash = await argon2.hash('IAmAPassword');
-    mockUser.passwordHash = hash;
+    mockUser.passwordHash = await argon2.hash('IAmAPassword');
 
-    let u;
+    let u = await database.user.findFirst({ where: { email: mockUser.email }});
 
-    if(u = await database.user.findFirst({ where: { firstName: mockUser.firstName }})) {
+    if(u && u?.id) {
+      await database.user.delete({ where: { id: u.id }});
+    }
+  });
+
+  beforeEach(async () => {
+    let u = await database.user.findFirst({ where: { email: mockUser.email }});
+
+    if(u && u?.id) {
+      await database.user.delete({ where: { id: u.id }});
+    }
+  });
+
+  afterEach(async () => {
+    let u = await database.user.findFirst({ where: { email: mockUser.email }});
+
+    if(u && u?.id) {
       await database.user.delete({ where: { id: u.id }});
     }
   });
@@ -45,7 +62,7 @@ describe('UsersController', () => {
 
   it('should have a method findAll', async () => {
     const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.UserSelect;
-    const first = await database.user.findFirst();
+    const first = await database.user.create({ data: mockUser });
     const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.UserWhereUniqueInput;
     const orderBy = await utility.convertOtoB({ firstName: 'asc' }) as unknown as Prisma.UserOrderByInput;
     const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.UserWhereInput;
@@ -62,36 +79,36 @@ describe('UsersController', () => {
   it('should have a method findOne', async () => {
     const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.UserSelect;
     await expect(controller.findOne).toBeDefined();
-    const user = await database.review.findFirst();
+    const user = await database.user.create({ data: mockUser });
     const findOne = await controller.findOne(user?.id as string, select);
     await expect(findOne).toBeDefined();
   });
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
-    mockUser = await controller.create({
-      email: 'a@b.com',
+    const user = await controller.create({
+      email: mockUser.email,
       password: 'IAmAPassword'
     });
-    await expect(mockUser).toBeDefined();
-    await expect(mockUser.email).toBe('a@b.com');
+    await expect(user).toBeDefined();
+    await expect(user.email).toBe(mockUser.email);
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
-    mockUser = await database.user.findFirst({ where: { id: mockUser.id }})
-    mockUser.email = 'c@d.com';
-    mockUser = await controller.update(mockUser.id, mockUser);
-    await expect(mockUser).toBeDefined();
-    await expect(mockUser.email).toBe('c@d.com');
+    let user = await database.user.create({ data: mockUser });
+    user.email = 'c@d.com';
+    user = await controller.update(user.id, user);
+    await expect(user).toBeDefined();
+    await expect(user.email).toBe('c@d.com');
+    await database.user.delete({ where: { id: user.id }});
   });
 
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
-    await expect(mockUser).toBeDefined();
-    mockUser = await database.user.findFirst({ where: { id: mockUser.id }});
-    mockUser = await controller.delete(mockUser.id);
-    const testBook = await controller.findOne(mockUser.id);
-    expect(testBook).toBeNull();
+    let user = await database.user.create({ data: mockUser });
+    user = await controller.delete(user.id);
+    const testUser = await controller.findOne(user.id);
+    expect(testUser).toBeNull();
   });
 });

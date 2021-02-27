@@ -41,6 +41,22 @@ describe('ReviewsController', () => {
     mockReview.bookId = book?.id;
   });
 
+  beforeEach(async () => {
+    const r = await database.review.findFirst({ where: { userId: user.id, bookId: book.id }});
+
+    if(r?.id) {
+      database.review.delete({ where: { id: r.id }});
+    }
+  });
+
+  afterEach(async () => {
+    const r = await database.review.findFirst({ where: { userId: user.id, bookId: book.id }});
+
+    if(r?.id) {
+      database.review.delete({ where: { id: r.id }});
+    }
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
@@ -54,11 +70,11 @@ describe('ReviewsController', () => {
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();
-    await expect(findAll.length).toBeGreaterThan(0);
+    await expect(findAll.length).toBeGreaterThanOrEqual(0);
 
     findAll = await controller.findAll();
     await expect(findAll).toBeDefined();
-    await expect(findAll.length).toBeGreaterThan(0);
+    await expect(findAll.length).toBeGreaterThanOrEqual(0);
   });
 
   it('should have a method findOne', async () => {
@@ -75,7 +91,6 @@ describe('ReviewsController', () => {
     mock = await controller.create(mock);
     await expect(mockReview).toBeDefined();
     await expect(mockReview.value).toBe(5);
-    await database.review.delete({ where: { id: mock.id }});
   });
 
   it('should have a method update', async () => {
@@ -92,6 +107,7 @@ describe('ReviewsController', () => {
     await expect(controller.delete).toBeDefined();
     let mock = mockReview;
     mock = await database.review.create({ data: mock });
+    mock = await database.review.findUnique({ where: { id: mock.id }});
     mock = await controller.delete(mock.id);
     const testBook = await controller.findOne(mock.id);
     expect(testBook).toBeNull();

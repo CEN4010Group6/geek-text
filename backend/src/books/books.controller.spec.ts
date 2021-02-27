@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Prisma } from '@prisma/client';
+import * as faker from 'faker';
 import { BooksController } from './books.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { BooksService } from './books.service';
@@ -10,27 +11,7 @@ describe('BooksController', () => {
   let database: PrismaService;
   let utility: UtilityService;
 
-  let mockBook: any = {
-    title: 'Mock Book',
-    publishYear: 2020,
-    isbn: 8675309,
-    description: 'A book',
-    price: 1.50,
-    coverUrl: '',
-    sold: 0,
-    publisher: {
-      connectOrCreate: {
-        where: {
-          name: 'A Mock Publisher'
-        },
-        create: {
-          name: 'A Mock Publisher',
-          city: '',
-          state: ''
-        }
-      }
-    }
-  }
+  let mockBook: any;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,11 +26,44 @@ describe('BooksController', () => {
     controller = module.get<BooksController>(BooksController);
     utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
+  });
 
-    let b = await database.book.findFirst({ where: { title: mockBook.title }});
+  beforeEach(async () => {
 
-    if(b?.id) {
-      await database.book.delete({ where: { id: b.id }});
+    mockBook = {
+      title: faker.commerce.productName(),
+      publishYear: 2020,
+      isbn: faker.random.number(),
+      description: 'A book',
+      price: 1.50,
+      coverUrl: '',
+      sold: 0,
+      publisher: {
+        connectOrCreate: {
+          where: {
+            name: 'A Mock Publisher'
+          },
+          create: {
+            name: 'A Mock Publisher',
+            city: '',
+            state: ''
+          }
+        }
+      }
+    }
+
+    const book = await database.book.findFirst({ where: { title: mockBook.title }});
+
+    if(book && book?.id) {
+      await database.book.delete({ where: { id: book.id }});
+    }
+  });
+
+  afterEach(async () => {
+    const book = await database.book.findFirst({ where: { title: mockBook.title }});
+
+    if(book && book?.id) {
+      await database.book.delete({ where: { id: book.id }});
     }
   });
 
@@ -83,28 +97,29 @@ describe('BooksController', () => {
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
-    mockBook = await controller.create(mockBook);
-    await expect(mockBook).toBeDefined();
-    await expect(mockBook.title).toBe('Mock Book');
-    await expect(mockBook.price).toBe(1.50);
-    await expect(mockBook.publishYear).toBe(2020);
+    const toBeMocked = mockBook;
+    const mock = await controller.create(toBeMocked);
+    await expect(mock).toBeDefined();
+    await expect(mock.title).toBe(toBeMocked.title);
+    await expect(mock.price).toBe(1.50);
+    await expect(mock.publishYear).toBe(2020);
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
-    mockBook = await database.book.findFirst({ where: { title: 'Mock Book' }})
-    mockBook.title = 'A Mocking Book';
-    mockBook = await controller.update(mockBook.id, mockBook);
-    await expect(mockBook).toBeDefined();
-    await expect(mockBook.title).toBe('A Mocking Book');
+    let mock = await database.book.create({ data: mockBook });
+    mock.title = 'A Mocking Book';
+    mock = await controller.update(mock.id, mock);
+    await expect(mock).toBeDefined();
+    await expect(mock.title).toBe('A Mocking Book');
+    await database.book.delete({ where: { title: mock.title }});
   });
 
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
-    await expect(mockBook).toBeDefined();
-    mockBook = await database.book.findFirst({ where: { title: mockBook.title }});
-    mockBook = await controller.delete(mockBook.id);
-    const testBook = await controller.findOne(mockBook.id);
+    let mock = await database.book.create({ data: mockBook });
+    mock = await controller.delete(mock.id);
+    const testBook = await database.book.findFirst({ where: { id: mock.id }});
     expect(testBook).toBeNull();
   });
 });

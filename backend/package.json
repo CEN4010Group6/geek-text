@@ -22,7 +22,9 @@
     "prisma:migrate": "prisma migrate deploy --preview-feature",
     "prisma:seed": "prisma db seed --preview-feature",
     "prisma:migrate-dev": "prisma migrate dev --preview-feature",
-    "prisma:studio": "prisma studio --browser none"
+    "prisma:studio": "prisma studio --browser none",
+    "prisma:push": "prisma db push --preview-feature",
+    "reset-db": "rimraf ./db/dev.db && npm run prisma:push && npm run prisma:seed"
   },
   "repository": {
     "type": "git",

@@ -31,10 +31,24 @@ describe('ReviewsService', () => {
 
     mockReview.userId = user?.id;
     mockReview.bookId = book?.id;
+  });
 
-    let r;
+  beforeEach(async () => {
+    let r = await database.review.findFirst({ where: { userId: user?.id }});
 
-    if(r = await database.review.findFirst({ where: { userId: user?.id }})) {
+    if(r && r?.id) {
+      r = await database.review.findUnique({ where: { id: r.id }});
+      if(r && r.id) {
+        r = await database.review.findUnique({ where: { id: r.id }});
+        await database.review.delete({ where: { id: r?.id }});
+      }
+    }
+  });
+
+  afterEach(async () => {
+    let r = await database.review.findFirst({ where: { userId: user?.id }});
+
+    if(r && r?.id) {
       await database.review.delete({ where: { id: r.id }});
     }
   });
@@ -74,7 +88,6 @@ describe('ReviewsService', () => {
     await expect(mock).toBeDefined();
     await expect(mock.id).toBeDefined();
     await expect(mock.value).toBe(5);
-    await database.review.delete({ where: { id: mock.id }});
   });
 
   it('should update an Review in the database', async () => {
@@ -94,8 +107,9 @@ describe('ReviewsService', () => {
   it('should delete an Review from the database', async () => {
     await expect(service.delete).toBeDefined();
     let mock = mockReview;
-    mock = await database.review.findFirst({ where: { id: mock.id }});
-    mock= await service.delete({ id: mock.id });
+    mock = await database.review.create({ data: mock });
+    mock = await database.review.findUnique({ where: { id: mock.id }});
+    mock = await service.delete({ id: mock.id });
     const noGenre = await service.findOne({where : { id: mock.id }});
     await expect(noGenre).toBeNull();
   });

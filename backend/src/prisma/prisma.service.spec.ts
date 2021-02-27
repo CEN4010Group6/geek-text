@@ -52,7 +52,7 @@ describe('PrismaService', () => {
     expect(service.genre).toBeDefined();
     expect(service.publisher).toBeDefined();
     expect(service.review).toBeDefined();
-    expect(service.savedShoppingCart).toBeDefined();
+    expect(service.shoppingCart).toBeDefined();
     expect(service.transaction).toBeDefined();
     expect(service.user).toBeDefined();
   })

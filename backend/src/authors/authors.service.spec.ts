@@ -23,11 +23,22 @@ describe('AuthorsService', () => {
 
     service = module.get<AuthorsService>(AuthorsService);
     database = module.get<PrismaService>(PrismaService);
+  });
 
-    let a = await database.author.findFirst({ where: { firstName: mockAuthor.firstName } });
+  beforeEach(async () => {
 
-    if(a?.id) {
-      await database.author.delete({where: { id: a.id }});
+    let a = await database.author.findFirst({ where: { firstName: mockAuthor.firstName }});
+
+    if(a && a?.id) {
+      await database.author.delete({ where: { id: a.id }});
+    }
+  });
+
+  afterEach(async () => {
+    let a = await database.author.findFirst({ where: { firstName: mockAuthor.firstname }});
+
+    if(a && a?.id) {
+      await database.author.delete({ where: { id: a.id } });
     }
   });
 
@@ -36,6 +47,7 @@ describe('AuthorsService', () => {
   });
 
   it('should have a method findAll', async () => {
+    await database.author.create({ data: mockAuthor });
     await expect(service.findAll).toBeDefined();
     let all = await service.findAll({});
     await expect(all).toBeDefined();
@@ -43,8 +55,8 @@ describe('AuthorsService', () => {
   });
 
   it('should have a method findOne', async () => {
-    let author = await database.author.findFirst();
-    await expect(author?.id).toBeDefined();
+    await database.author.create({ data: mockAuthor });
+    const author = await database.author.findFirst();
     await expect(service.findOne).toBeDefined();
     let one = await service.findOne({
       where: {
@@ -79,12 +91,11 @@ describe('AuthorsService', () => {
     });
     await expect(mock).toBeDefined();
     await expect(mock.middleName).toBe('R');
-    await database.author.delete({ where: { id: mock.id }});
   });
 
   it('should delete an Author from the database', async () => {
     await expect(service.delete).toBeDefined();
-    let mock = await database.author.create({ data: { ...mockAuthor }});
+    let mock = await database.author.create({ data: mockAuthor });
     mock = await service.delete({ id: mock.id });
     const noAuthor = await service.findOne({where : { id: mock.id }});
     await expect(noAuthor).toBeNull();

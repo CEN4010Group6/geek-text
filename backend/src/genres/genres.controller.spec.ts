@@ -4,17 +4,18 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UtilityService } from '../utility/utility.service';
 import { GenresController } from './genres.controller';
 import { GenresService } from './genres.service';
+import * as faker from 'faker';
 
 describe('GenresController', () => {
   let controller: GenresController;
   let utility: UtilityService;
   let database: PrismaService;
 
-  const mockGenre: any = {
-    name: 'Mockfiction'
-  };
+  let mockGenre: {
+    name: string;
+  }
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PrismaService,
@@ -27,10 +28,24 @@ describe('GenresController', () => {
     controller = module.get<GenresController>(GenresController);
     utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
+  });
 
-    let g = await database.genre.findFirst({ where: { name: mockGenre.name }})
+  beforeEach(async () => {
+    mockGenre = {
+      name: faker.commerce.productMaterial()
+    }
 
-    if(g) {
+    let g: any = await database.genre.findFirst({ where: { name: mockGenre.name }});
+
+    if(g && g?.id) {
+      await database.genre.delete({ where: { id: g.id }});
+    }
+  });
+
+  afterEach(async () => {
+    let g: any = await database.genre.findFirst({ where: { name: mockGenre.name }});
+
+    if(g && g?.id) {
       await database.genre.delete({ where: { id: g.id }});
     }
   });
@@ -67,8 +82,7 @@ describe('GenresController', () => {
     await expect(controller.create).toBeDefined();
     let mock = await controller.create(mockGenre);
     await expect(mock).toBeDefined();
-    await expect(mock.name).toBe('Mockfiction');
-    await database.genre.delete({ where: { id: mock.id } });
+    await expect(mock.name).toBe(mockGenre.name);
   });
 
   it('should have a method update', async () => {

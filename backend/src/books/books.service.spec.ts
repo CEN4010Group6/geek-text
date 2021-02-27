@@ -39,10 +39,20 @@ describe('BooksService', () => {
 
     service = module.get<BooksService>(BooksService);
     database = module.get<PrismaService>(PrismaService);
+  });
 
+  beforeEach(async () => {
     let b = await database.book.findFirst({ where: { title: mockBook.title }});
 
-    if(b?.id) {
+    if(b && b?.id) {
+      await database.book.delete({ where: { id: b.id } });
+    }
+  });
+
+  afterEach(async () => {
+    let b = await database.book.findFirst({ where: { title: mockBook.title }});
+
+    if(b && b?.id) {
       await database.book.delete({ where: { id: b.id } });
     }
   });
@@ -97,7 +107,7 @@ describe('BooksService', () => {
 
   it('should delete an Book from the database', async () => {
     await expect(service.delete).toBeDefined();
-    let mock = await database.book.create({data: { ...mockBook }});
+    let mock = await database.book.create({data: mockBook});
     mock = await service.delete({ id: mock.id });
     const noBook = await service.findOne({where : { id: mock.id }});
     await expect(noBook).toBeNull();

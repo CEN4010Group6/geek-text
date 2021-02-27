@@ -19,10 +19,20 @@ describe('GenresService', () => {
     }).compile();
     service = module.get<GenresService>(GenresService);
     database = module.get<PrismaService>(PrismaService);
+  });
 
+  beforeEach(async () => {
     let g = await database.genre.findFirst({ where: { name: mockGenre.name } });
 
-    if(g?.id) {
+    if(g && g?.id) {
+      await database.genre.delete({ where: { id: g.id } });
+    }
+  });
+
+  afterEach(async () => {
+    let g = await database.genre.findFirst({ where: { name: mockGenre.name } });
+
+    if(g && g?.id) {
       await database.genre.delete({ where: { id: g.id } });
     }
   });
@@ -49,7 +59,6 @@ describe('GenresService', () => {
     });
     await expect(one).toBeDefined();
     await expect(one?.id).toBe(genre?.id);
-    await database.genre.delete({ where: { id: genre.id }});
   });
 
   it('should create a new Genre in the database', async () => {
@@ -58,9 +67,6 @@ describe('GenresService', () => {
     await expect(genre).toBeDefined();
     await expect(genre.id).toBeDefined();
     await expect(genre.name).toBe('Mockfiction');
-    if(genre.id) {
-      await database.genre.delete({ where: { id: genre.id }});
-    }
   });
 
   it('should update an Genre in the database', async () => {
