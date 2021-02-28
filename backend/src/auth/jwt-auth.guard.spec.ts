@@ -4,7 +4,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 describe('RolesGuard', () => {
-
   let guard: JwtAuthGuard;
   let module: TestingModule;
 
@@ -16,6 +15,10 @@ describe('RolesGuard', () => {
     }).compile();
 
     guard = module.get<JwtAuthGuard>(JwtAuthGuard);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

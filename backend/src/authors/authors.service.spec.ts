@@ -3,6 +3,7 @@ import { AuthorsService } from './authors.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 describe('AuthorsService', () => {
+  let module: TestingModule;
   let service: AuthorsService;
   let database: PrismaService;
 
@@ -14,7 +15,7 @@ describe('AuthorsService', () => {
   };
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         AuthorsService,
         PrismaService
@@ -23,6 +24,10 @@ describe('AuthorsService', () => {
 
     service = module.get<AuthorsService>(AuthorsService);
     database = module.get<PrismaService>(PrismaService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

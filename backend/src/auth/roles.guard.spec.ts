@@ -7,11 +7,11 @@ import { NestApplication } from '@nestjs/core';
 import { request } from 'express';
 
 describe('RolesGuard', () => {
-
   let guard: RolesGuard;
+  let module: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         RolesGuard
       ]
@@ -19,6 +19,10 @@ describe('RolesGuard', () => {
       .compile();
 
     guard = module.get<RolesGuard>(RolesGuard);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ReviewsService } from './reviews.service';
 
 describe('ReviewsService', () => {
+  let module: TestingModule;
   let service: ReviewsService;
   let database: PrismaService;
 
@@ -16,7 +17,7 @@ describe('ReviewsService', () => {
   };
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         PrismaService,
         ReviewsService
@@ -32,6 +33,10 @@ describe('ReviewsService', () => {
     mockReview.userId = user?.id;
     mockReview.bookId = book?.id;
   });
+
+  afterAll(async () => {
+    await module.close();
+  })
 
   beforeEach(async () => {
     let r = await database.review.findFirst({ where: { userId: user?.id }});

@@ -7,6 +7,7 @@ import { GenresService } from './genres.service';
 import * as faker from 'faker';
 
 describe('GenresController', () => {
+  let module: TestingModule;
   let controller: GenresController;
   let utility: UtilityService;
   let database: PrismaService;
@@ -16,7 +17,7 @@ describe('GenresController', () => {
   }
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         PrismaService,
         GenresService,
@@ -28,6 +29,10 @@ describe('GenresController', () => {
     controller = module.get<GenresController>(GenresController);
     utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

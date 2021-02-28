@@ -5,6 +5,7 @@ import * as argon2 from 'argon2';
 import faker from 'faker';
 
 describe('UsersService', () => {
+  let module: TestingModule;
   let service: UsersService;
   let database: PrismaService;
 
@@ -18,7 +19,7 @@ describe('UsersService', () => {
   }
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         PrismaService,
         UsersService
@@ -29,6 +30,10 @@ describe('UsersService', () => {
     database = module.get<PrismaService>(PrismaService);
 
     mockUser.passwordHash = await argon2.hash('IAmAPassword');
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

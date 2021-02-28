@@ -5,15 +5,20 @@ import { PrismaService } from './prisma/prisma.service';
 import * as pkg from '../package.json';
 
 describe('AppController', () => {
+  let module: TestingModule;
   let controller: AppController;
 
   beforeAll(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       controllers: [ AppController] ,
       providers: [ PrismaService ],
     }).compile();
 
-    controller = app.get<AppController>(AppController);
+    controller = module.get<AppController>(AppController);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

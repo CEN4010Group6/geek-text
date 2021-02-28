@@ -3,6 +3,7 @@ import { BooksService } from './books.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 describe('BooksService', () => {
+  let module: TestingModule;
   let service: BooksService;
   let database: PrismaService;
 
@@ -39,6 +40,10 @@ describe('BooksService', () => {
 
     service = module.get<BooksService>(BooksService);
     database = module.get<PrismaService>(PrismaService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

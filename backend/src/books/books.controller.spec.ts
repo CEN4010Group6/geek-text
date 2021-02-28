@@ -7,6 +7,7 @@ import { BooksService } from './books.service';
 import { UtilityService } from '../utility/utility.service';
 
 describe('BooksController', () => {
+  let module: TestingModule;
   let controller: BooksController;
   let database: PrismaService;
   let utility: UtilityService;
@@ -14,7 +15,7 @@ describe('BooksController', () => {
   let mockBook: any;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         PrismaService,
         BooksService,
@@ -26,6 +27,10 @@ describe('BooksController', () => {
     controller = module.get<BooksController>(BooksController);
     utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

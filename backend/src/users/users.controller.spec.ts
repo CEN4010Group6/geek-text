@@ -8,6 +8,7 @@ import * as argon2 from 'argon2';
 import faker from 'faker';
 
 describe('UsersController', () => {
+  let module: TestingModule;
   let controller: UsersController;
   let database: PrismaService;
   let utility: UtilityService;
@@ -22,7 +23,7 @@ describe('UsersController', () => {
   }
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [PrismaService, UsersService, UtilityService]
     }).compile();
@@ -38,6 +39,10 @@ describe('UsersController', () => {
     if(u && u?.id) {
       await database.user.delete({ where: { id: u.id }});
     }
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

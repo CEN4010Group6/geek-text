@@ -7,9 +7,10 @@ import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let module: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot(),
         UsersModule,
@@ -34,6 +35,10 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
   });
+
+  afterAll(async () => {
+    await module.close();
+  })
 
   it('should be defined', () => {
     expect(service).toBeDefined();

@@ -8,9 +8,10 @@ import { UsersModule } from '../users/users.module';
 
 describe('AuthController', () => {
   let controller: AuthController;
+  let module: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot(),
         UsersModule,
@@ -35,6 +36,10 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {

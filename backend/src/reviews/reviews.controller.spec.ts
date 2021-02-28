@@ -7,6 +7,7 @@ import { ReviewsController } from './reviews.controller';
 import { ReviewsService } from './reviews.service';
 
 describe('ReviewsController', () => {
+  let module: TestingModule;
   let controller: ReviewsController;
   let database: PrismaService;
   let utility: UtilityService;
@@ -21,7 +22,7 @@ describe('ReviewsController', () => {
   let book;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         PrismaService,
         ReviewsService,
@@ -39,6 +40,10 @@ describe('ReviewsController', () => {
 
     mockReview.userId = user?.id;
     mockReview.bookId = book?.id;
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   beforeEach(async () => {

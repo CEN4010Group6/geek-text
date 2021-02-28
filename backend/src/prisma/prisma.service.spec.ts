@@ -5,10 +5,11 @@ import { PrismaService } from './prisma.service';
 import 'dotenv/config';
 
 describe('PrismaService', () => {
+  let module: TestingModule;
   let service: PrismaService;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [ PrismaService ],
     }).compile();
 
@@ -18,6 +19,10 @@ describe('PrismaService', () => {
     service.onModuleDestroy = jest.fn(async () => await service.$disconnect() );
 
     await module.init();
+  });
+
+  afterAll(async () => {
+    await module.close()
   });
 
   it('should be defined', () => {

@@ -31,6 +31,7 @@ jobs:
           ${{ runner.OS }}-
     - run: npm i -g @angular/cli
     - run: npm ci
+    - run: cp .env.example .env
     - run: npm run test
 
   backend:
