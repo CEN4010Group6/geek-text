@@ -66,12 +66,12 @@ jobs:
     - run: npm run prisma:generate
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-    - run: npm run prisma:migrate
+    - run: DATABASE_URL="$DATABASE_URL" npm run prisma:migrate
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-    - run: npm run prisma:seed
+    - run: DATABASE_URL="$DATABASE_URL" npm run prisma:seed
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-    - run: npm test
+    - run: DATABASE_URL="$DATABASE_URL" npm test
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
