@@ -16,7 +16,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start:dev": "ng serve --watch --disable-host-check --live-reload"
+    "start:dev": "ng serve --watch --disable-host-check --live-reload",
+    "test:cov": "ng test --coverage"
   },
   "repository": {
     "type": "git",

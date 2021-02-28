@@ -1,5 +1,3 @@
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
-
 export class BrowserError extends Error {
   public createdAt: Date;
 

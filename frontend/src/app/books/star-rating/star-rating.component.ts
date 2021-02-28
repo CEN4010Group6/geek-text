@@ -1,9 +1,7 @@
 // Module inspired by prior work of: https://github.com/MurhafSousli/ngx-bar-rating
 
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, ɵisDefaultChangeDetectionStrategy, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, Validator, NG_VALIDATORS, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
-import { textSpanContainsTextSpan } from 'typescript';
-import { ContextReplacementPlugin } from 'webpack';
 
 @Component({
   selector: 'app-star-rating',
