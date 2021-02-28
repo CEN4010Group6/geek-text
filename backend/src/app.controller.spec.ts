@@ -7,6 +7,7 @@ import * as pkg from '../package.json';
 describe('AppController', () => {
   let module: TestingModule;
   let controller: AppController;
+  let database: PrismaService;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
@@ -15,9 +16,11 @@ describe('AppController', () => {
     }).compile();
 
     controller = module.get<AppController>(AppController);
+    database = module.get<PrismaService>(PrismaService);
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 

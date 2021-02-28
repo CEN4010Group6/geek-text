@@ -9,6 +9,7 @@ import { UsersModule } from '../users/users.module';
 describe('AuthController', () => {
   let controller: AuthController;
   let module: TestingModule;
+  let database: PrismaService;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
@@ -36,9 +37,11 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
+    database = module.get<PrismaService>(PrismaService);
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 

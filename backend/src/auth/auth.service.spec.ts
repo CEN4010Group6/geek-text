@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 describe('AuthService', () => {
   let service: AuthService;
   let module: TestingModule;
+  let database: PrismaService;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
@@ -34,9 +35,11 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
+    database = module.get<PrismaService>(PrismaService);
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   })
 

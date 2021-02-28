@@ -42,6 +42,7 @@ describe('UsersController', () => {
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 

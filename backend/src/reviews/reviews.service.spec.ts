@@ -35,6 +35,7 @@ describe('ReviewsService', () => {
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   })
 

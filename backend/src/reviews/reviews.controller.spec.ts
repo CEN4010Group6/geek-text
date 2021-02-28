@@ -43,6 +43,7 @@ describe('ReviewsController', () => {
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 

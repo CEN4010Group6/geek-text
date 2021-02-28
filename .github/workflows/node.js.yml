@@ -62,7 +62,8 @@ jobs:
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-
     - run: npm ci
-    - run: DATABASE_URL=file:../db/dev.db npm run prisma:generate
-    - run: DATABASE_URL=file:../db/dev.db npm run prisma:migrate
-    - run: DATABASE_URL=file:../db/dev.db npm run prisma:seed
-    - run: DATABASE_URL=file:../db.dev.db npm test
+    - run: cp .env.example .env
+    - run: npm run prisma:generate
+    - run: npm run prisma:migrate
+    - run: npm run prisma:seed
+    - run: npm test

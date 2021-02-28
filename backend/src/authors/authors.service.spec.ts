@@ -27,6 +27,7 @@ describe('AuthorsService', () => {
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 

@@ -22,6 +22,7 @@ describe('PrismaService', () => {
   });
 
   afterAll(async () => {
+    await service.$disconnect();
     await module.close()
   });
 

@@ -34,6 +34,7 @@ describe('AuthorsController', () => {
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 

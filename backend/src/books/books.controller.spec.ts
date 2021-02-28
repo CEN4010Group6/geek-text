@@ -30,6 +30,7 @@ describe('BooksController', () => {
   });
 
   afterAll(async () => {
+    await database.$disconnect();
     await module.close();
   });
 
