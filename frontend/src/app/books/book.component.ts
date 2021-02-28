@@ -32,6 +32,9 @@ export class BookComponent implements OnInit {
         id: true,
         title: true,
         authors: {
+          orderBy: {
+            lastName: 'asc'
+          },
           select: {
             id: true,
             firstName: true,
@@ -50,7 +53,11 @@ export class BookComponent implements OnInit {
         description: true,
         genres: true,
         price: true,
-        reviews: true,
+        reviews: {
+          orderBy: {
+            createdAt: 'desc'
+          }
+        },
         coverUrl: true,
         coverDataUri: true,
         sold: true

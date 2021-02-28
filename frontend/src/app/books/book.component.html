@@ -104,6 +104,7 @@
                     <span *ngSwitchCase="'realName'">{{ review.user?.firstName }} {{ review.user?.lastName }}</span>
                     <span *ngSwitchCase="'nickName'">{{ review.user?.nickName }}</span>
                   </h5>
+                  <p>Review Rating: <app-star-rating [rating]="review.value" [max]="5" [readOnly]="true"></app-star-rating></p>
                   <p>{{ review.description }}</p>
                 </div>
               </div>
