@@ -63,6 +63,6 @@ jobs:
           ${{ runner.OS }}-
     - run: npm ci
     - run: DATABASE_URL=file:../db/dev.db npm run prisma:generate
-    - run: DATABASE_URL=file:../db/dev.db npm run reset-db
     - run: DATABASE_URL=file:../db/dev.db npm run prisma:migrate
+    - run: DATABASE_URL=file:../db/dev.db npm run prisma:seed
     - run: DATABASE_URL=file:../db.dev.db npm test
