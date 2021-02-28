@@ -25,7 +25,7 @@ export class UsersController {
    * @param query Query parameters to alter the `WHERE` SQL clause
    */
   @Get()
-  // @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Roles(Role.Admin)
   public async findAll(
     @Query('skip') skip?: number,
@@ -33,15 +33,13 @@ export class UsersController {
     @Query('cursor') cursor?: Prisma.UserWhereUniqueInput,
     @Query('where') where?: Prisma.UserWhereInput,
     @Query('orderBy') orderBy?: Prisma.UserOrderByInput,
-    @Query('select') select?: Prisma.UserSelect,
-    @Query('include') include?: Prisma.UserInclude
+    @Query('select') select?: Prisma.UserSelect
   ): Promise<User[]> {
     if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
     if(where) where = await this.$utilityService.convertBtoO(where as string);
     if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
     if(select) select = await this.$utilityService.convertBtoO(select as string);
-    if(include) include = await this.$utilityService.convertBtoO(include as string);
-    const query = { skip, take, cursor, where, orderBy, select, include };
+    const query = { skip, take, cursor, where, orderBy, select };
     return this.$usersService.findAll(query);
   }
 
@@ -52,8 +50,13 @@ export class UsersController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  public async findOne(@Param('id') id: string): Promise<User | null> {
-    return this.$usersService.findOne({ where: { id: id }});
+  public async findOne(
+    @Param('id') id: string,
+    @Query('select') select?: Prisma.UserSelect
+  ): Promise<User | null> {
+    if(select) select = await this.$utilityService.convertBtoO<Prisma.UserSelect>(select as string);
+    const query = { where: { id: id }, select };
+    return this.$usersService.findOne(query);
   }
 
   /**

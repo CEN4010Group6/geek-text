@@ -3,7 +3,7 @@ import { PrismaService } from './prisma/prisma.service';
 import * as pkg from '../package.json';
 import { Public } from './public.decorator';
 
-class BrowserError implements Error {
+export class BrowserError implements Error {
   name: string;
   message: string;
   createdAt: Date;

@@ -47,7 +47,7 @@ export class AuthService {
       }
     });
 
-    if(user && argon2.verify(user.passwordHash, password)) {
+    if(await argon2.verify(user.passwordHash, password)) {
       const { passwordHash, ...result } = user;
       return result;
     }

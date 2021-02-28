@@ -16,9 +16,16 @@ describe('UtilitiesService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should convert a base64 string representing an object into an object', async () => {
-    expect.assertions(1);
+  it('should convert a base64 string into an object', async () => {
     const obj = await service.convertBtoO('eyJyYXRpbmciOnRydWV9');
-    expect(obj).toStrictEqual({"rating": true});
+    await expect(obj).toStrictEqual({"rating": true});
   });
+
+  it('should convert an object into a base64 string', async () => {
+    const expected = 'eyJyYXRpbmciOnRydWV9'
+    const obj = { "rating": true };
+    const str = await service.convertOtoB(obj);
+    await expect(str).toBeDefined();
+    await expect(str).toBe(expected);
+  })
 });

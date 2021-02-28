@@ -1,20 +1,44 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
+import { AppController, BrowserError } from './app.controller';
 import { PrismaService } from './prisma/prisma.service';
 
+import * as pkg from '../package.json';
+
 describe('AppController', () => {
-  let appController: AppController;
+  let controller: AppController;
 
   beforeAll(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [PrismaService],
+      controllers: [ AppController] ,
+      providers: [ PrismaService ],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    controller = app.get<AppController>(AppController);
   });
 
   it('should be defined', () => {
-    expect(appController).toBeDefined();
+    expect(controller).toBeDefined();
   });
+
+  it('should have a method `getRoot`', () => {
+    expect(controller.getRoot).toBeDefined();
+  });
+
+  it('should return a valid root object for the `getRoot` method', async () => {
+    const obj: any = await controller.getRoot();
+
+    expect(obj).toBeDefined();
+    expect(obj.apiVersion).toBe(pkg.version)
+    expect(obj.authors).toStrictEqual([pkg.author, ...pkg.contributors]);
+    expect(obj.license).toBe(pkg.license);
+    expect(obj.homepage).toBe(pkg.homepage);
+  })
+
+  it('should have a method `logError`', () => {
+    expect(controller.logError).toBeDefined();
+  });
+
+  it('should log an error', async () => {
+    expect(controller.logError(new BrowserError())).resolves.toBeUndefined();
+  })
 });
