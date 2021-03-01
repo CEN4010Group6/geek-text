@@ -1,12 +1,13 @@
 import { Prisma } from '@prisma/client';
-import { IsAlphanumeric, IsCurrency, IsDataURI, IsDate, IsDecimal, IsInt, IsNotEmpty, IsOptional, IsPositive, IsUrl, IsUUID } from 'class-validator';
+import { IsAlphanumeric, IsCurrency, IsDataURI, IsDate, IsDecimal, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString, IsUrl, IsUUID } from 'class-validator';
+import { BaseDTO } from '../../dto/base';
 
-export class BookCreateInput implements Prisma.BookCreateInput {
+export class BookCreateInput extends BaseDTO implements Prisma.BookCreateInput {
   @IsOptional()
   @IsUUID()
   id?: string;
 
-  @IsAlphanumeric()
+  @IsString()
   title: string;
 
   @IsInt()
@@ -18,6 +19,7 @@ export class BookCreateInput implements Prisma.BookCreateInput {
   isbn: number;
 
   @IsNotEmpty()
+  @IsString()
   description: string;
 
   @IsDecimal()
@@ -62,5 +64,5 @@ export class BookCreateInput implements Prisma.BookCreateInput {
   Transaction?: Prisma.TransactionCreateNestedOneWithoutBooksInput
 
   @IsOptional()
-  SavedShoppingCart?: Prisma.SavedShoppingCartCreateNestedOneWithoutBooksInput
+  ShoppingCart?: Prisma.ShoppingCartCreateNestedOneWithoutBooksInput
 }

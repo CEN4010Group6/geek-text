@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Book as BookModel, Prisma } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service';
 import { Book } from './dto/book';
@@ -25,21 +25,29 @@ export class BooksService {
   }): Promise<Book | null> {
     const { where, select } = params;
 
-    let book = new Book(await this.$prisma.book.findUnique({
+    const dbBook = await this.$prisma.book.findUnique({
       where,
       select
-    }) as BookModel | null);
+    }) as BookModel | null;
 
-    const aggregate = await this.$prisma.review.aggregate({
-      where: {
-        id: book.id
-      },
-      avg: {
-        value: true
-      }
-    });
+    if(!dbBook) {
+      throw new NotFoundException('The requested book could not be found');
+    }
 
-    book.averageRating = aggregate.avg.value;
+    let book = new Book(dbBook);
+
+    if(select?.reviews) {
+      const aggregate = await this.$prisma.review.aggregate({
+        where: {
+          bookId: book.id
+        },
+        avg: {
+          value: true
+        }
+      });
+
+      book.averageRating = aggregate.avg.value;
+    }
 
     return book;
   }
@@ -71,16 +79,18 @@ export class BooksService {
     for(let idx in books) {
       let book = new Book(books[idx]);
 
-      const aggregate = await this.$prisma.review.aggregate({
-        where: {
-          id: book.id
-        },
-        avg: {
-          value: true
-        }
-      });
+      if(select?.reviews) {
+        const aggregate = await this.$prisma.review.aggregate({
+          where: {
+            bookId: book.id
+          },
+          avg: {
+            value: true
+          }
+        });
 
-      book.averageRating = aggregate.avg.value;
+        book.averageRating = aggregate.avg.value;
+      }
 
       books[idx] = book;
     }

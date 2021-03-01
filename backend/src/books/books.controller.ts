@@ -48,6 +48,8 @@ export class BooksController {
     if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
     if(where) where = await this.$utilityService.convertBtoO(where as string);
     if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
+    if(take) take = parseInt(take as unknown as string);
+    if(skip) skip = parseInt(skip as unknown as string);
     const query = { skip, take, cursor, where, orderBy, select };
     return this.$booksService.findAll(query);
   }

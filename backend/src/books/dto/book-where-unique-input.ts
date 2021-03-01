@@ -1,13 +1,14 @@
 import { Prisma } from '@prisma/client';
-import { IsAlphanumeric, IsInt, IsOptional, IsPositive, IsUUID } from 'class-validator';
+import { IsAlphanumeric, IsInt, IsOptional, IsPositive, IsString, IsUUID } from 'class-validator';
+import { BaseDTO } from '../../dto/base';
 
-export class BookWhereUniqueInput implements Prisma.BookWhereUniqueInput {
+export class BookWhereUniqueInput extends BaseDTO implements Prisma.BookWhereUniqueInput {
   @IsOptional()
   @IsUUID()
   id?: string;
 
   @IsOptional()
-  @IsAlphanumeric()
+  @IsString()
   title?: string;
 
   @IsOptional()

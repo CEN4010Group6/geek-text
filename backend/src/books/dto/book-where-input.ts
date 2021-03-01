@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { IsAlphanumeric, IsCurrency, IsDataURI, IsDate, IsDecimal, IsInt, IsNotEmpty, IsOptional, IsPositive, IsUrl, IsUUID } from 'class-validator';
+import { BaseDTO } from '../../dto/base';
 
 export class BookWhereInput implements Prisma.BookWhereInput {
   @IsOptional()
