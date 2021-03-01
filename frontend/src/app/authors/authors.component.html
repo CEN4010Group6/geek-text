@@ -21,7 +21,7 @@
         </ng-template>
         <div class="card-body">
           <p>Price: {{ book.price | currency }}</p>
-          <p><app-star-rating [rating]="averageReviews(book)" [max]="5" [readOnly]="true"></app-star-rating></p>
+          <p><app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
         </div>
       </div>
     </div>

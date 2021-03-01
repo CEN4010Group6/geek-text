@@ -1,6 +1,7 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
-import { Book, Prisma } from '@prisma/client'
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Book as BookModel, Prisma } from '@prisma/client'
 import { PrismaService } from '../prisma/prisma.service';
+import { Book } from './dto/book';
 
 @Injectable()
 export class BooksService {
@@ -24,10 +25,31 @@ export class BooksService {
   }): Promise<Book | null> {
     const { where, select } = params;
 
-    return this.$prisma.book.findUnique({
+    const dbBook = await this.$prisma.book.findUnique({
       where,
       select
-    }) as unknown as Book;
+    }) as BookModel | null;
+
+    if(!dbBook) {
+      throw new NotFoundException('The requested book could not be found');
+    }
+
+    let book = new Book(dbBook);
+
+    if(select?.reviews) {
+      const aggregate = await this.$prisma.review.aggregate({
+        where: {
+          bookId: book.id
+        },
+        avg: {
+          value: true
+        }
+      });
+
+      book.averageRating = aggregate.avg.value;
+    }
+
+    return book;
   }
 
   /**
@@ -45,14 +67,35 @@ export class BooksService {
   }): Promise<Book[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
 
-    return this.$prisma.book.findMany({
+    let books = await this.$prisma.book.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
       select
-    }) as unknown as Book[];
+    }) as BookModel[] | null || [];
+
+    for(let idx in books) {
+      let book = new Book(books[idx]);
+
+      if(select?.reviews) {
+        const aggregate = await this.$prisma.review.aggregate({
+          where: {
+            bookId: book.id
+          },
+          avg: {
+            value: true
+          }
+        });
+
+        book.averageRating = aggregate.avg.value;
+      }
+
+      books[idx] = book;
+    }
+
+    return books;
   }
 
   /**

@@ -16,6 +16,7 @@ export interface Book {
   publishYear: number;
   reviews?: Review[];
   genres?: Genre[];
+  averageRating?: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -61,12 +61,4 @@ export class AuthorsComponent implements OnInit {
   public authorName(author: Author): string {
     return this.$authorsService.authorName(author);
   }
-
-  public averageReviews(book: Book): number {
-    if(book?.reviews && book.reviews.length > 0) {
-      return book.reviews.map((review: Review) => review.value)
-        .reduce((acc, val) => acc + val ) / book.reviews.length
-    }
-    return 0;
-  }
 }
