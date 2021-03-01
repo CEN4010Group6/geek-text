@@ -5,6 +5,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersModule } from '../users/users.module';
+import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -32,7 +34,9 @@ describe('AuthController', () => {
       controllers: [ AuthController ],
       providers: [
         PrismaService,
-        AuthService
+        AuthService,
+        LocalStrategy,
+        JwtStrategy
       ]
     }).compile();
 

@@ -2,7 +2,6 @@ import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
-import { JwtAuthGuard } from './jwt-auth.guard';
 
 import { LocalAuth } from './dto/local-auth';
 import { Public } from '../public.decorator';
@@ -24,9 +23,9 @@ export class AuthController {
    * @param email The user's email
    * @param password The user's password
    */
+  @Post('login')
   @UseGuards(LocalAuthGuard)
   @Public()
-  @Post('login')
   public async login(
     @Request() req
   ): Promise<any> {

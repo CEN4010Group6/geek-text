@@ -47,7 +47,9 @@ export class AuthService {
       }
     });
 
-    if(await argon2.verify(user.passwordHash, password)) {
+    const isValid = await argon2.verify(user.passwordHash, password);
+
+    if(isValid) {
       const { passwordHash, ...result } = user;
       return result;
     }
@@ -63,6 +65,7 @@ export class AuthService {
    * @param password The user's password
    */
   public async login(user: any): Promise<any> {
+
     const payload = {
       email: user.email,
       sub: user.id,
