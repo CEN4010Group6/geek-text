@@ -111,11 +111,11 @@ describe('BooksService', () => {
     await database.book.delete({ where: { id: mock.id }});
   });
 
-  it('should delete an Book from the database', async () => {
+  it('should delete a Book from the database', async () => {
     await expect(service.delete).toBeDefined();
-    let mock = await database.book.create({data: mockBook});
+    let mock = await service.create(mockBook);
     mock = await service.delete({ id: mock.id });
-    const noBook = await service.findOne({where : { id: mock.id }});
+    const noBook = await database.book.findFirst({where : { id: mock.id }});
     await expect(noBook).toBeNull();
   });
 });
