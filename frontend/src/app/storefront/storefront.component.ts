@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 
 import { Book } from '../models/book';
@@ -13,12 +14,16 @@ export class StorefrontComponent implements OnInit {
   public books: Book[] = [];
 
   constructor(
-    private $apiService: ApiService
+    private readonly $apiService: ApiService,
+    private readonly $router: Router
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.$apiService.get('/books')
       .subscribe(res => this.books = res);
   }
 
+  public async navigate(id: string) {
+    await this.$router.navigate(['/books', id]);
+  }
 }

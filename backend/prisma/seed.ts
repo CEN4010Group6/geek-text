@@ -62,7 +62,17 @@ async function main() {
       email: 'john.doe@gmail.com'
     },
     update: {
-      nickName: 'JDoe'
+      nickName: 'JDoe',
+      roles: {
+        connectOrCreate: {
+          where: {
+            name: 'user'
+          },
+          create: {
+            name: 'user'
+          }
+        }
+      }
     },
     create: {
       email: 'john.doe@gmail.com',
@@ -89,15 +99,25 @@ async function main() {
         }
       },
       roles: {
-        connectOrCreate: {
-          where: {
-            name: 'admin'
+        connectOrCreate: [
+            {
+            where: {
+              name: 'admin'
+            },
+            create: {
+              name: 'admin'
+            }
           },
-          create: {
-            name: 'admin'
+          {
+            where: {
+              name: 'user'
+            },
+            create: {
+              'name': 'user'
+            }
           }
-        }
-      }
+        ],
+      },
     }
   }));
 
@@ -135,6 +155,14 @@ async function main() {
     }));
   }
 
+  const harperLee = await client.author.create({
+    data: {
+      firstName: 'Harper',
+      lastName: 'Lee',
+      description: "Harper Lee was born in 1926 in Monroeville, Alabama. She is the author of the acclaimed To Kill a Mockingbird and Go Set a Watchman, which became a phenomenal #1 New York Times bestseller when it was published in July 2015. Ms. Lee received the Pulitzer Prize, the Presidential Medal of Freedom, and numerous other literary awards and honors. She died on February 19, 2016."
+    }
+  });
+
   books = books.push(await client.book.upsert({
     where: {
       title: 'To Kill a Mockingbird',
@@ -146,10 +174,8 @@ async function main() {
     create: {
       title: 'To Kill a Mockingbird',
       authors: {
-        create: {
-          firstName: 'Harper',
-          lastName: 'Lee',
-          description: "Harper Lee was born in 1926 in Monroeville, Alabama. She is the author of the acclaimed To Kill a Mockingbird and Go Set a Watchman, which became a phenomenal #1 New York Times bestseller when it was published in July 2015. Ms. Lee received the Pulitzer Prize, the Presidential Medal of Freedom, and numerous other literary awards and honors. She died on February 19, 2016."
+        connect: {
+          id: harperLee.id
         }
       },
       publisher: {
@@ -190,15 +216,7 @@ async function main() {
       title: 'Go Set A Watchman',
       authors: {
         connect: {
-          id: (await client.author.findFirst({
-            where: {
-              firstName: 'Harper',
-              lastName: 'Lee'
-            },
-            select: {
-              id: true
-            }
-          }) as Author).id
+          id: harperLee.id
         }
       },
       publishYear: 2015,
