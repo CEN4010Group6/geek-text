@@ -10,7 +10,8 @@ import {
   Review,
   Address,
   Transaction,
-  Prisma
+  Prisma,
+  prisma
 } from '@prisma/client';
 import * as faker from 'faker';
 import * as argon2 from 'argon2';
@@ -31,32 +32,8 @@ async function main() {
   let books: List<Book> = List();
   let genres: Map<string, Genre> = Map();
 
-  users = users.push(await client.user.upsert({
-    where: {
-      email: ''
-    },
-    update: {},
-    create: {
-      id: '0',
-      email: '',
-      passwordHash: await argon2.hash("87!k5HELaXpCm*%"),
-      firstName: 'Anonymous',
-      lastName: '',
-      nickName: 'Anonymous',
-      roles: {
-        connectOrCreate: {
-          where: {
-            name: 'Anonymous'
-          },
-          create: {
-            name: 'Anonymous'
-          }
-        }
-      }
-    }
-  }));
 
-  users = users.push(await client.user.upsert({
+  const john = await client.user.upsert({
     where: {
       email: 'john.doe@gmail.com'
     },
@@ -118,9 +95,11 @@ async function main() {
         ],
       },
     }
-  }));
+  });
 
-  users = users.push(await client.user.upsert({
+  users = users.push(john);
+
+  const jane = await client.user.upsert({
     where: {
       email: 'jane.doe@gmail.com'
     },
@@ -144,7 +123,9 @@ async function main() {
         }
       }
     }
-  }));
+  });
+
+  users = users.push(jane);
 
   const userCount = await client.user.count();
 
@@ -168,13 +149,15 @@ async function main() {
       }
     }
 
-    users.push(await client.user.upsert({
+    const dbUser =  await client.user.upsert({
       where: {
         email: newUser.email
       },
       update: newUser,
       create: newUser
-    }));
+    });
+
+    users = users.push(dbUser)
   }
 
   for(let genre of ['Fiction', 'Fantasy', 'Romance', 'Philosophy', 'Young Adult', 'Self-Help', 'Sci-fi', 'Non-Fiction', 'Biography', 'Mystery']) {
@@ -335,34 +318,52 @@ async function main() {
       sold: faker.random.number({max: 50})
     }
 
-    books = books.push(await client.book.upsert({
+    const book = await client.book.upsert({
       where: {
         title: newBook.title
       },
       update: {},
       create: newBook
-    }));
+    });
+
+    books = books.push(book);
   }
 
-  for(let i = 0; i < 10; i++) {
-    const randomBookNumber = faker.random.number({min: 0, max: 32});
+  for(let i = 0; i < 25; i++) {
+    const randomBookNumber = faker.random.number({
+      min: 0,
+      max: books.count() - 1
+    });
+
+    const randomUserNumber = faker.random.number({
+      min: 0,
+      max: users.count() -1
+    });
 
     const posted = ['anonymous', 'nickName', 'realName']
     const postedNum = faker.random.number({ min:0, max: 2 });
 
-    const user = users.get(0);
+    const user = users.get(randomUserNumber);
     const book = books.get(randomBookNumber);
 
     if(user && book) {
       const _review = await client.review.create({
         data: {
-          value: faker.random.number({min: 0, max: 5}),
+          value: faker.random.number({min: 1, max: 5}),
           description: faker.lorem.paragraph(),
           postedAs: posted[postedNum],
-          userId: user.id,
-          bookId: book.id
+          book: {
+            connect: {
+              id: book.id
+            }
+          },
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
         }
-      })
+      });
     }
   }
 }

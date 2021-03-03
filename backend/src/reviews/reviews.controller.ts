@@ -1,11 +1,15 @@
 import { UtilityService } from './../utility/utility.service';
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { Review, Prisma } from '@prisma/client';
+import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 import { Public } from '../public.decorator';
 import { Roles, Role } from '../roles.decorator';
 
 import { ReviewsService } from './reviews.service';
+import { ParseIntPipe } from '../parse-int.pipe';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+
+import { Review } from './dto/review';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -28,18 +32,13 @@ export class ReviewsController {
   @Header('Cache-Control', 'max-age=0; s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
-    @Query('skip') skip?: number,
-    @Query('take') take?: number,
-    @Query('cursor') cursor?: Prisma.ReviewWhereUniqueInput,
-    @Query('where') where?: Prisma.ReviewWhereInput,
-    @Query('orderBy') orderBy?: Prisma.ReviewOrderByInput,
-    @Query('select') select?: Prisma.ReviewSelect
+    @Query('skip',ParseIntPipe) skip?: number,
+    @Query('take', ParseIntPipe) take?: number,
+    @Query('cursor', new ParseFrontendBtoaPipe()) cursor?: Prisma.ReviewWhereUniqueInput,
+    @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.ReviewWhereInput,
+    @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.ReviewOrderByInput,
+    @Query('select',new ParseFrontendBtoaPipe()) select?: Prisma.ReviewSelect
   ): Promise<Review[]> {
-    if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
-    if(where) where = await this.$utilityService.convertBtoO(where as string);
-    if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
-    if(select) select = await this.$utilityService.convertBtoO(select as string);
-
     const query = { skip, take, cursor, where, orderBy, select };
 
     return this.$reviewsService.findAll(query);
@@ -54,10 +53,9 @@ export class ReviewsController {
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
-    @Param('id') id: string,
-    @Query('select') select?: Prisma.ReviewSelect
+    @Param('id', ParseUUIDPipe) id: string,
+    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.ReviewSelect
   ): Promise<Review | null> {
-    if(select) select = await this.$utilityService.convertBtoO(select as string);
     const query = { where: { id: id }, select };
     return this.$reviewsService.findOne(query);
   }
@@ -84,7 +82,7 @@ export class ReviewsController {
   @Put(':id')
   @Roles(Role.User)
   public async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() postData: Prisma.ReviewCreateInput
   ): Promise<Review> {
     return this.$reviewsService.update({
@@ -100,7 +98,7 @@ export class ReviewsController {
    */
   @Delete(':id')
   @Roles(Role.User)
-  public async delete(@Param('id') id: string): Promise<Review> {
+  public async delete(@Param('id', ParseUUIDPipe) id: string): Promise<Review> {
     return this.$reviewsService.delete({id: id} as Prisma.ReviewWhereUniqueInput);
   }
 }

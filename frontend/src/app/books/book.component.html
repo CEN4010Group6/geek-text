@@ -85,7 +85,7 @@
   <div class="row">
     <div class="col-12">
       <h2>Reviews of this Book</h2>
-      <div *ngIf="book.reviews && book.reviews.length; then thenReviewBlock else elseReviewBlock"></div>
+      <div *ngIf="book.reviews?.length; then thenReviewBlock else elseReviewBlock"></div>
       <ng-template #thenReviewBlock>
          <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
           <li class="media">
@@ -99,7 +99,7 @@
             <div class="media-body">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">By:&nbsp;
+                  <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">By:
                     <span *ngSwitchCase="'anonymous'">Anonymous</span>
                     <span *ngSwitchCase="'realName'">{{ review.user?.firstName }} {{ review.user?.lastName }}</span>
                     <span *ngSwitchCase="'nickName'">{{ review.user?.nickName }}</span>

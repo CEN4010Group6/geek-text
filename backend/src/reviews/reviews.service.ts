@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Review } from '@prisma/client';
+import { Prisma, Review as ReviewModel } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+
+import { Review } from './dto/review';
 
 @Injectable()
 export class ReviewsService {
@@ -23,7 +25,12 @@ export class ReviewsService {
     select?: Prisma.ReviewSelect;
   }): Promise<Review | null> {
     const { where, select } = params;
-    return this.$prisma.review.findUnique({where, select}) as unknown as Review;
+
+    const dbReview = await this.$prisma.review.findUnique({where, select}) as ReviewModel | null;
+
+    const review = new Review(dbReview);
+
+    return review;
   }
 
   /**
@@ -40,14 +47,25 @@ export class ReviewsService {
     select?: Prisma.ReviewSelect;
   }): Promise<Review[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
-    return this.$prisma.review.findMany({
+
+    const dbReviews = await this.$prisma.review.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
       select
-    }) as unknown as Review[]
+    }) as ReviewModel[] | null;
+
+    let reviews: Review[] = [];
+
+    for(let dbReview in dbReviews) {
+      const review = new Review(dbReview);
+
+      reviews.push(review);
+    }
+
+    return reviews;
   }
 
   /**
@@ -56,9 +74,7 @@ export class ReviewsService {
    * @param data The Review to be created
    */
   public async create(data: Prisma.ReviewCreateInput): Promise<Review> {
-    return this.$prisma.review.create({
-      data
-    });
+    return this.$prisma.review.create({ data });
   }
 
   /**
@@ -71,10 +87,7 @@ export class ReviewsService {
     data: Prisma.ReviewUpdateInput;
   }): Promise<Review> {
     const { where, data } = params;
-    return this.$prisma.review.update({
-      data,
-      where
-    });
+    return this.$prisma.review.update({ data, where });
   }
 
   /**
@@ -83,8 +96,6 @@ export class ReviewsService {
    * @param where The unique identifier(s) of the Review to be removed
    */
   public async delete(where: Prisma.ReviewWhereUniqueInput): Promise<Review> {
-    return this.$prisma.review.delete({
-      where
-    });
+    return this.$prisma.review.delete({ where });
   }
 }

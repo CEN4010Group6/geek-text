@@ -56,6 +56,20 @@ export class BookComponent implements OnInit {
         reviews: {
           orderBy: {
             createdAt: 'desc'
+          },
+          select: {
+            id: true,
+            value: true,
+            description: true,
+            postedAs: true,
+            user: {
+              select: {
+                firstName: true,
+                middleName: true,
+                lastName: true,
+                nickName: true
+              }
+            }
           }
         },
         coverUrl: true,

@@ -1,6 +1,7 @@
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { CacheModule, CacheInterceptor, Module } from '@nestjs/common';
+import { CacheModule, CacheInterceptor, CACHE_MANAGER, Module, Inject } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { Cache } from 'cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 
 import { AppController } from './app.controller';
@@ -54,4 +55,12 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     }
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    @Inject(CACHE_MANAGER) private readonly $cacheManager: Cache
+  ) {
+    if(process.env.NODE_ENV === 'development') {
+      this.$cacheManager.reset();
+    }
+  }
+}

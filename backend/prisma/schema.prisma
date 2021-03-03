@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "sqlite"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -23,6 +23,8 @@ model User {
   shippingAddresses Address[] @relation("ShippingAddress")
   creditCards CreditCard[]
   roles Role[]
+  reviews Review[]
+  shoppingCart ShoppingCart[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("users")
@@ -43,8 +45,12 @@ model Book {
   coverUrl String?
   coverDataUri String?
   sold Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  transaction Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId String?
+  shoppingCart ShoppingCart? @relation(fields: [shoppingCartId], references: [id])
+  shoppingCartId String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   @@map("books")
 }
 
@@ -66,6 +72,7 @@ model Publisher {
   city String
   state String
   website String?
+  book Book[]
   @@map("publishers")
 }
 
@@ -91,7 +98,7 @@ model Review {
 }
 
 model Address {
-  id String @id @default(uuid())
+  id String  @id @default(uuid())
   street String
   apartmentOrUnit String?
   city String
@@ -105,7 +112,8 @@ model Address {
 
 model Transaction {
   id String @id @default(uuid())
-  user User
+  user User @relation(fields: [userId], references: [id])
+  userId String
   books Book[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -127,7 +135,8 @@ model CreditCard {
 
 model ShoppingCart {
   id String @id @default(uuid())
-  user User
+  user User @relation(fields: [userId], references: [id])
+  userId String
   books Book[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
