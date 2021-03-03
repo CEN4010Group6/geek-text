@@ -16,7 +16,6 @@ import * as faker from 'faker';
 import * as argon2 from 'argon2';
 import { List, Map } from 'immutable';
 import * as dataURIs from './data_uri.json';
-import { fake } from 'faker';
 
 const client = new PrismaClient();
 
@@ -146,6 +145,37 @@ async function main() {
       }
     }
   }));
+
+  const userCount = await client.user.count();
+
+  for(let i = userCount; i < 8; i++) {
+    const newUser = {
+      email: faker.internet.email(),
+      passwordHash: await argon2.hash('TheElectricSlide'),
+      firstName: faker.name.firstName(),
+      middleName: faker.name.middleName(),
+      lastName: faker.name.lastName(),
+      nickName: faker.name.jobTitle(),
+      roles: {
+        connectOrCreate: {
+          where: {
+            name: 'user'
+          },
+          create: {
+            name: 'user'
+          }
+        }
+      }
+    }
+
+    users.push(await client.user.upsert({
+      where: {
+        email: newUser.email
+      },
+      update: newUser,
+      create: newUser
+    }));
+  }
 
   for(let genre of ['Fiction', 'Fantasy', 'Romance', 'Philosophy', 'Young Adult', 'Self-Help', 'Sci-fi', 'Non-Fiction', 'Biography', 'Mystery']) {
     genres = genres.set(genre, await client.genre.upsert({
