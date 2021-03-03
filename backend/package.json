@@ -47,6 +47,7 @@
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.11",
     "@nestjs/jwt": "^7.2.0",
+    "@nestjs/mapped-types": "^0.3.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.11",
     "@prisma/client": "^2.16.1",
@@ -95,7 +96,11 @@
     "typescript": "^4.1.5"
   },
   "jest": {
-    "moduleFileExtensions": [ "js", "json", "ts" ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
@@ -106,6 +111,8 @@
     ],
     "coverageDirectory": "../coverage",
     "preset": "ts-jest",
-    "setupFiles": [ "dotenv/config" ]
+    "setupFiles": [
+      "dotenv/config"
+    ]
   }
 }

@@ -1,7 +1,8 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
-import { Author, Prisma } from '@prisma/client';
-import { exception } from 'console';
+import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import { Author as AuthorModel, Prisma } from '@prisma/client';
+import { Book } from '../books/dto/book';
 import { PrismaService } from '../prisma/prisma.service';
+import { Author } from './dto/author';
 
 @Injectable()
 export class AuthorsService {
@@ -23,7 +24,38 @@ export class AuthorsService {
     select?: Prisma.AuthorSelect
   }): Promise<Author | null> {
     const { where, select } = params;
-    return this.$prisma.author.findUnique({ where, select }) as unknown as Author;
+
+    const dbAuthor = await this.$prisma.author.findUnique({
+      where,
+      select
+    }) as AuthorModel | null;
+
+    if(!dbAuthor) {
+      throw new NotFoundException('The requested author could not be found');
+    }
+
+    let author = new Author(dbAuthor);
+
+    if(select?.books) {
+      for(const idx in author.books) {
+        author.books[idx] = new Book(author.books[idx]);
+
+        const bookId = author.books[idx].id;
+
+        const aggregate = await this.$prisma.review.aggregate({
+          where: {
+            bookId: bookId
+          },
+          avg: {
+            value: true
+          }
+        });
+
+        author.books[idx].averageRating = aggregate.avg.value;
+      }
+    }
+
+    return author;
   }
 
   /**
@@ -40,14 +72,42 @@ export class AuthorsService {
     select?: Prisma.AuthorSelect;
   }): Promise<Author[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
-    return this.$prisma.author.findMany({
+
+    let authors = await this.$prisma.author.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
       select
-    }) as unknown as Author[];
+    }) as AuthorModel[] | null || [];
+
+    for(const idx in authors) {
+      let author = new Author(authors[idx]);
+
+      if(select?.books) {
+        for(const idx in author?.books) {
+          let book = new Book(author.books[idx]);
+
+          const aggregate  = await this.$prisma.review.aggregate({
+            where: {
+              bookId: book.id
+            },
+            avg: {
+              value: true
+            }
+          });
+
+          book.averageRating = aggregate.avg.value;
+
+          author.books[idx] = book;
+        }
+      }
+
+      authors[idx] = author;
+    }
+
+    return authors;
   }
 
   /**
@@ -56,7 +116,7 @@ export class AuthorsService {
    * @param data The Author data to be created
    */
   public async create(data: Prisma.AuthorCreateInput): Promise<Author> {
-    return this.$prisma.author.create({ data });
+    return await this.$prisma.author.create({ data });
   }
 
   /**

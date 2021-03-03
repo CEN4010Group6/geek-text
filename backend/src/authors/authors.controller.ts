@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
-import { Author, Prisma } from '@prisma/client';
+import { Body, Controller, Delete, Get, Header, Optional, Param, Post, Put, Query } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
 import { Roles, Role } from './../roles.decorator';
+import { Public } from '../public.decorator';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { ParseIntPipe } from '../parse-int.pipe';
 
 import { AuthorsService } from './authors.service';
-import { Public } from '../public.decorator';
-import { observable } from 'rxjs';
+import { Author, CreateAuthor, UpdateAuthor } from './dto/author';
 
 @Controller('authors')
 export class AuthorsController {
@@ -34,27 +36,15 @@ export class AuthorsController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @Public()
+  @Roles(Role.Admin)
   public async findAll(
-    @Query('skip') skip?: number,
-    @Query('take') take?: number,
-    @Query('cursor') cursor?: Prisma.AuthorWhereUniqueInput,
-    @Query('where') where?: Prisma.AuthorWhereInput,
-    @Query('orderBy') orderBy?: Prisma.AuthorOrderByInput,
-    @Query('select') select?: Prisma.AuthorSelect,
+    @Query('skip', ParseIntPipe) skip?: number,
+    @Query('take', ParseIntPipe) take?: number,
+    @Query('cursor', new ParseFrontendBtoaPipe()) cursor?: Prisma.AuthorWhereUniqueInput,
+    @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.AuthorWhereInput,
+    @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.AuthorOrderByInput,
+    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.AuthorSelect,
   ): Promise<Author[]> {
-    if(select) {
-      select = await this.$utilityService.convertBtoO(select as string);
-    }
-    if(cursor) {
-      cursor = await this.$utilityService.convertBtoO(cursor as string);
-    }
-    if(where) {
-      where = await this.$utilityService.convertBtoO(where as string);
-    }
-    if(orderBy) {
-      orderBy = await this.$utilityService.convertBtoO(orderBy as string);
-    }
     const query = { skip, take, cursor, where, orderBy, select };
     return this.$authorsService.findAll(query);
   }
@@ -71,11 +61,8 @@ export class AuthorsController {
   @Public()
   public async findOne(
     @Param('id') id: string,
-    @Query('select') select?: Prisma.AuthorSelect,
+    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.AuthorSelect,
   ): Promise<Author | null> {
-    if(select) {
-      select = await this.$utilityService.convertBtoO(select as string);
-    }
     const query = { where: { id: id }, select };
     return this.$authorsService.findOne(query);
   }
@@ -88,7 +75,7 @@ export class AuthorsController {
   @Post('')
   @Roles(Role.Admin)
   public async create(
-    @Body() postData: Prisma.AuthorCreateInput
+    @Body() postData: CreateAuthor
   ): Promise<Author> {
     return this.$authorsService.create(postData);
   }
@@ -103,7 +90,7 @@ export class AuthorsController {
   @Roles(Role.Admin)
   public async update(
     @Param('id') id: string,
-    @Body() postData: Author
+    @Body() postData: UpdateAuthor
   ): Promise<Author> {
     return this.$authorsService.update({
       where: { id: id } as Prisma.AuthorWhereUniqueInput,
