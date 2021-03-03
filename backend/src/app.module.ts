@@ -55,12 +55,4 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     }
   ],
 })
-export class AppModule {
-  constructor(
-    @Inject(CACHE_MANAGER) private readonly $cacheManager: Cache
-  ) {
-    if(process.env.NODE_ENV === 'development') {
-      this.$cacheManager.reset();
-    }
-  }
-}
+export class AppModule {}

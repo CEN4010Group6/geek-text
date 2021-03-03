@@ -117,6 +117,6 @@ describe('ReviewsService', () => {
     mock = await database.review.findUnique({ where: { id: mock.id }});
     mock = await service.delete({ id: mock.id });
     const noGenre = await service.findOne({where : { id: mock.id }});
-    await expect(noGenre).toBeNull();
+    await expect(noGenre).toBeUndefined();
   });
 });

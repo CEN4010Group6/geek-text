@@ -314,7 +314,7 @@ async function main() {
           id: faker.random.number({ min: 1, max: 10 })
         }
       },
-      coverUrl: faker.image.imageUrl(395, 595, 'books'),
+      coverUrl: faker.image.imageUrl(395, 595),
       sold: faker.random.number({max: 50})
     }
 

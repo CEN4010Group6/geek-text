@@ -69,10 +69,10 @@ describe('ReviewsController', () => {
 
   it('should have a method findAll', async () => {
     const first = await database.review.create({ data: mockReview });
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.ReviewSelect;
-    const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.ReviewWhereUniqueInput;
-    const orderBy = await utility.convertOtoB({ value: 'asc' }) as unknown as Prisma.ReviewOrderByInput;
-    const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.ReviewWhereInput;
+    const select = { id: true } as Prisma.ReviewSelect;
+    const cursor ={ id: first?.id } as Prisma.ReviewWhereUniqueInput;
+    const orderBy = { value: 'asc' } as Prisma.ReviewOrderByInput;
+    const where = { id: first?.id } as Prisma.ReviewWhereInput;
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();
@@ -84,7 +84,7 @@ describe('ReviewsController', () => {
   });
 
   it('should have a method findOne', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.ReviewSelect;
+    const select = { id: true } as Prisma.ReviewSelect;
     await expect(controller.findOne).toBeDefined();
     const review = await database.review.create({ data: mockReview })
     const findOne = await controller.findOne(review?.id as string, select);
@@ -115,7 +115,7 @@ describe('ReviewsController', () => {
     mock = await database.review.create({ data: mock });
     mock = await database.review.findUnique({ where: { id: mock.id }});
     mock = await controller.delete(mock.id);
-    const testBook = await controller.findOne(mock.id);
-    expect(testBook).toBeNull();
+    let review = await database.review.findFirst({ where: { id: mock.id }});
+    expect(review).toBeNull();
   });
 });
