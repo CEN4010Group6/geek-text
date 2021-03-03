@@ -61,12 +61,11 @@ describe('AuthorsService', () => {
   });
 
   it('should have a method findOne', async () => {
-    await database.author.create({ data: mockAuthor });
-    const author = await database.author.findFirst();
+    const author = await database.author.create({ data: mockAuthor });
     await expect(service.findOne).toBeDefined();
     let one = await service.findOne({
       where: {
-        id: author?.id
+        id: author.id
       }
     });
     await expect(one).toBeDefined();
@@ -103,7 +102,6 @@ describe('AuthorsService', () => {
     await expect(service.delete).toBeDefined();
     let mock = await database.author.create({ data: mockAuthor });
     mock = await service.delete({ id: mock.id });
-    const noAuthor = await service.findOne({where : { id: mock.id }});
-    await expect(noAuthor).toBeNull();
+    await expect(service.findOne({where : { id: mock.id }})).rejects.toThrowError('The requested author could not be found');
   });
 });

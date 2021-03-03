@@ -97,7 +97,7 @@ describe('BooksController', () => {
   });
 
   it('should have a method findOne', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.BookSelect;
+    const select = { id: true } as Prisma.BookSelect;
     await expect(controller.findOne).toBeDefined();
     const book = await database.book.findFirst();
     const findOne = await controller.findOne(book?.id as string, select);
@@ -106,10 +106,9 @@ describe('BooksController', () => {
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
-    const toBeMocked = mockBook;
-    const mock = await controller.create(toBeMocked);
+    const mock = await controller.create(mockBook);
     await expect(mock).toBeDefined();
-    await expect(mock.title).toBe(toBeMocked.title);
+    await expect(mock.title).toBe(mockBook.title);
     await expect(mock.price).toBe(1.50);
     await expect(mock.publishYear).toBe(2020);
   });

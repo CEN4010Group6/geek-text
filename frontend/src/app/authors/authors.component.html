@@ -21,7 +21,6 @@
         </ng-template>
         <div class="card-body">
           <p>Price: {{ book.price | currency }}</p>
-          {{ book.averageRating| json }}
           <p><app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
         </div>
       </div>

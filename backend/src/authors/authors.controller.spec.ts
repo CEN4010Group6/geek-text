@@ -9,7 +9,6 @@ describe('AuthorsController', () => {
   let module: TestingModule;
   let controller: AuthorsController;
   let database: PrismaService;
-  let utility: UtilityService;
 
   const mockAuthor: any = {
     firstName: 'Mock',
@@ -30,7 +29,6 @@ describe('AuthorsController', () => {
 
     controller = module.get<AuthorsController>(AuthorsController);
     database = module.get<PrismaService>(PrismaService);
-    utility = module.get<UtilityService>(UtilityService);
   });
 
   afterAll(async () => {
@@ -39,6 +37,7 @@ describe('AuthorsController', () => {
   });
 
   beforeEach(async () => {
+    await database.$connect();
     const a: any = database.author.findFirst({ where: { firstName: mockAuthor.firstName }});
 
     if(a && a?.id) {
@@ -52,6 +51,8 @@ describe('AuthorsController', () => {
     if(a && a?.id) {
       database.author.delete({ where: { id: a.id }})
     }
+
+    await database.$disconnect();
   });
 
   it('should be defined', async () => {
@@ -76,11 +77,10 @@ describe('AuthorsController', () => {
   });
 
   it('should have a method findOne', async () => {
-    await database.author.create({ data: mockAuthor });
+    const user = await controller.create(mockAuthor);
     const select = { id: true } as Prisma.AuthorSelect;
     await expect(controller.findOne).toBeDefined();
-    const user = await database.user.findFirst();
-    const findOne = await controller.findOne(user?.id as string, select);
+    const findOne = await controller.findOne(user.id, select);
     await expect(findOne).toBeDefined();
   });
 
@@ -100,7 +100,7 @@ describe('AuthorsController', () => {
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
     let mock = mockAuthor;
-    mock = await database.author.create({ data: mock });
+    mock = await controller.create(mock);
     mock.middleName = 'R';
     mock = await controller.update(mock.id, mock);
     await expect(mock).toBeDefined();
@@ -111,10 +111,9 @@ describe('AuthorsController', () => {
   it('should have a method delete', async () => {
     await expect(controller.delete).toBeDefined();
     let mock = mockAuthor;
-    mock = await database.author.create({ data: mock });
+    mock = await controller.create(mock);
     expect(mock.id).toBeDefined();
     mock = await controller.delete(mock.id);
-    const testAuthor = await controller.findOne(mock.id);
-    expect(testAuthor).toBeNull();
+    await expect(controller.findOne(mock.id)).rejects.toThrowError('The requested author could not be found');
   });
 });
