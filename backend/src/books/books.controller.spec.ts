@@ -5,6 +5,8 @@ import { BooksController } from './books.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { BooksService } from './books.service';
 import { UtilityService } from '../utility/utility.service';
+import { ParseIntPipe } from '../parse-int.pipe';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 
 describe('BooksController', () => {
   let module: TestingModule;
@@ -22,7 +24,8 @@ describe('BooksController', () => {
         UtilityService
       ],
       controllers: [ BooksController ],
-    }).compile();
+    })
+      .compile();
 
     controller = module.get<BooksController>(BooksController);
     utility = module.get<UtilityService>(UtilityService);
@@ -78,11 +81,11 @@ describe('BooksController', () => {
   });
 
   it('should have a method findAll', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.AuthorSelect;
+    const select = { id: true } as unknown as Prisma.AuthorSelect;
     const first = await database.book.findFirst();
-    const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.BookWhereUniqueInput;
-    const orderBy = await utility.convertOtoB({ title: 'asc' }) as unknown as Prisma.BookOrderByInput;
-    const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.BookWhereInput;
+    const cursor = { id: first?.id } as Prisma.BookWhereUniqueInput;
+    const orderBy = { title: 'asc' } as Prisma.BookOrderByInput;
+    const where = { id: first?.id } as Prisma.BookWhereInput;
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();

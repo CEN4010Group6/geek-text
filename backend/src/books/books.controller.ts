@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
 import { Book, Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
 import { Roles, Role } from '../roles.decorator';
+import { Public } from '../public.decorator';
+import { ParseIntPipe } from '../parse-int.pipe';
 
 import { BooksService } from './books.service';
-import { Public } from '../public.decorator';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 
 @Controller('books')
 export class BooksController {
@@ -35,21 +37,13 @@ export class BooksController {
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
-    @Query('skip') skip?: number,
-    @Query('take') take?: number,
-    @Query('cursor') cursor?: Prisma.BookWhereUniqueInput,
-    @Query('where') where?: Prisma.BookWhereInput,
-    @Query('orderBy') orderBy?: Prisma.BookOrderByInput,
-    @Query('select') select?: Prisma.BookSelect
+    @Query('skip', ParseIntPipe) skip?: number,
+    @Query('take', ParseIntPipe) take?: number,
+    @Query('cursor', new ParseFrontendBtoaPipe()) cursor?: Prisma.BookWhereUniqueInput,
+    @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.BookWhereInput,
+    @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.BookOrderByInput,
+    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.BookSelect
   ): Promise<Book[]> {
-    if(select) {
-      select = await this.$utilityService.convertBtoO(select as string);
-    }
-    if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
-    if(where) where = await this.$utilityService.convertBtoO(where as string);
-    if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
-    if(take) take = parseInt(take as unknown as string);
-    if(skip) skip = parseInt(skip as unknown as string);
     const query = { skip, take, cursor, where, orderBy, select };
     return this.$booksService.findAll(query);
   }
@@ -65,8 +59,8 @@ export class BooksController {
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
-    @Param('id') id: string,
-    @Query('select') select?: Prisma.BookSelect,
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Query('select', ParseFrontendBtoaPipe) select?: Prisma.BookSelect,
   ): Promise<Book | null> {
     if(select) {
       select = await this.$utilityService.convertBtoO(select as string);
@@ -97,7 +91,7 @@ export class BooksController {
   @Put(':id')
   @Roles(Role.Admin)
   public async update(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe()) id: string,
     @Body() postData: Book
   ): Promise<Book> {
     return this.$booksService.update({
@@ -113,7 +107,7 @@ export class BooksController {
    */
   @Delete(':id')
   @Roles(Role.Admin)
-  public async delete(@Param('id') id: string): Promise<Book> {
+  public async delete(@Param('id', new ParseUUIDPipe()) id: string): Promise<Book> {
     return this.$booksService.delete({id: id} as Prisma.BookWhereUniqueInput);
   }
 }

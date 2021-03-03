@@ -14,7 +14,8 @@ export async function bootstrap() {
   app.setGlobalPrefix('api')
   app.set('trust proxy', 1);
   app.useGlobalPipes(new ValidationPipe({
-    transform: false
+    transform: false,
+    whitelist: true
   }));
 
   const configService = app.get(ConfigService);

@@ -60,11 +60,11 @@ describe('AuthorsController', () => {
 
   it('should have a method findAll', async () => {
     let author = await database.author.create({ data: mockAuthor });
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.AuthorSelect;
+    const select = { id: true } as Prisma.AuthorSelect;
     const first = author;
-    const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.AuthorWhereUniqueInput;
-    const orderBy = await utility.convertOtoB({ firstName: 'asc' }) as unknown as Prisma.AuthorOrderByInput;
-    const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.AuthorWhereInput;
+    const cursor = { id: first?.id } as Prisma.AuthorWhereUniqueInput;
+    const orderBy = { firstName: 'asc' } as Prisma.AuthorOrderByInput;
+    const where = { id: first?.id } as Prisma.AuthorWhereInput;
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();
@@ -77,7 +77,7 @@ describe('AuthorsController', () => {
 
   it('should have a method findOne', async () => {
     await database.author.create({ data: mockAuthor });
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.AuthorSelect;
+    const select = { id: true } as Prisma.AuthorSelect;
     await expect(controller.findOne).toBeDefined();
     const user = await database.user.findFirst();
     const findOne = await controller.findOne(user?.id as string, select);
