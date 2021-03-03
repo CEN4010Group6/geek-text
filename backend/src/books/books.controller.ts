@@ -62,9 +62,6 @@ export class BooksController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Query('select', ParseFrontendBtoaPipe) select?: Prisma.BookSelect,
   ): Promise<Book | null> {
-    if(select) {
-      select = await this.$utilityService.convertBtoO(select as string);
-    }
     const query = { where: { id: id }, select };
     return this.$booksService.findOne(query);
   }

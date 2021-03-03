@@ -32,7 +32,8 @@ model Book {
   id String @id @default(uuid())
   title String @unique
   authors Author[]
-  publisher Publisher
+  publisher Publisher @relation(fields: [publisherId], references: [id])
+  publisherId String
   publishYear Int
   isbn Int @unique
   description String

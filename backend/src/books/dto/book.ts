@@ -1,5 +1,5 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { Book as BookModel } from '@prisma/client';
+import { Book as BookModel, Prisma } from '@prisma/client';
 import { IsCurrency, IsDataURI, IsDate, IsDecimal, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, IsUUID } from 'class-validator';
 
 import { BaseDTO } from '../../dto/base';
@@ -64,11 +64,12 @@ export class Book extends BaseDTO implements BookModel {
 
   @IsOptional()
   @IsDefined()
-  reviews?: any[]
+  reviews?: Prisma.ReviewCreateOrConnectWithoutBookInput
 
   @IsOptional()
   @IsDefined()
-  publisher?: any;
+  /**@TODO: Change to Connect publisher input */
+  publisher?: Prisma.PublisherCreateOrConnectWithoutBookInput
 
   constructor(merge: BookModel | null) {
     super(merge);
@@ -79,10 +80,10 @@ export class CreateBook extends OmitType(Book, [
   'createdAt',
   'updatedAt',
   'shoppingCartId',
-  'publisher',
   'reviews',
+  'publisher',
   'transactionId',
   'averageRating'
-] as const) {}
+] as const) implements Prisma.BookCreateWithoutPublisherInput {}
 
-export class UpdateBook extends PartialType(Book) {}
+export class UpdateBook extends PartialType(Book) implements Prisma.BookUpdateInput {}

@@ -61,11 +61,8 @@ export class AuthorsController {
   @Public()
   public async findOne(
     @Param('id') id: string,
-    @Query('select', ParseFrontendBtoaPipe) select?: Prisma.AuthorSelect,
+    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.AuthorSelect,
   ): Promise<Author | null> {
-    // if(select) {
-    //   select = await this.$utilityService.convertBtoO(select as string);
-    // }
     const query = { where: { id: id }, select };
     return this.$authorsService.findOne(query);
   }
