@@ -67,11 +67,11 @@ describe('UsersController', () => {
   });
 
   it('should have a method findAll', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.UserSelect;
+    const select = { id: true } as Prisma.UserSelect;
     const first = await database.user.create({ data: mockUser });
-    const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.UserWhereUniqueInput;
-    const orderBy = await utility.convertOtoB({ firstName: 'asc' }) as unknown as Prisma.UserOrderByInput;
-    const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.UserWhereInput;
+    const cursor = { id: first?.id } as Prisma.UserWhereUniqueInput;
+    const orderBy = { firstName: 'asc' } as Prisma.UserOrderByInput;
+    const where = { id: first?.id } as Prisma.UserWhereInput;
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();
@@ -83,7 +83,7 @@ describe('UsersController', () => {
   });
 
   it('should have a method findOne', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.UserSelect;
+    const select = { id: true } as Prisma.UserSelect;
     await expect(controller.findOne).toBeDefined();
     const user = await database.user.create({ data: mockUser });
     const findOne = await controller.findOne(user?.id as string, select);

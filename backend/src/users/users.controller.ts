@@ -1,11 +1,13 @@
 import { UtilityService } from './../utility/utility.service';
-import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { Public } from '../public.decorator';
 import { Roles, Role } from '../roles.decorator';
 
 import { UsersService } from './users.service';
+import { CreateUser, UpdateUser, User } from './dto/user';
+import { ParseIntPipe } from '../parse-int.pipe';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -28,17 +30,13 @@ export class UsersController {
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Roles(Role.Admin)
   public async findAll(
-    @Query('skip') skip?: number,
-    @Query('take') take?: number,
-    @Query('cursor') cursor?: Prisma.UserWhereUniqueInput,
-    @Query('where') where?: Prisma.UserWhereInput,
-    @Query('orderBy') orderBy?: Prisma.UserOrderByInput,
-    @Query('select') select?: Prisma.UserSelect
+    @Query('skip', ParseIntPipe) skip?: number,
+    @Query('take', ParseIntPipe) take?: number,
+    @Query('cursor', ParseFrontendBtoaPipe) cursor?: Prisma.UserWhereUniqueInput,
+    @Query('where', ParseFrontendBtoaPipe) where?: Prisma.UserWhereInput,
+    @Query('orderBy', ParseFrontendBtoaPipe) orderBy?: Prisma.UserOrderByInput,
+    @Query('select', ParseFrontendBtoaPipe) select?: Prisma.UserSelect
   ): Promise<User[]> {
-    if(cursor) cursor = await this.$utilityService.convertBtoO(cursor as string);
-    if(where) where = await this.$utilityService.convertBtoO(where as string);
-    if(orderBy) orderBy = await this.$utilityService.convertBtoO(orderBy as string);
-    if(select) select = await this.$utilityService.convertBtoO(select as string);
     const query = { skip, take, cursor, where, orderBy, select };
     return this.$usersService.findAll(query);
   }
@@ -51,10 +49,9 @@ export class UsersController {
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   public async findOne(
-    @Param('id') id: string,
-    @Query('select') select?: Prisma.UserSelect
+    @Param('id', ParseUUIDPipe) id: string,
+    @Query('select', ParseFrontendBtoaPipe) select?: Prisma.UserSelect
   ): Promise<User | null> {
-    if(select) select = await this.$utilityService.convertBtoO<Prisma.UserSelect>(select as string);
     const query = { where: { id: id }, select };
     return this.$usersService.findOne(query);
   }
@@ -83,8 +80,8 @@ export class UsersController {
    */
   @Put(':id')
   public async update(
-    @Param('id') id: string,
-    @Body() postData: User
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() postData: UpdateUser
   ): Promise<User> {
     return this.$usersService.update({
       where: { id: id } as Prisma.UserWhereUniqueInput,
@@ -99,7 +96,7 @@ export class UsersController {
    */
   @Delete(':id')
   @Roles(Role.Admin)
-  public async delete(@Param('id') id: string): Promise<User> {
+  public async delete(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.$usersService.delete({id: id} as Prisma.UserWhereUniqueInput);
   }
 }

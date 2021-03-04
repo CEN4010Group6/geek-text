@@ -3,8 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import argon2 from 'argon2';
-
-import { UsersService } from '../users/users.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 /**
  *
@@ -21,7 +20,7 @@ export class AuthService {
    */
   constructor(
     private readonly $configService: ConfigService,
-    private readonly $usersService: UsersService,
+    private readonly $prisaService: PrismaService,
     private readonly $jwtService: JwtService
   ) {}
 
@@ -34,8 +33,8 @@ export class AuthService {
   public async validateUser(
     email: string,
     password: string
-  ): Promise<User | null> {
-    const user = await this.$usersService.findOne({
+  ): Promise<any | null> {
+    const user = await this.$prisaService.user.findUnique({
       where: {
         email: email
       },
@@ -47,11 +46,12 @@ export class AuthService {
       }
     });
 
-    const isValid = await argon2.verify(user.passwordHash, password);
-
-    if(isValid) {
-      const { passwordHash, ...result } = user;
-      return result;
+    if(user?.passwordHash){
+      const isValid = await argon2.verify(user.passwordHash, password);
+      if(isValid) {
+        const { passwordHash, ...result } = user;
+        return result;
+      }
     }
 
     return null;

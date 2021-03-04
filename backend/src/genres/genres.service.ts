@@ -1,6 +1,7 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
-import { Genre, Prisma } from '@prisma/client';
+import { Genre as GenreModel, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateGenre, Genre, UpdateGenre } from './dto/genre';
 
 @Injectable()
 export class GenresService {
@@ -22,7 +23,10 @@ export class GenresService {
     select?: Prisma.GenreSelect;
   }): Promise<Genre | null> {
     const { where, select } = params;
-    return this.$prisma.genre.findUnique({ where, select }) as unknown as Genre;
+
+    const genre = await this.$prisma.genre.findUnique({ where, select }) as Genre | null;
+
+    return genre;
   }
 
   /**
@@ -40,14 +44,16 @@ export class GenresService {
   }): Promise<Genre[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
 
-    return this.$prisma.genre.findMany({
+    const genres = await this.$prisma.genre.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
       select
-    }) as unknown as Genre[];
+    }) as Genre[];
+
+    return genres;
   }
 
   /**
@@ -55,8 +61,9 @@ export class GenresService {
    *
    * @param data The Genre data to be created
    */
-  public async create(data: Prisma.GenreCreateInput): Promise<Genre> {
-    return this.$prisma.genre.create({ data });
+  public async create(data: CreateGenre): Promise<Genre> {
+    const genre = await this.$prisma.genre.create({ data }) as Genre;
+    return genre;
   }
 
   /**
@@ -66,10 +73,11 @@ export class GenresService {
    */
   public async update(params: {
     where: Prisma.GenreWhereUniqueInput;
-    data: Prisma.GenreUpdateInput;
+    data: UpdateGenre;
   }): Promise<Genre> {
     const { where, data } = params;
-    return this.$prisma.genre.update({ data, where });
+    const genre = await this.$prisma.genre.update({ data, where }) as Genre;
+    return genre;
   }
 
   /**
@@ -78,6 +86,7 @@ export class GenresService {
    * @param where The unique identifier(s) of teh Genre to be removed
    */
   public async delete(where: Prisma.GenreWhereUniqueInput): Promise<Genre> {
-    return this.$prisma.genre.delete({ where });
+    const genre = await this.$prisma.genre.delete({ where }) as Genre;
+    return genre;
   }
 }

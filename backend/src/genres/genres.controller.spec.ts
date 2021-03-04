@@ -61,11 +61,11 @@ describe('GenresController', () => {
   });
 
   it('should have a method findAll', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.GenreSelect;
+    const select = { id: true } as Prisma.GenreSelect;
     const first = await database.genre.findFirst();
-    const cursor = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.GenreWhereUniqueInput;
-    const orderBy = await utility.convertOtoB({ name: 'asc' }) as unknown as Prisma.GenreOrderByInput;
-    const where = await utility.convertOtoB({ id: first?.id }) as unknown as Prisma.GenreWhereInput;
+    const cursor = { id: first?.id } as Prisma.GenreWhereUniqueInput;
+    const orderBy =  { name: 'asc' } as Prisma.GenreOrderByInput;
+    const where = { id: first?.id } as Prisma.GenreWhereInput;
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();
@@ -77,7 +77,7 @@ describe('GenresController', () => {
   });
 
   it('should have a method findOne', async () => {
-    const select = await utility.convertOtoB({ id: true }) as unknown as Prisma.GenreSelect;
+    const select = { id: true } as Prisma.GenreSelect;
     await expect(controller.findOne).toBeDefined();
     const genre = await database.genre.findFirst();
     const findOne = await controller.findOne(genre?.id as number, select);

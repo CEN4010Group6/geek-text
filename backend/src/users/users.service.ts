@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
+import { User } from './dto/user'
 
 @Injectable()
 export class UsersService {
@@ -25,7 +26,12 @@ export class UsersService {
   }): Promise<any | null> {
     const { where, select } = params;
 
-    let user = await this.$prisma.user.findFirst({ where, select });
+    let user = await this.$prisma.user.findFirst({ where, select }) as User;
+
+    if(user) {
+      // @ts-ignore
+      delete user.passwordHash;
+    }
 
     return user;
   }
@@ -45,7 +51,7 @@ export class UsersService {
   }): Promise<User[]> {
     let { skip, take, cursor, where, orderBy, select } = params;
 
-    let users = await this.$prisma.user.findMany({
+    const users = await this.$prisma.user.findMany({
       skip,
       take,
       cursor,
@@ -78,10 +84,12 @@ export class UsersService {
       passwordHash: passwordHash,
     };
 
-    let user = await this.$prisma.user.create({ data: newUser });
+    let user = await this.$prisma.user.create({ data: newUser }) as User;
 
-    // @ts-ignore
-    delete user.passwordHash;
+    if(user) {
+      // @ts-ignore
+      delete user.passwordHash;
+    }
 
     return user;
   }
@@ -104,10 +112,12 @@ export class UsersService {
     let user = await this.$prisma.user.update({
       data,
       where
-    });
+    }) as User;
 
-    // @ts-ignore
-    delete user.passwordHash;
+    if(user) {
+      // @ts-ignore
+      delete user.passwordHash;
+    }
 
     return user;
   }
@@ -120,10 +130,12 @@ export class UsersService {
   public async delete(where: Prisma.UserWhereUniqueInput): Promise<User> {
     let user = await this.$prisma.user.delete({
       where
-    });
+    }) as User;
 
-    // @ts-ignore
-    delete user.passwordHash;
+    if(user) {
+      // @ts-ignore
+      delete user.passwordHash;
+    }
 
     return user;
   }
