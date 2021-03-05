@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuthorsController } from './authors.controller';
 import { AuthorsService } from './authors.service';
 import { UtilityService } from '../utility/utility.service';
+import { CaslAbilityFactory } from '../auth/casl-ability.factory';
 
 describe('AuthorsController', () => {
   let module: TestingModule;
@@ -22,13 +23,36 @@ describe('AuthorsController', () => {
       providers: [
         PrismaService,
         AuthorsService,
-        UtilityService
+        UtilityService,
+        CaslAbilityFactory
       ],
       controllers: [ AuthorsController ],
     }).compile();
 
     controller = module.get<AuthorsController>(AuthorsController);
     database = module.get<PrismaService>(PrismaService);
+
+    let oldAuthor = await database.author.findUnique({
+      where: {
+        firstName_middleName_lastName: {
+          firstName: mockAuthor.firstName,
+          middleName: mockAuthor.middleName,
+          lastName: mockAuthor.lastName
+        }
+      }
+    });
+
+    if(oldAuthor) {
+      await database.author.delete({
+        where: {
+          firstName_middleName_lastName: {
+            firstName: mockAuthor.firstName,
+            middleName: mockAuthor.middleName,
+            lastName: mockAuthor.lastName
+          }
+        }
+      });
+    }
   });
 
   afterAll(async () => {
@@ -37,22 +61,47 @@ describe('AuthorsController', () => {
   });
 
   beforeEach(async () => {
-    await database.$connect();
-    const a: any = database.author.findFirst({ where: { firstName: mockAuthor.firstName }});
+    let a: any = await database.author.findUnique({
+      where: {
+        firstName_middleName_lastName: {
+          firstName: mockAuthor.firstName,
+          middleName: mockAuthor.middleName,
+          lastName: mockAuthor.lastName
+        }
+      }
+    });
 
-    if(a && a?.id) {
-      database.author.delete({ where: { id: a.id }});
+    if(a) {
+      await database.author.delete({ where: { id: a.id }});
+    }
+
+    a = await database.author.findFirst({
+      where: {
+        firstName: mockAuthor.firstName,
+        middleName: mockAuthor.middleName,
+        lastName: mockAuthor.lastName
+      }
+    });
+
+    if(a) {
+      await database.author.delete({ where: { id: a.id }});
     }
   })
 
   afterEach(async () => {
-    const a: any = database.author.findFirst({ where: { id: mockAuthor.firstName }});
+    const a: any = await database.author.findUnique({
+      where: {
+        firstName_middleName_lastName: {
+          firstName: mockAuthor.firstName,
+          middleName: mockAuthor.middleName,
+          lastName: mockAuthor.lastName
+        }
+      }
+    });
 
     if(a && a?.id) {
-      database.author.delete({ where: { id: a.id }})
+      await database.author.delete({ where: { id: a.id }})
     }
-
-    await database.$disconnect();
   });
 
   it('should be defined', async () => {
@@ -77,10 +126,10 @@ describe('AuthorsController', () => {
   });
 
   it('should have a method findOne', async () => {
-    const user = await controller.create(mockAuthor);
+    const author = await controller.create(mockAuthor);
     const select = { id: true } as Prisma.AuthorSelect;
     await expect(controller.findOne).toBeDefined();
-    const findOne = await controller.findOne(user.id, select);
+    const findOne = await controller.findOne(author.id, select);
     await expect(findOne).toBeDefined();
   });
 

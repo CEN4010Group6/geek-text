@@ -53,6 +53,12 @@ describe('BooksService', () => {
     if(b && b?.id) {
       await database.book.delete({ where: { id: b.id } });
     }
+
+    b = await database.book.findUnique({ where: { isbn: mockBook.isbn }});
+
+    if(b) {
+      await database.book.delete({ where: { id: b.id }})
+    }
   });
 
   afterEach(async () => {

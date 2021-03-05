@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, Post, Put, Query } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 import { UtilityService } from '../utility/utility.service';
@@ -7,6 +7,7 @@ import { Roles, Role } from '../roles.decorator';
 import { GenresService } from './genres.service';
 import { Public } from '../public.decorator';
 import { Genre, CreateGenre, UpdateGenre } from './dto/genre'
+import { ParseIntPipe } from '../parse-int.pipe';
 import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 
 @Controller('genres')
@@ -34,7 +35,6 @@ export class GenresController {
    * @param include
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
     @Query('skip', ParseIntPipe) skip?: number,
@@ -55,7 +55,6 @@ export class GenresController {
    * @param include
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id') id: number,

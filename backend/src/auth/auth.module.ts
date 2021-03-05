@@ -8,6 +8,7 @@ import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { CaslAbilityFactory } from './casl-ability.factory';
 
 @Module({
   imports: [
@@ -31,9 +32,10 @@ import { PrismaService } from '../prisma/prisma.service';
     PrismaService,
     AuthService,
     LocalStrategy,
-    JwtStrategy
+    JwtStrategy,
+    CaslAbilityFactory
   ],
   controllers: [ AuthController ],
-  exports: [ AuthService, JwtModule ]
+  exports: [ AuthService, JwtModule, CaslAbilityFactory ]
 })
 export class AuthModule {}

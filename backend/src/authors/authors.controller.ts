@@ -35,17 +35,17 @@ export class AuthorsController {
    * @param include
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @Roles(Role.Admin)
+  @Public()
   public async findAll(
     @Query('skip', ParseIntPipe) skip?: number,
     @Query('take', ParseIntPipe) take?: number,
-    @Query('cursor', new ParseFrontendBtoaPipe()) cursor?: Prisma.AuthorWhereUniqueInput,
-    @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.AuthorWhereInput,
-    @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.AuthorOrderByInput,
-    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.AuthorSelect,
+    @Query('cursor', ParseFrontendBtoaPipe) cursor?: Prisma.AuthorWhereUniqueInput,
+    @Query('where', ParseFrontendBtoaPipe)where?: Prisma.AuthorWhereInput,
+    @Query('orderBy', ParseFrontendBtoaPipe) orderBy?: Prisma.AuthorOrderByInput,
+    @Query('select', ParseFrontendBtoaPipe) select?: Prisma.AuthorSelect,
   ): Promise<Author[]> {
     const query = { skip, take, cursor, where, orderBy, select };
+
     return this.$authorsService.findAll(query);
   }
 
@@ -57,11 +57,10 @@ export class AuthorsController {
    * @param include
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id') id: string,
-    @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.AuthorSelect,
+    @Query('select', ParseFrontendBtoaPipe) select?: Prisma.AuthorSelect,
   ): Promise<Author | null> {
     const query = { where: { id: id }, select };
     return this.$authorsService.findOne(query);

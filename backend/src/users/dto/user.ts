@@ -1,5 +1,5 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { User as UserModel, Prisma } from '@prisma/client';
+import { User as UserModel, Prisma, Role } from '@prisma/client';
 import { IsDate, IsEmail, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { BaseDTO } from '../../dto/base';
@@ -31,6 +31,9 @@ export class User extends BaseDTO implements UserModel {
 
   passwordHash: string;
 
+  @IsOptional()
+  roles?: Prisma.RoleUpdateManyWithoutUsersInput
+
   @IsDate()
   createdAt: Date;
 
@@ -44,6 +47,7 @@ export class User extends BaseDTO implements UserModel {
 
 export class CreateUser extends OmitType(User, [
   'id',
+  'roles',
   'createdAt',
   'updatedAt',
 ] as const) implements Prisma.UserCreateInput {}

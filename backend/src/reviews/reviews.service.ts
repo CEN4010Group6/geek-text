@@ -52,21 +52,17 @@ export class ReviewsService {
   }): Promise<Review[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
 
-    const dbReviews = await this.$prisma.review.findMany({
+    let reviews = await this.$prisma.review.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
       select
-    }) as ReviewModel[] | null;
+    }) as ReviewModel[] | Review[];
 
-    let reviews: Review[] = [];
-
-    for(let dbReview in dbReviews) {
-      const review = new Review(dbReview);
-
-      reviews.push(review);
+    for(const review in reviews) {
+      reviews[review] = new Review(reviews[review]);
     }
 
     return reviews;

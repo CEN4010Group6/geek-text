@@ -34,7 +34,6 @@ export class BooksController {
    * @param include
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
     @Query('skip', ParseIntPipe) skip?: number,
@@ -56,7 +55,6 @@ export class BooksController {
    * @param include
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id', new ParseUUIDPipe()) id: string,

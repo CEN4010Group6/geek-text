@@ -71,21 +71,12 @@ export class AuthorsService {
     orderBy?: Prisma.AuthorOrderByInput;
     select?: Prisma.AuthorSelect;
   }): Promise<Author[]> {
-    const { skip, take, cursor, where, orderBy, select } = params;
-
-    let authors = await this.$prisma.author.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-      select
-    }) as AuthorModel[] | null || [];
+    let authors = await this.$prisma.author.findMany(params) as AuthorModel[] | Author[];
 
     for(const idx in authors) {
       let author = new Author(authors[idx]);
 
-      if(select?.books) {
+      if(params.select?.books) {
         for(const idx in author?.books) {
           let book = new Book(author.books[idx]);
 

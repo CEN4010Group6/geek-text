@@ -29,15 +29,14 @@ export class ReviewsController {
    * @param query Query parametesto alter the `WHERE` SQL clause
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0; s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
     @Query('skip',ParseIntPipe) skip?: number,
     @Query('take', ParseIntPipe) take?: number,
-    @Query('cursor', new ParseFrontendBtoaPipe()) cursor?: Prisma.ReviewWhereUniqueInput,
-    @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.ReviewWhereInput,
-    @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.ReviewOrderByInput,
-    @Query('select',new ParseFrontendBtoaPipe()) select?: Prisma.ReviewSelect
+    @Query('cursor', ParseFrontendBtoaPipe) cursor?: Prisma.ReviewWhereUniqueInput,
+    @Query('where', ParseFrontendBtoaPipe) where?: Prisma.ReviewWhereInput,
+    @Query('orderBy', ParseFrontendBtoaPipe) orderBy?: Prisma.ReviewOrderByInput,
+    @Query('select',ParseFrontendBtoaPipe) select?: Prisma.ReviewSelect
   ): Promise<Review[]> {
     const query = { skip, take, cursor, where, orderBy, select };
 
@@ -50,7 +49,6 @@ export class ReviewsController {
    * @param id The UUID of the requested Review
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id', ParseUUIDPipe) id: string,

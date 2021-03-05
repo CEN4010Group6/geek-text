@@ -24,7 +24,7 @@
     "prisma:migrate-dev": "prisma migrate dev --preview-feature",
     "prisma:studio": "prisma studio --browser none",
     "prisma:push": "prisma db push --preview-feature",
-    "reset-db": "rimraf ./db/dev.db && npm run prisma:push && npm run prisma:seed"
+    "prisma:reset-db": "rimraf ./db/dev.db && npm run prisma:push && npm run prisma:seed"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,7 @@
   },
   "homepage": "https://github.com/CEN4010Group6/geek-text#readme",
   "dependencies": {
+    "@casl/ability": "^5.2.2",
     "@nestjs/common": "^7.6.11",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.11",

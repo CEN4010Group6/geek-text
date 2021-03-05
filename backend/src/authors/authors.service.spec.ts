@@ -96,6 +96,7 @@ describe('AuthorsService', () => {
     });
     await expect(mock).toBeDefined();
     await expect(mock.middleName).toBe('R');
+    await database.author.delete({ where: { id: mock.id }});
   });
 
   it('should delete an Author from the database', async () => {

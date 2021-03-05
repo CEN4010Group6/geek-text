@@ -3,7 +3,6 @@ import { Author as AuthorModel, Prisma } from '@prisma/client';
 import { IsAlphanumeric, IsArray, IsDate, IsDefined, IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { BaseDTO } from '../../dto/base';
-import { Book } from '../../books/dto/book';
 
 export class Author extends BaseDTO implements AuthorModel {
   @IsUUID()
