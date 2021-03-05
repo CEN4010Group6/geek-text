@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client';
 import { Public } from '../public.decorator';
 import { Roles, Role } from '../roles.decorator';
 
+import { Resource } from '../interface/resource.interface';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser, User } from './dto/user';
 import { ParseIntPipe } from '../parse-int.pipe';
@@ -13,7 +14,7 @@ import { PoliciesGuard } from '../auth/policies.guard';
 import { AppAbility, Action } from '../auth/casl-ability.factory';
 
 @Controller('users')
-export class UsersController {
+export class UsersController implements Resource {
     /**
    * Users controller constructor
    *

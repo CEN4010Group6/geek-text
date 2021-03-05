@@ -5,6 +5,7 @@ import { UtilityService } from '../utility/utility.service';
 import { GenresController } from './genres.controller';
 import { GenresService } from './genres.service';
 import * as faker from 'faker';
+import { CaslAbilityFactory } from '../auth/casl-ability.factory';
 
 describe('GenresController', () => {
   let module: TestingModule;
@@ -21,7 +22,8 @@ describe('GenresController', () => {
       providers: [
         PrismaService,
         GenresService,
-        UtilityService
+        UtilityService,
+        CaslAbilityFactory
       ],
       controllers: [ GenresController ],
     }).compile();

@@ -1,17 +1,20 @@
-import { Body, Controller, Delete, Get, Header, Optional, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Optional, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
+import { Resource } from '../interface/resource.interface'
 import { UtilityService } from '../utility/utility.service';
-import { Roles, Role } from './../roles.decorator';
 import { Public } from '../public.decorator';
 import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 import { ParseIntPipe } from '../parse-int.pipe';
+import { PoliciesGuard } from '../auth/policies.guard';
+import { CheckPolicies } from '../auth/check-policies.decorator';
+import { AppAbility, Action } from '../auth/casl-ability.factory';
 
 import { AuthorsService } from './authors.service';
 import { Author, CreateAuthor, UpdateAuthor } from './dto/author';
 
 @Controller('authors')
-export class AuthorsController {
+export class AuthorsController implements Resource {
   /**
    * Authors controller constructor
    *
@@ -45,7 +48,6 @@ export class AuthorsController {
     @Query('select', ParseFrontendBtoaPipe) select?: Prisma.AuthorSelect,
   ): Promise<Author[]> {
     const query = { skip, take, cursor, where, orderBy, select };
-
     return this.$authorsService.findAll(query);
   }
 
@@ -72,7 +74,8 @@ export class AuthorsController {
    * @param postData The Author data to be created
    */
   @Post('')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, Author))
   public async create(
     @Body() postData: CreateAuthor
   ): Promise<Author> {
@@ -86,7 +89,8 @@ export class AuthorsController {
    * @param postData The updated information of the Author
    */
   @Put(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, Author))
   public async update(
     @Param('id') id: string,
     @Body() postData: UpdateAuthor
@@ -103,7 +107,8 @@ export class AuthorsController {
    * @param id The UUID of the Author to be removed
    */
   @Delete(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, Author))
   public async delete(@Param('id') id: string): Promise<Author> {
     return this.$authorsService.delete({ id: id } as Prisma.AuthorWhereUniqueInput)
   }
