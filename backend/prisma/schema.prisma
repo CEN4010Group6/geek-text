@@ -64,6 +64,7 @@ model Author {
   books Book[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@unique([firstName, middleName, lastName])
   @@map("authors")
 }
 

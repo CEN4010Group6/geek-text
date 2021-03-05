@@ -5,8 +5,7 @@ import { BooksController } from './books.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { BooksService } from './books.service';
 import { UtilityService } from '../utility/utility.service';
-import { ParseIntPipe } from '../parse-int.pipe';
-import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { CaslAbilityFactory } from '../auth/casl-ability.factory'
 
 describe('BooksController', () => {
   let module: TestingModule;
@@ -21,7 +20,8 @@ describe('BooksController', () => {
       providers: [
         PrismaService,
         BooksService,
-        UtilityService
+        UtilityService,
+        CaslAbilityFactory
       ],
       controllers: [ BooksController ],
     })

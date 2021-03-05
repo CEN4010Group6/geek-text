@@ -6,6 +6,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import * as argon2 from 'argon2';
 import faker from 'faker';
+import { CaslAbilityFactory } from '../auth/casl-ability.factory';
 
 describe('UsersController', () => {
   let module: TestingModule;
@@ -25,7 +26,12 @@ describe('UsersController', () => {
   beforeAll(async () => {
     module = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [PrismaService, UsersService, UtilityService]
+      providers: [
+        PrismaService,
+        UsersService,
+        UtilityService,
+        CaslAbilityFactory
+      ]
     }).compile();
 
     controller = module.get<UsersController>(UsersController);

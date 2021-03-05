@@ -1,8 +1,8 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleInit, OnModuleDestroy, OnApplicationShutdown } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy, OnApplicationShutdown {
   /**
    * Prisma service constructor
    */
@@ -21,6 +21,14 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
    * Close all active database connections upon destruction of the module
    */
   public async onModuleDestroy() {
+    await this.$disconnect();
+  }
+
+  /**
+   * Close all active databse connections upon application shutdown
+   * @param signal
+   */
+  public async onApplicationShutdown(signal?: string): Promise<any> {
     await this.$disconnect();
   }
 }

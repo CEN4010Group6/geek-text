@@ -42,16 +42,8 @@ export class GenresService {
     orderBy?: Prisma.GenreOrderByInput;
     select?: Prisma.GenreSelect;
   }): Promise<Genre[]> {
-    const { skip, take, cursor, where, orderBy, select } = params;
 
-    const genres = await this.$prisma.genre.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-      select
-    }) as Genre[];
+    const genres = await this.$prisma.genre.findMany(params) as Genre[];
 
     return genres;
   }

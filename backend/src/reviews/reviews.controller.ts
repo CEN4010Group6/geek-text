@@ -1,18 +1,20 @@
-import { UtilityService } from './../utility/utility.service';
-import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
+import { Resource } from '../interface/resource.interface';
+import { UtilityService } from '../utility/utility.service';
 import { Public } from '../public.decorator';
-import { Roles, Role } from '../roles.decorator';
-
-import { ReviewsService } from './reviews.service';
 import { ParseIntPipe } from '../parse-int.pipe';
 import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { PoliciesGuard } from '../auth/policies.guard';
+import { CheckPolicies } from '../auth/check-policies.decorator';
+import { AppAbility, Action } from '../auth/casl-ability.factory';
 
+import { ReviewsService } from './reviews.service';
 import { Review } from './dto/review';
 
 @Controller('reviews')
-export class ReviewsController {
+export class ReviewsController implements Resource {
   /**
    * Reviews controller constructor
    *
@@ -29,18 +31,16 @@ export class ReviewsController {
    * @param query Query parametesto alter the `WHERE` SQL clause
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0; s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
     @Query('skip',ParseIntPipe) skip?: number,
     @Query('take', ParseIntPipe) take?: number,
-    @Query('cursor', new ParseFrontendBtoaPipe()) cursor?: Prisma.ReviewWhereUniqueInput,
-    @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.ReviewWhereInput,
-    @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.ReviewOrderByInput,
-    @Query('select',new ParseFrontendBtoaPipe()) select?: Prisma.ReviewSelect
+    @Query('cursor', ParseFrontendBtoaPipe) cursor?: Prisma.ReviewWhereUniqueInput,
+    @Query('where', ParseFrontendBtoaPipe) where?: Prisma.ReviewWhereInput,
+    @Query('orderBy', ParseFrontendBtoaPipe) orderBy?: Prisma.ReviewOrderByInput,
+    @Query('select',ParseFrontendBtoaPipe) select?: Prisma.ReviewSelect
   ): Promise<Review[]> {
     const query = { skip, take, cursor, where, orderBy, select };
-
     return this.$reviewsService.findAll(query);
   }
 
@@ -50,7 +50,6 @@ export class ReviewsController {
    * @param id The UUID of the requested Review
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id', ParseUUIDPipe) id: string,
@@ -66,7 +65,8 @@ export class ReviewsController {
    * @param postData The Review data to be created
    */
   @Post('')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, Review))
   public async create(
     @Body() postData: Prisma.ReviewCreateInput
   ): Promise<Review> {
@@ -80,7 +80,8 @@ export class ReviewsController {
    * @param postData The updated information of the Review
    */
   @Put(':id')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, Review))
   public async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() postData: Prisma.ReviewCreateInput
@@ -97,7 +98,8 @@ export class ReviewsController {
    * @param id The UUID of the Review to be removed
    */
   @Delete(':id')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, Review))
   public async delete(@Param('id', ParseUUIDPipe) id: string): Promise<Review> {
     return this.$reviewsService.delete({id: id} as Prisma.ReviewWhereUniqueInput);
   }

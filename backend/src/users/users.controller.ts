@@ -1,16 +1,20 @@
 import { UtilityService } from './../utility/utility.service';
-import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Public } from '../public.decorator';
 import { Roles, Role } from '../roles.decorator';
 
+import { Resource } from '../interface/resource.interface';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser, User } from './dto/user';
 import { ParseIntPipe } from '../parse-int.pipe';
 import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { CheckPolicies } from '../auth/check-policies.decorator';
+import { PoliciesGuard } from '../auth/policies.guard';
+import { AppAbility, Action } from '../auth/casl-ability.factory';
 
 @Controller('users')
-export class UsersController {
+export class UsersController implements Resource {
     /**
    * Users controller constructor
    *
@@ -27,8 +31,8 @@ export class UsersController {
    * @param query Query parameters to alter the `WHERE` SQL clause
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Manage, User))
   public async findAll(
     @Query('skip', ParseIntPipe) skip?: number,
     @Query('take', ParseIntPipe) take?: number,
@@ -47,7 +51,8 @@ export class UsersController {
    * @param id The UUID of the requested User
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Read, User))
   public async findOne(
     @Param('id', ParseUUIDPipe) id: string,
     @Query('select', ParseFrontendBtoaPipe) select?: Prisma.UserSelect
@@ -63,6 +68,8 @@ export class UsersController {
    */
   @Post('')
   @Public()
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, User))
   public async create(
     @Body() postData: {
       email: string;
@@ -79,6 +86,8 @@ export class UsersController {
    * @param bookData The updated information of the Book
    */
   @Put(':id')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, User))
   public async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() postData: UpdateUser
@@ -95,7 +104,8 @@ export class UsersController {
    * @param id The UUID of the User to be removed
    */
   @Delete(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, User))
   public async delete(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
     return this.$usersService.delete({id: id} as Prisma.UserWhereUniqueInput);
   }

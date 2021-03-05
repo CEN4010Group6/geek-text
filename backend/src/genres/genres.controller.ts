@@ -1,16 +1,20 @@
-import { Body, Controller, Delete, Get, Header, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
+import { Resource } from '../interface/resource.interface';
 import { UtilityService } from '../utility/utility.service';
-import { Roles, Role } from '../roles.decorator';
+import { Public } from '../public.decorator';
+import { ParseIntPipe } from '../parse-int.pipe';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { PoliciesGuard } from '../auth/policies.guard';
+import { CheckPolicies } from '../auth/check-policies.decorator';
+import { AppAbility, Action } from '../auth/casl-ability.factory';
 
 import { GenresService } from './genres.service';
-import { Public } from '../public.decorator';
 import { Genre, CreateGenre, UpdateGenre } from './dto/genre'
-import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 
 @Controller('genres')
-export class GenresController {
+export class GenresController implements Resource {
     /**
    * Genres controller constructor
    *
@@ -34,7 +38,6 @@ export class GenresController {
    * @param include
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
     @Query('skip', ParseIntPipe) skip?: number,
@@ -55,7 +58,6 @@ export class GenresController {
    * @param include
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id') id: number,
@@ -71,7 +73,8 @@ export class GenresController {
    * @param postData The Genre to be created
    */
   @Post('')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, Genre))
   public async create(
     @Body() postData: CreateGenre
   ): Promise<Genre> {
@@ -85,7 +88,8 @@ export class GenresController {
    * @param postData The updated information of the Genre
    */
   @Put(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, Genre))
   public async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() postData: UpdateGenre
@@ -102,7 +106,8 @@ export class GenresController {
    * @param id The UUID of the Genre to be removed
    */
   @Delete(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, Genre))
   public async delete(@Param('id', ParseIntPipe) id: number): Promise<Genre> {
     return this.$genresService.delete({ id: id } as Prisma.GenreWhereUniqueInput)
   }

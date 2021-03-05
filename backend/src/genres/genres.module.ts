@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CaslAbilityFactory } from '../auth/casl-ability.factory';
 import { PrismaService } from '../prisma/prisma.service';
 import { UtilityService } from '../utility/utility.service';
 import { GenresController } from './genres.controller';
@@ -9,7 +10,8 @@ import { GenresService } from './genres.service';
   providers: [
     PrismaService,
     GenresService,
-    UtilityService
+    UtilityService,
+    CaslAbilityFactory
   ]
 })
 export class GenresModule {}

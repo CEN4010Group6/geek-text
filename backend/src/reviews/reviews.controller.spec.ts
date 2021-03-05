@@ -1,6 +1,7 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { Prisma } from '@prisma/client';
+import { CaslAbilityFactory } from '../auth/casl-ability.factory';
 import { PrismaService } from '../prisma/prisma.service';
 import { UtilityService } from '../utility/utility.service';
 import { ReviewsController } from './reviews.controller';
@@ -26,7 +27,8 @@ describe('ReviewsController', () => {
       providers: [
         PrismaService,
         ReviewsService,
-        UtilityService
+        UtilityService,
+        CaslAbilityFactory
       ],
       controllers: [ ReviewsController ],
     }).compile();

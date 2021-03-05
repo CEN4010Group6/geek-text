@@ -1,16 +1,20 @@
-import { Body, Controller, Delete, Get, Header, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
-import { Book, Prisma } from '@prisma/client';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
+import { Resource } from '../interface/resource.interface'
 import { UtilityService } from '../utility/utility.service';
-import { Roles, Role } from '../roles.decorator';
 import { Public } from '../public.decorator';
 import { ParseIntPipe } from '../parse-int.pipe';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { AppAbility, Action } from '../auth/casl-ability.factory';
+import { PoliciesGuard } from '../auth/policies.guard';
+import { CheckPolicies } from '../auth/check-policies.decorator';
 
 import { BooksService } from './books.service';
-import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
+import { Book } from './dto/book';
 
 @Controller('books')
-export class BooksController {
+export class BooksController implements Resource {
   /**
    * Books controller constructor
    *
@@ -34,7 +38,6 @@ export class BooksController {
    * @param include
    */
   @Get()
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findAll(
     @Query('skip', ParseIntPipe) skip?: number,
@@ -56,7 +59,6 @@ export class BooksController {
    * @param include
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @Public()
   public async findOne(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -72,7 +74,8 @@ export class BooksController {
    * @param postData The Book data to be created
    */
   @Post('')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, Book))
   public async create(
     @Body() postData: Prisma.BookCreateInput
   ): Promise<Book> {
@@ -86,7 +89,8 @@ export class BooksController {
    * @param bookData The updated information of the Book
    */
   @Put(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, Book))
   public async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() postData: Book
@@ -103,7 +107,8 @@ export class BooksController {
    * @param id The UUID of the Book to be removed
    */
   @Delete(':id')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability: AppAbility) => ability.can(Action.Delete, Book))
   public async delete(@Param('id', new ParseUUIDPipe()) id: string): Promise<Book> {
     return this.$booksService.delete({id: id} as Prisma.BookWhereUniqueInput);
   }

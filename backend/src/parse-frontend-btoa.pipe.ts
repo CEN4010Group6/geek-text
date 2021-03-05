@@ -8,8 +8,8 @@ export class ParseFrontendBtoaPipe implements PipeTransform {
    *
    * @param value The Base64 string to decode
    */
-  public transform(value: string, metadata: ArgumentMetadata): any {
-    if(value && typeof value === 'string') {
+  public transform(value: string | null, metadata: ArgumentMetadata): any {
+    if(typeof value === 'string') {
       return JSON.parse(Buffer.from(value, 'base64').toString());
     } else {
       return undefined;

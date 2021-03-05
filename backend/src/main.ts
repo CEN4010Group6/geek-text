@@ -1,12 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from './app.module';
 
-export async function bootstrap() {
-
+export async function bootstrap(): Promise<INestApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['log', 'error', 'warn']
   });
@@ -32,11 +31,11 @@ export async function bootstrap() {
     throw new Error('Environment variable `SECRET_KEY` is not defined.');
   }
 
-  await app.listen(3000);
+  return app;
 }
 
 if(!(typeof expect === 'function')) {
-  bootstrap().catch(console.error);
+  bootstrap()
+    .then(async (app) => app.listen(3000))
+    .catch(console.error);
 }
-// bootstrap()
-//   .catch(console.error);

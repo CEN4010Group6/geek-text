@@ -1,10 +1,10 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
+
+import { Public } from '../public.decorator';
 
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
-
 import { LocalAuth } from './dto/local-auth';
-import { Public } from '../public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +26,7 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @Public()
+  @HttpCode(200)
   public async login(
     @Request() req
   ): Promise<any> {

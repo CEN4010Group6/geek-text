@@ -168,14 +168,6 @@ async function main() {
     }));
   }
 
-  const harperLee = await client.author.create({
-    data: {
-      firstName: 'Harper',
-      lastName: 'Lee',
-      description: "Harper Lee was born in 1926 in Monroeville, Alabama. She is the author of the acclaimed To Kill a Mockingbird and Go Set a Watchman, which became a phenomenal #1 New York Times bestseller when it was published in July 2015. Ms. Lee received the Pulitzer Prize, the Presidential Medal of Freedom, and numerous other literary awards and honors. She died on February 19, 2016."
-    }
-  });
-
   books = books.push(await client.book.upsert({
     where: {
       title: 'To Kill a Mockingbird',
@@ -187,8 +179,20 @@ async function main() {
     create: {
       title: 'To Kill a Mockingbird',
       authors: {
-        connect: {
-          id: harperLee.id
+        connectOrCreate: {
+          where: {
+            firstName_middleName_lastName: {
+              firstName: 'Harper',
+              middleName: '',
+              lastName: 'Lee'
+            }
+          },
+          create: {
+            firstName: 'Harper',
+            middleName: '',
+            lastName: 'Lee',
+            description: "Harper Lee was born in 1926 in Monroeville, Alabama. She is the author of the acclaimed To Kill a Mockingbird and Go Set a Watchman, which became a phenomenal #1 New York Times bestseller when it was published in July 2015. Ms. Lee received the Pulitzer Prize, the Presidential Medal of Freedom, and numerous other literary awards and honors. She died on February 19, 2016."
+          }
         }
       },
       publisher: {
@@ -229,7 +233,11 @@ async function main() {
       title: 'Go Set A Watchman',
       authors: {
         connect: {
-          id: harperLee.id
+          firstName_middleName_lastName: {
+            firstName: 'Harper',
+            middleName: '',
+            lastName: 'Lee'
+          }
         }
       },
       publishYear: 2015,
@@ -258,11 +266,20 @@ async function main() {
     create: {
       title: 'On Liberty',
       authors: {
-        create: {
-          firstName: 'John',
-          middleName: 'Stuart',
-          lastName: 'Mill',
-          description: 'John Stuart Mill (1806–73) was the most influential English language philosopher of the nineteenth century. He was a naturalist, a utilitarian, and a liberal, whose work explores the consequences of a thoroughgoing empiricist outlook.'
+        connectOrCreate: {
+          where: {
+            firstName_middleName_lastName: {
+              firstName: 'John',
+              middleName: 'Stuart',
+              lastName: 'Mill'
+            }
+          },
+          create: {
+            firstName: 'John',
+            middleName: 'Stuart',
+            lastName: 'Mill',
+            description: 'John Stuart Mill (1806–73) was the most influential English language philosopher of the nineteenth century. He was a naturalist, a utilitarian, and a liberal, whose work explores the consequences of a thoroughgoing empiricist outlook.'
+          }
         }
       },
       publisher: {
@@ -315,6 +332,7 @@ async function main() {
         }
       },
       coverUrl: faker.image.imageUrl(395, 595),
+      coverDataUri: faker.image.dataUri(395, 595),
       sold: faker.random.number({max: 50})
     }
 

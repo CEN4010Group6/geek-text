@@ -36,7 +36,11 @@ export class Review extends BaseDTO implements ReviewModel {
   public book?: Prisma.BookUpdateOneRequiredWithoutReviewsInput;
 
   @IsOptional()
-  public user?: Prisma.UserCreateNestedOneWithoutReviewsInput;
+  public user?: Prisma.UserUpdateOneRequiredWithoutReviewsInput
+
+  constructor(merge: any) {
+    super(merge);
+  }
 }
 
 export class CreateReview extends OmitType(Review, [
