@@ -40,6 +40,6 @@ export class Author extends BaseDTO implements AuthorModel {
   }
 }
 
-export class CreateAuthor extends OmitType(Author, ['createdAt', 'updatedAt'] as const) implements Prisma.AuthorCreateInput {}
+export class CreateAuthor extends OmitType(Author, ['id', 'createdAt', 'updatedAt'] as const) implements Prisma.AuthorCreateInput {}
 
 export class UpdateAuthor extends PartialType(Author) implements Prisma.AuthorUpdateInput {}
