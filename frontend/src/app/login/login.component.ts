@@ -6,6 +6,8 @@ import { StorageMap } from '@ngx-pwa/local-storage';
 import { first } from 'rxjs/operators';
 
 import { AuthService } from '../auth/auth.service';
+import { UserService } from '../users/user.service';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,9 @@ export class LoginComponent implements OnInit {
     private readonly $route: ActivatedRoute,
     private readonly $router: Router,
     private readonly $location: Location,
-    private readonly $authService: AuthService
+    private readonly $apiService: ApiService,
+    private readonly $authService: AuthService,
+    private readonly $userService: UserService
   ) {}
 
   public ngOnInit(): void {
@@ -53,7 +57,10 @@ export class LoginComponent implements OnInit {
     })
       .pipe(first())
       .subscribe(
-        data => {
+        auth => {
+          this.$apiService.get('/users/' + auth.userId).subscribe((data) => {
+            this.$userService.load(data);
+          });
           this.$router.navigate([this.returnUrl]);
         },
         error => {

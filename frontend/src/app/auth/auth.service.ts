@@ -5,26 +5,28 @@ import { map } from 'rxjs/operators';
 
 import { ApiService } from '../api.service';
 import { User } from '../models/user';
+import { UserService } from '../users/user.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
 
-  private currentUserSubject?: BehaviorSubject<string>;
+  private tokenSubject: BehaviorSubject<string>;
 
   constructor(
     private readonly $apiService: ApiService,
-    private readonly $storage: StorageMap
+    private readonly $storage: StorageMap,
+    private readonly $userService: UserService
   ) {
-    this.$storage.get('accessToken')
-      .subscribe(token => {
-        this.currentUserSubject = new BehaviorSubject<string>(token as string);
-      });
+    this.tokenSubject = new BehaviorSubject<string>('');
+    this.$storage.get('accessToken').subscribe((t) => {
+      if(t) {
+        this.tokenSubject.next(t as string);
+      }
+    });
   }
 
-  public get currentUser(): string {
-    return this.currentUserSubject?.value || '';
+  public get token(): string {
+    return this.tokenSubject.value || '';
   }
 
   public login(formData: {
@@ -33,15 +35,15 @@ export class AuthService {
   }): Observable<User> {
     return this.$apiService.post('/auth/login', formData)
       .pipe(
-        map(auth => {
-          this.$storage.set('accessToken', auth.accessToken).subscribe(() => this.currentUserSubject?.next(auth.accessToken));
+        map((auth: { accessToken: string, userId: string }) => {
+          this.$storage.set('accessToken', auth.accessToken).subscribe(() => {});
           return auth;
         })
       );
   }
 
   public logout() {
-    this.$storage.delete('user')
-      .subscribe(() => this.currentUserSubject?.next(null as unknown as string));
+    this.$storage.delete('accessToken').subscribe(() => {});
+    this.tokenSubject.next('');
   }
 }

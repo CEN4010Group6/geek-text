@@ -369,7 +369,6 @@ async function main() {
         }
       },
       coverUrl: faker.image.imageUrl(395, 595),
-      coverDataUri: faker.image.dataUri(395, 595),
       sold: faker.random.number({max: 50})
     }
 

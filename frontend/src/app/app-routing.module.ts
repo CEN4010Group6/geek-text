@@ -9,10 +9,12 @@ import { StorefrontComponent } from './storefront/storefront.component';
 import { ReviewComponent } from './books/review/review.component';
 import { AuthorsComponent } from './authors/authors.component';
 import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
   { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
   { path: 'books/:bookId', component: BookComponent },
   { path: 'books/:bookId/review', component: ReviewComponent},
   { path: 'authors/:authorId', component: AuthorsComponent },

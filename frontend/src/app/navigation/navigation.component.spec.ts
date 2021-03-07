@@ -3,6 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NavigationComponent } from './navigation.component';
+import { UsersModule } from '../users/users.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { UserService } from '../users/user.service';
+import { AuthService } from '../auth/auth.service';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -11,7 +15,8 @@ describe('NavigationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ NavigationComponent ],
-      imports: [ NgbModule, RouterTestingModule ]
+      imports: [ NgbModule, RouterTestingModule, UsersModule, HttpClientTestingModule ],
+      providers: [ UserService, AuthService ]
     })
     .compileComponents();
   });

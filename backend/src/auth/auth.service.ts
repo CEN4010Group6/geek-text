@@ -73,7 +73,8 @@ export class AuthService {
     };
 
     return {
-      accessToken: this.$jwtService.sign(payload)
+      accessToken: this.$jwtService.sign(payload),
+      userId: user.id
     };
   }
 }

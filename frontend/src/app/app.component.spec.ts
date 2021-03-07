@@ -8,6 +8,10 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { UsersModule } from './users/users.module';
+import { UserService } from './users/user.service';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -17,12 +21,18 @@ describe('AppComponent', () => {
         NgbModule,
         LoadingBarHttpClientModule,
         LoadingBarRouterModule,
-        LoadingBarModule
+        LoadingBarModule,
+        AuthModule,
+        UsersModule
       ],
       declarations: [
         AppComponent,
-        NavigationComponent
+        NavigationComponent,
       ],
+      providers: [
+        AuthService,
+        UserService
+      ]
     }).compileComponents();
   });
 

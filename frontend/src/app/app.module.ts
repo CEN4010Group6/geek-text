@@ -29,6 +29,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthModule } from './auth/auth.module';
 import { JwtInterceptor } from './jwt.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
+import { LogoutComponent } from './logout/logout.component';
+import { StorageModule } from '@ngx-pwa/local-storage';
 
 @NgModule({
   imports: [
@@ -40,6 +42,10 @@ import { ErrorInterceptor } from './error.interceptor';
     LoadingBarHttpClientModule,
     LoadingBarRouterModule,
     LoadingBarModule,
+    StorageModule.forRoot({
+      IDBDBName: 'geektext',
+      LSPrefix: 'geektext_'
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: (process.env.NODE_ENV === 'production')
     }),
@@ -55,6 +61,7 @@ import { ErrorInterceptor } from './error.interceptor';
     NotFoundComponent,
     JoinPipe,
     LoginComponent,
+    LogoutComponent,
   ],
   providers: [
     ApiService,

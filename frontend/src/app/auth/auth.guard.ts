@@ -10,7 +10,8 @@ export class AuthGuard implements CanActivate {
 
   public canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot): boolean
+  {
     // @TODO: Add user account handling
     this.$router.navigate(['/login', { queryParams: { returnUrl: state.url } }]);
     return false;

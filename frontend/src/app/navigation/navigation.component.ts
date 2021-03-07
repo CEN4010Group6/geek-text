@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { UserService } from '../users/user.service';
 
 @Component({
   selector: 'app-navigation',
@@ -8,10 +12,19 @@ import { Component, OnInit } from '@angular/core';
 export class NavigationComponent implements OnInit {
 
   private collapsed = true;
+  public isLoggedIn = false;
 
-  constructor() {}
+  constructor(
+    private readonly $router: Router,
+    private readonly $authService: AuthService,
+    private readonly $userService: UserService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.$userService.isLoggedIn().subscribe((loggedIn) => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
 
   public isCollapsed(): boolean {
     return this.collapsed;

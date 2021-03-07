@@ -3,6 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { StorageMap } from '@ngx-pwa/local-storage';
 
 import { ApiService } from '../api.service';
+import { UserService } from '../users/user.service';
+import { UsersModule } from '../users/users.module';
 
 import { AuthService } from './auth.service';
 
@@ -12,12 +14,15 @@ describe('AuthService', () => {
   beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule
+        HttpClientModule,
+        UsersModule
       ],
       providers: [
         HttpClient,
         ApiService,
-        StorageMap
+        StorageMap,
+        AuthService,
+        UserService
       ]
     });
     service = TestBed.inject(AuthService);
