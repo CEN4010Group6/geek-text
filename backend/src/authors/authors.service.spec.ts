@@ -32,8 +32,15 @@ describe('AuthorsService', () => {
   });
 
   beforeEach(async () => {
-
-    let a = await database.author.findFirst({ where: { firstName: mockAuthor.firstName }});
+    let a = await database.author.findUnique({
+      where: {
+        firstName_middleName_lastName: {
+          firstName: mockAuthor.firstName,
+          middleName: mockAuthor.middleName,
+          lastName: mockAuthor.lastName
+        }
+      }
+    });
 
     if(a && a?.id) {
       await database.author.delete({ where: { id: a.id }});
@@ -41,7 +48,15 @@ describe('AuthorsService', () => {
   });
 
   afterEach(async () => {
-    let a = await database.author.findFirst({ where: { firstName: mockAuthor.firstname }});
+    let a = await database.author.findUnique({
+      where: {
+        firstName_middleName_lastName: {
+          firstName: mockAuthor.firstname,
+          middleName: mockAuthor.middleName,
+          lastName: mockAuthor.lastName
+        }
+      }
+    });
 
     if(a && a?.id) {
       await database.author.delete({ where: { id: a.id } });

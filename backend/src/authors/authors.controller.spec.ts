@@ -74,18 +74,6 @@ describe('AuthorsController', () => {
     if(a) {
       await database.author.delete({ where: { id: a.id }});
     }
-
-    a = await database.author.findFirst({
-      where: {
-        firstName: mockAuthor.firstName,
-        middleName: mockAuthor.middleName,
-        lastName: mockAuthor.lastName
-      }
-    });
-
-    if(a) {
-      await database.author.delete({ where: { id: a.id }});
-    }
   })
 
   afterEach(async () => {

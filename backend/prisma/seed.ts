@@ -17,6 +17,7 @@ import * as faker from 'faker';
 import * as argon2 from 'argon2';
 import { List, Map } from 'immutable';
 import * as dataURIs from './data_uri.json';
+import authors from './authors.json';
 
 const client = new PrismaClient();
 
@@ -174,7 +175,19 @@ async function main() {
     },
     update: {
       coverDataUri: dataURIs.toKillAMockingBird,
-      sold: faker.random.number()
+      sold: faker.random.number(),
+      authors: {
+        connectOrCreate: {
+          where: {
+              firstName_middleName_lastName: {
+              firstName: authors.harperLee.firstName,
+              middleName: authors.harperLee.middleName,
+              lastName: authors.harperLee.lastName
+            }
+          },
+          create: authors.harperLee
+        }
+      }
     },
     create: {
       title: 'To Kill a Mockingbird',
@@ -182,17 +195,12 @@ async function main() {
         connectOrCreate: {
           where: {
             firstName_middleName_lastName: {
-              firstName: 'Harper',
-              middleName: '',
-              lastName: 'Lee'
+              firstName: authors.harperLee.firstName,
+              middleName: authors.harperLee.middleName,
+              lastName: authors.harperLee.lastName
             }
           },
-          create: {
-            firstName: 'Harper',
-            middleName: '',
-            lastName: 'Lee',
-            description: "Harper Lee was born in 1926 in Monroeville, Alabama. She is the author of the acclaimed To Kill a Mockingbird and Go Set a Watchman, which became a phenomenal #1 New York Times bestseller when it was published in July 2015. Ms. Lee received the Pulitzer Prize, the Presidential Medal of Freedom, and numerous other literary awards and honors. She died on February 19, 2016."
-          }
+          create: authors.harperLee
         }
       },
       publisher: {
@@ -227,17 +235,32 @@ async function main() {
     },
     update: {
       coverDataUri: dataURIs.goSetAWatchman,
-      sold: faker.random.number()
+      sold: faker.random.number(),
+      authors: {
+        connectOrCreate: {
+          where: {
+            firstName_middleName_lastName: {
+              firstName: authors.harperLee.firstName,
+              middleName: authors.harperLee.middleName,
+              lastName: authors.harperLee.lastName
+            }
+          },
+          create: authors.harperLee
+        }
+      }
     },
     create: {
       title: 'Go Set A Watchman',
       authors: {
-        connect: {
-          firstName_middleName_lastName: {
-            firstName: 'Harper',
-            middleName: '',
-            lastName: 'Lee'
-          }
+        connectOrCreate: {
+          where: {
+            firstName_middleName_lastName: {
+              firstName: 'Harper',
+              middleName: '',
+              lastName: 'Lee'
+            }
+          },
+          create: authors.harperLee
         }
       },
       publishYear: 2015,
@@ -258,28 +281,42 @@ async function main() {
     }
   }))
 
+  const jSMill = {
+    firstName: 'John',
+    middleName: 'Stuart',
+    lastName: 'Mill'
+  }
+
   books = books.push(await client.book.upsert({
     where: {
       title: 'On Liberty'
     },
-    update: {},
+    update: {
+      authors: {
+        connectOrCreate: {
+          where: {
+            firstName_middleName_lastName: {
+              firstName: authors.jSMills.firstName,
+              middleName: authors.jSMills.middleName,
+              lastName: authors.jSMills.lastName
+            },
+          },
+          create: authors.jSMills
+        }
+      }
+    },
     create: {
       title: 'On Liberty',
       authors: {
         connectOrCreate: {
           where: {
             firstName_middleName_lastName: {
-              firstName: 'John',
-              middleName: 'Stuart',
-              lastName: 'Mill'
+              firstName: authors.jSMills.firstName,
+              middleName: authors.jSMills.middleName,
+              lastName: authors.jSMills.lastName
             }
           },
-          create: {
-            firstName: 'John',
-            middleName: 'Stuart',
-            lastName: 'Mill',
-            description: 'John Stuart Mill (1806–73) was the most influential English language philosopher of the nineteenth century. He was a naturalist, a utilitarian, and a liberal, whose work explores the consequences of a thoroughgoing empiricist outlook.'
-          }
+          create: authors.jSMills
         }
       },
       publisher: {
