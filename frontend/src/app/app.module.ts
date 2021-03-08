@@ -12,25 +12,28 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { StorageModule } from '@ngx-pwa/local-storage';
 
 // Site imports
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { ApiService } from './api.service';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthorsModule } from './authors/authors.module';
 import { BooksModule } from './books/books.module';
-import { NavigationComponent } from './navigation/navigation.component';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
+import { ErrorInterceptor } from './error.interceptor';
+import { JoinPipe } from './join.pipe';
+import { JwtInterceptor } from './jwt.interceptor';
 import { LoggerService } from './logger.service';
+import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
+import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { StorefrontModule } from './storefront/storefront.module';
-import { AuthorsModule } from './authors/authors.module';
-import { JoinPipe } from './join.pipe';
-import { LoginComponent } from './login/login.component';
-import { AuthModule } from './auth/auth.module';
-import { JwtInterceptor } from './jwt.interceptor';
-import { ErrorInterceptor } from './error.interceptor';
-import { LogoutComponent } from './logout/logout.component';
-import { StorageModule } from '@ngx-pwa/local-storage';
+import { FlashMessageComponent } from './flash-message/flash-message.component';
+import { FlashMessageService } from './flash-message/flash-message.service';
+import { FlashMessageModule } from './flash-message/flash-message.module';
 
 @NgModule({
   imports: [
@@ -50,18 +53,19 @@ import { StorageModule } from '@ngx-pwa/local-storage';
       enabled: (process.env.NODE_ENV === 'production')
     }),
     AppRoutingModule,
-    StorefrontModule,
-    BooksModule,
+    AuthModule,
     AuthorsModule,
-    AuthModule
+    BooksModule,
+    FlashMessageModule,
+    StorefrontModule
   ],
   declarations: [
     AppComponent,
-    NavigationComponent,
-    NotFoundComponent,
     JoinPipe,
     LoginComponent,
     LogoutComponent,
+    NavigationComponent,
+    NotFoundComponent
   ],
   providers: [
     ApiService,

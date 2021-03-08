@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StorageMap } from '@ngx-pwa/local-storage';
 import { first } from 'rxjs/operators';
 
-import { AuthService } from '../auth/auth.service';
-import { UserService } from '../users/user.service';
 import { ApiService } from '../api.service';
+import { AuthService } from '../auth/auth.service';
+import { FlashMessageService } from '../flash-message/flash-message.service';
+import { Level } from '../flash-message/level';
+import { UserService } from '../users/user.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
     private readonly $location: Location,
     private readonly $apiService: ApiService,
     private readonly $authService: AuthService,
-    private readonly $userService: UserService
+    private readonly $userService: UserService,
+    private readonly $flashMessageService: FlashMessageService
   ) {}
 
   public ngOnInit(): void {
@@ -64,7 +66,17 @@ export class LoginComponent implements OnInit {
           this.$router.navigate([this.returnUrl]);
         },
         error => {
-          // @TODO: Error handling
+          if(error === 'Unauthorized') {
+            this.$flashMessageService.add({
+              value: "Username or password was incorrect",
+              level: Level.Danger
+            });
+          } else {
+            this.$flashMessageService.add({
+              value: error,
+              level: Level.Danger
+            });
+          }
         });
   }
 }

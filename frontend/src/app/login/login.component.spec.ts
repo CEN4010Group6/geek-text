@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthModule } from '../auth/auth.module';
+import { FlashMessageModule } from '../flash-message/flash-message.module';
 import { UsersModule } from '../users/users.module';
 
 import { LoginComponent } from './login.component';
@@ -18,7 +19,8 @@ describe('LoginComponent', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         AuthModule,
-        UsersModule
+        UsersModule,
+        FlashMessageModule
       ],
       declarations: [ LoginComponent ]
     })

@@ -12,6 +12,8 @@ import { UsersModule } from './users/users.module';
 import { UserService } from './users/user.service';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { FlashMessageModule } from './flash-message/flash-message.module';
+import { FlashMessageService } from './flash-message/flash-message.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -23,7 +25,8 @@ describe('AppComponent', () => {
         LoadingBarRouterModule,
         LoadingBarModule,
         AuthModule,
-        UsersModule
+        UsersModule,
+        FlashMessageModule
       ],
       declarations: [
         AppComponent,
@@ -31,7 +34,8 @@ describe('AppComponent', () => {
       ],
       providers: [
         AuthService,
-        UserService
+        UserService,
+        FlashMessageService
       ]
     }).compileComponents();
   });

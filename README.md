@@ -33,5 +33,5 @@ OR
 eg:
 
 - `docker-compose exec backend primsa migrate deploy --preview-feature`
-- `docker-compose exec backend npm run seed`
+- `docker-compose exec backend npm run prisma:seed`
 - `docker-compose exec frontend npm run build -- --prod`
