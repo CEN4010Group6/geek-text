@@ -68,12 +68,14 @@ export class UsersController implements Resource {
    */
   @Post('')
   @Public()
-  @UseGuards(PoliciesGuard)
-  @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, User))
   public async create(
     @Body() postData: {
       email: string;
       password: string;
+      firstName: string;
+      middleName?: string;
+      lastName: string;
+      nickName: string;
     }
   ): Promise<User> {
     return this.$usersService.create(postData);

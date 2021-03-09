@@ -76,15 +76,32 @@ export class UsersService {
   public async create(data: {
     email: string;
     password: string;
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    nickName: string;
   }): Promise<User> {
     let passwordHash = await argon2.hash(data.password);
 
     const newUser = {
       email: data.email,
       passwordHash: passwordHash,
+      firstName: data.firstName,
+      middleName: data.middleName || '',
+      lastName: data.lastName,
+      nickName: data.nickName
     };
 
-    let user = await this.$prisma.user.create({ data: newUser }) as User;
+    let user = await this.$prisma.user.create({ data:
+      {
+        ...newUser,
+        roles: {
+          connect: {
+            name: 'user'
+          }
+        }
+      }
+    }) as User;
 
     if(user) {
       // @ts-ignore
