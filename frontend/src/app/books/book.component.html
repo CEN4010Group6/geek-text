@@ -34,7 +34,7 @@
               </p>
               <p>Average User Reviews: <app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
               <p>
-                <button class="btn btn-primary">Add To Cart</button>&nbsp;<a class="btn btn-info" [routerLink]="['./review']">Leave a review</a>
+                <button class="btn btn-primary">Add To Cart</button>&nbsp;<button type="button" class="btn btn-info" [routerLink]="['./review']" [disabled]="!(isLoggedIn | async)">Leave a review</button>
               </p>
             </div>
           </div>

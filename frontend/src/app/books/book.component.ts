@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { ApiService } from '../api.service';
 import { AuthorsService } from '../authors/authors.service';
@@ -8,6 +9,7 @@ import { Author } from '../models/author';
 import { Book } from '../models/book';
 import { Genre } from '../models/genre';
 import { Review } from '../models/review';
+import { UserService } from '../users/user.service';
 
 @Component({
   selector: 'app-book',
@@ -19,9 +21,10 @@ export class BookComponent implements OnInit {
   public activeTab = 1;
 
   constructor(
-    private $route: ActivatedRoute,
-    private $apiService: ApiService,
-    private $authorsService: AuthorsService
+    private readonly $route: ActivatedRoute,
+    private readonly $apiService: ApiService,
+    private readonly $authorsService: AuthorsService,
+    private readonly $userService: UserService
   ) {}
 
   public ngOnInit(): void {
@@ -96,11 +99,7 @@ export class BookComponent implements OnInit {
     return '';
   }
 
-  public get averageReviews(): number {
-    if(this.book?.reviews && this.book.reviews.length > 0) {
-      return this.book.reviews.map((review: Review) => review.value)
-        .reduce((acc, val) => acc + val ) / this.book.reviews.length
-    }
-    return 0;
+  public get isLoggedIn(): Observable<boolean> {
+    return this.$userService.isLoggedIn();
   }
 }
