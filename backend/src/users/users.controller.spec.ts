@@ -98,19 +98,26 @@ describe('UsersController', () => {
 
   it('should have a method create', async () => {
     await expect(controller.create).toBeDefined();
+    let mock = mockUser;
     const user = await controller.create({
-      email: mockUser.email,
-      password: 'IAmAPassword'
+      ...mock,
+      password: 'lafsdkasdlmflsda'
     });
     await expect(user).toBeDefined();
     await expect(user.email).toBe(mockUser.email);
+    await database.user.delete({
+      where: {
+        id: user.id
+      }
+    });
   });
 
   it('should have a method update', async () => {
     await expect(controller.update).toBeDefined();
+    let mock = mockUser;
     let user = await controller.create({
-      email: mockUser.email,
-      password: 'IAmAFakePassword'
+      ...mock,
+      password: 'lamlksdfklam'
     });
     user.email = 'cdefg@d.com';
     user = await controller.update(user.id, user);

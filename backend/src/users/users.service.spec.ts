@@ -82,7 +82,10 @@ describe('UsersService', () => {
   it('should create a new User in the database', async () => {
     let mock = mockUser;
     await expect(service.create).toBeDefined();
-    mock = await service.create({ email: mock.email, password: 'IAmAPassword' });
+    mock = await service.create({
+      ...mock,
+      password: 'asmdkflmsadkmlsa'
+    });
     await expect(mock).toBeDefined();
     await expect(mock.id).toBeDefined();
   });
