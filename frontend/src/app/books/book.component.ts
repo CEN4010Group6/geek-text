@@ -77,7 +77,8 @@ export class BookComponent implements OnInit {
         },
         coverUrl: true,
         coverDataUri: true,
-        sold: true
+        sold: true,
+        averageRating: true
       });
 
       httpParams = httpParams.set('select', select);

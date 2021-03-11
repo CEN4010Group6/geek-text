@@ -9,8 +9,8 @@ import { AuthorsService } from '../authors/authors.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StarRatingComponent } from './star-rating/star-rating.component';
-import { BooksModule } from './books.module';
 import { RateTitlePipe } from './star-rating/rate-title.pipe';
+import { UserService } from '../users/user.service';
 
 describe('BookComponent', () => {
   let component: BookComponent;
@@ -20,7 +20,7 @@ describe('BookComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule, NgbModule, ReactiveFormsModule ],
       declarations: [ BookComponent, StarRatingComponent, RateTitlePipe ],
-      providers: [ ApiService, AuthorsService ]
+      providers: [ ApiService, AuthorsService, UserService ]
     })
     .compileComponents();
   });
@@ -68,8 +68,4 @@ describe('BookComponent', () => {
   it('should correctly display the genres of the book', () => {
     expect(component.genres).toBe('Fiction');
   })
-
-  it('should correctly display an average of reviews', () => {
-    expect(component.averageReviews).toBe(3.5);
-  });
 });

@@ -4,8 +4,13 @@
   "integrationFolder": "./src/integration",
   "pluginsFile": "./src/plugins/index",
   "supportFile": false,
-  "video": true,
+  "video": false,
   "videosFolder": "../dist/cypress/e2e/videos",
   "screenshotsFolder": "../dist/cypress/e2e/screenshots",
-  "chromeWebSecurity": false
+  "screenshotOnRunFailure": true,
+  "trashAssetsBeforeRuns": true,
+  "chromeWebSecurity": false,
+  "env": {
+    "tsConfig": "./tsconfig.e2e.json"
+  }
 }

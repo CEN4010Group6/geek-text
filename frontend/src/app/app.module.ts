@@ -31,8 +31,6 @@ import { LogoutComponent } from './logout/logout.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { StorefrontModule } from './storefront/storefront.module';
-import { FlashMessageComponent } from './flash-message/flash-message.component';
-import { FlashMessageService } from './flash-message/flash-message.service';
 import { FlashMessageModule } from './flash-message/flash-message.module';
 
 @NgModule({

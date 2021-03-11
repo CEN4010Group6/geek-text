@@ -1,27 +1,27 @@
 <div *ngIf="book">
   <div class="row">
     <div class="col-12">
-      <div class="card" style="width: 100%">
+      <div class="card" style="width: 100%;">
         <div class="card-body">
           <div class="row">
             <div class="col-6">
-              <h1>{{ book.title }}</h1>
-              <h2 *ngFor="let author of book.authors; index as i">
+              <h1 id="title">{{ book.title }}</h1>
+              <h2 id="authors" *ngFor="let author of book.authors; index as i">
                 <a [routerLink]="['/authors', author.id]">{{ authorName(author) }}</a><span *ngIf="i < book.authors.length - 1">,
                 </span>
               </h2>
               <div *ngIf="book.coverDataUri; then thenBookBlock else elseBookBlock"></div>
               <ng-template #thenBookBlock>
-                <img width="198" height="298" [src]="book.coverDataUri" [alt]="book.title" lightbox />
+                <img id="cover" width="198" height="298" [src]="book.coverDataUri" [alt]="book.title" lightbox />
               </ng-template>
               <ng-template #elseBookBlock>
-                <img width="198" height="298" [src]="book.coverUrl" [alt]="book.title" lightbox />
+                <img id="cover" width="198" height="298" [src]="book.coverUrl" [alt]="book.title" lightbox />
               </ng-template>
             </div>
             <div class="col-6">
-              <p>Price: {{ book.price | currency }}</p>
-              <p>Genres: {{ genres }}</p>
-              <p>Published: {{ book.publishYear}}
+              <p id="price">Price: {{ book.price | currency }}</p>
+              <p id="genres">Genres: {{ genres }}</p>
+              <p id="publisher">Published: {{ book.publishYear}}
                 <span *ngIf="book.publisher"> by
                   <div *ngIf="book.publisher.website; then thenBlock else elseBlock"></div>
                   <ng-template #thenBlock>
@@ -32,9 +32,9 @@
                   </ng-template>
                 </span>
               </p>
-              <p>Average User Reviews: <app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
+              <p id="average-rating">Average User Reviews: <app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
               <p>
-                <button class="btn btn-primary">Add To Cart</button>&nbsp;<button type="button" class="btn btn-info" [routerLink]="['./review']" [disabled]="!(isLoggedIn | async)">Leave a review</button>
+                <button id="add-to-cart" class="btn btn-primary">Add To Cart</button>&nbsp;<button id="submit-review" type="button" class="btn btn-info" [routerLink]="['./review']" [disabled]="!(isLoggedIn | async)">Leave a review</button>
               </p>
             </div>
           </div>

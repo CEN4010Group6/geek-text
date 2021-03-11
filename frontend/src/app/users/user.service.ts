@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ApiService } from '../api.service';
 import { User } from '../models/user';
 
 @Injectable()
 export class UserService {
 
-  private userSubject: BehaviorSubject<User>;
+  private userSubject: BehaviorSubject<User | undefined>;
   private isLoggedInSubject: BehaviorSubject<boolean>;
 
   constructor(
     private readonly $storage: StorageMap
   ) {
     this.isLoggedInSubject = new BehaviorSubject<boolean>(false);
-    this.userSubject = new BehaviorSubject(null as unknown as User);
+    this.userSubject = new BehaviorSubject<User | undefined>(undefined);
     this.$storage.get('user').subscribe((data) => {
       if(data) {
         const parsed = JSON.parse(atob(data as string));

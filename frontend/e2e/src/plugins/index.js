@@ -1,5 +1,5 @@
-import { preprocessTypescript } from '@nrwl/cypress/plugins/preprocessor';
+const { preprocessTypescript } = require('@nrwl/cypress/plugins/preprocessor');
 
-export default function(on, config) {
-  on('file:preprocessor', preprocessTypescript(config)
+module.exports = function(on, config) {
+  on('file:preprocessor', preprocessTypescript(config));
 }

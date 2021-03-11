@@ -1,0 +1,15 @@
+[{
+  "title": "A Book",
+  "publishYear": 2020,
+  "isbn": 8888888888888,
+  "description": "A book description",
+  "price": 1.50,
+  "coverUrl": "https://via.placeholder.com/320",
+  "sold": 5,
+  "publisher": {
+    "name": "A Publisher",
+    "city": "Panama City",
+    "state": "FL"
+  },
+  "averageRating": "3"
+}]

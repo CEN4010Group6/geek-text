@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Book as BookModel, Prisma } from '@prisma/client'
+import { ObjectUnsubscribedError } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { Book } from './dto/book';
 
@@ -25,6 +26,16 @@ export class BooksService {
   }): Promise<Book | null> {
     const { where, select } = params;
 
+    let averageRating = false;
+
+    // @ts-ignore
+    if(select?.averageRating) {
+      averageRating  = true;
+      // @ts-ignore
+      delete select.averageRating;
+    }
+    /** @ts-ignore */
+
     const dbBook = await this.$prisma.book.findUnique({
       where,
       select
@@ -36,7 +47,7 @@ export class BooksService {
 
     let book = new Book(dbBook);
 
-    if(select?.reviews) {
+    if(averageRating) {
       const aggregate = await this.$prisma.review.aggregate({
         where: {
           bookId: book.id
@@ -46,7 +57,7 @@ export class BooksService {
         }
       });
 
-      book.averageRating = aggregate.avg.value;
+      book = Object.assign({ averageRating: aggregate.avg.value }, book);
     }
 
     return book;

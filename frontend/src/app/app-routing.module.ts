@@ -1,6 +1,6 @@
 // Core Angular imports
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, Route } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 import { List } from 'immutable';
 
 import { NotFoundComponent } from './not-found/not-found.component';

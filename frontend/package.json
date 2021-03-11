@@ -91,6 +91,6 @@
   },
   "optionalDependencies": {
     "@nrwl/cypress": "^11.2.12",
-    "cypress": "^6.5.0"
+    "cypress": "^6.6.0"
   }
 }

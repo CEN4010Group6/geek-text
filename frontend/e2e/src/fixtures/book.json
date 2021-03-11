@@ -1,0 +1,43 @@
+{
+  "id": "c152e39b-a19d-400a-8905-043d2960d8ad",
+  "title": "A Book",
+  "authors": [
+    {
+      "id": "b35bc6b6-0bcf-4de5-ae53-b3fd60b6eb15",
+      "firstName": "An",
+      "middleName": null,
+      "lastName": "Author",
+      "description": "askldfnalsdnlkasngklasngkls"
+    }
+  ],
+  "publishYear": 2020,
+  "isbn": 8888888888888,
+  "description": "A book description",
+  "price": 1.50,
+  "coverUrl": "https://via.placeholder.com/320",
+  "sold": 5,
+  "publisher": {
+    "name": "A Publisher",
+    "city": "Panama City",
+    "state": "FL"
+  },
+  "genres": [
+    {
+      "id": 1,
+      "name": "Fiction"
+    }
+  ],
+  "averageRating": "3",
+  "reviews": [
+    {
+      "id": "8abb3322-5106-4100-b0f5-49f3a8628e0c",
+      "value": "3",
+      "description": "Commodi perspiciatis quia voluptatem. Culpa quidem exercitationem. Recusandae voluptas voluptas dolor totam. Sit repellendus assumenda nesciunt aut quos est. Ea at esse et repellat odio magnam ipsam.",
+      "postedAs": "anonymous",
+      "userId": "c5c72ba3-7e63-4821-8496-f48e71050f80",
+      "bookId": "c152e39b-a19d-400a-8905-043d2960d8ad",
+      "createdAt": "2021-03-09T22:47:41.569Z",
+      "updatedAt": "2021-03-09T22:47:41.569Z"
+    }
+  ]
+}
