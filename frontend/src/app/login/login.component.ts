@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         auth => {
           this.$apiService.get('/users/' + auth.userId).subscribe((data) => {
+            localStorage.setItem('userId', data?.id);
             this.$userService.load(data);
           });
           this.$router.navigate([this.returnUrl]);
