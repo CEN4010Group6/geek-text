@@ -25,6 +25,7 @@ export class UserService {
   }
 
   public load(data: {
+    id?: string;
     firstName?: string;
     middleName?: string;
     lastName?: string;
