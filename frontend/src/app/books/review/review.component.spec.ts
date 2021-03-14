@@ -9,6 +9,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { RateTitlePipe } from '../star-rating/rate-title.pipe';
 import { BooksModule } from '../books.module';
+import { UserService } from 'src/app/users/user.service';
+import { FlashMessageService } from 'src/app/flash-message/flash-message.service';
 
 describe('ReviewComponent', () => {
   let component: ReviewComponent;
@@ -16,9 +18,22 @@ describe('ReviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpClientModule, NgbNavModule, ReactiveFormsModule ],
-      providers: [ ApiService ],
-      declarations: [ ReviewComponent, StarRatingComponent, RateTitlePipe ]
+      imports: [
+        RouterTestingModule,
+        HttpClientModule,
+        NgbNavModule,
+        ReactiveFormsModule
+      ],
+      providers: [
+        ApiService,
+        UserService,
+        FlashMessageService
+      ],
+      declarations: [
+        ReviewComponent,
+        StarRatingComponent,
+        RateTitlePipe
+      ]
     })
     .compileComponents();
   });
