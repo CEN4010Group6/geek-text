@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Book, Prisma, ShoppingCart } from '@prisma/client';
+import { Book, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { ShoppingCart } from './dto/shopping-cart';
 
 @Injectable()
 export class ShoppingCartService {
@@ -29,7 +30,6 @@ export class ShoppingCartService {
    *
    * @param shoppingCartWhereUniqueInput
    */
-  // TODO is this something that should be implemented?
   public async findAll(params: {
     skip?: number;
     take?: number;

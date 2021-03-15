@@ -8,15 +8,14 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ShoppingCart, Prisma } from '@prisma/client';
+import { PoliciesGuard } from '../auth/policies.guard';
 import { UtilityService } from './../utility/utility.service';
-import { Public } from '../public.decorator';
-import { Roles, Role } from '../roles.decorator';
-
 import { ShoppingCartService } from './shopping-cart.service';
 
-@Controller('cart')
+@Controller('shopping-cart')
 export class ShoppingCartController {
   /**
    * Shopping Cart controller constructor
@@ -35,7 +34,7 @@ export class ShoppingCartController {
    */
   @Get()
   @Header('Cache-Control', 'max-age=0; s-max-age=3600, proxy-revalidate')
-  @Roles(Role.Admin)
+  @UseGuards(PoliciesGuard)
   public async findAll(
     @Query('skip') skip?: number,
     @Query('take') take?: number,
@@ -67,7 +66,7 @@ export class ShoppingCartController {
    */
   @Get(':id')
   @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
   public async findOne(@Param('id') id: string): Promise<ShoppingCart | null> {
     return this.$shoppingCartService.findOne({
       id: id,
@@ -80,25 +79,12 @@ export class ShoppingCartController {
    * @param postData The Shopping Cart data to be created
    */
   @Post('')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
   public async create(
     @Body() postData: Prisma.ShoppingCartCreateInput,
   ): Promise<ShoppingCart> {
     return this.$shoppingCartService.create(postData);
   }
-
-  // /**
-  //  * POST request to create a new ShoppingCart in the `shopping_carts` table
-  //  *
-  //  * @param postData The Shopping Cart data to be created
-  //  */
-  // @Post(':id')
-  // @Roles(Role.User)
-  // public async create(
-  //   @Body() postData: Prisma.TransactionCreateInput,
-  // ): Promise<Transaction> {
-  //   return this.$transactionService.create(postData);
-  // }
 
   /**
    * PUT request to update a ShoppingCart in the `shopping_carts` table
@@ -107,7 +93,7 @@ export class ShoppingCartController {
    * @param postData The updated information of the Shopping Cart
    */
   @Put(':id')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
   public async update(
     @Param('id') id: string,
     @Body() postData: Prisma.ShoppingCartCreateInput,
@@ -124,7 +110,7 @@ export class ShoppingCartController {
    * @param id The UUID of the Shopping Cart to be removed
    */
   @Delete(':id')
-  @Roles(Role.User)
+  @UseGuards(PoliciesGuard)
   public async delete(@Param('id') id: string): Promise<ShoppingCart> {
     return this.$shoppingCartService.delete({
       id: id,

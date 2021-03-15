@@ -4,11 +4,71 @@
   <li>
     <p><a>book title</a></p>
     <p>author information</p>
-    <button [ngClass]="['btn', 'btn-primary']">Plus</button>
+    <button class="btn btn-primary">Plus</button>
     <span>
       Quantity
       <!--Default to 1-->
     </span>
-    <button [ngClass]="['btn', 'btn-primary']">Minus</button>
+    <button class="btn btn-primary">Minus</button>
   </li>
 </ol>
+<section>
+  <div class="spacer">
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-lg-9">
+          <div class="row shop-listing">
+            <!-- <table class="table shop-table" *ngIf="carts"> -->
+            <table class="table shop-table">
+              <tr>
+                <th class="b-0">Name</th>
+                <th class="b-0">Price</th>
+                <th class="b-0">Quantity</th>
+                <th class="b-0 text-right">Total Price</th>
+              </tr>
+              <!-- <tr *ngFor="let item of carts.items"> -->
+              <tr>
+                <!-- <td>{{ item.productId.name }}</td>
+                <td>{{ item.productId.price }}</td> -->
+                <td>
+                  <button class="btn btn-primary btn-sm">-</button>
+                  <!-- {{ item.quantity }} -->
+                  hello world
+                  <button class="btn btn-primary btn-sm">
+                    <!-- <button
+                    class="btn btn-primary btn-sm"
+                    (click)="_incrementQTY(item.productId._id, 1)"
+                  > -->
+                    +
+                  </button>
+                </td>
+                <td class="text-right">
+                  <h5 class="font-medium m-b-30">item.total</h5>
+                  <!-- <h5 class="font-medium m-b-30">{{ item.total }}</h5> -->
+                </td>
+                <td>
+                  <button class="btn btn-danger btn-md">Delete</button>&nbsp;
+                  <button class="btn btn-secondary btn-md">
+                    Save for Later
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" align="right">
+                  <!-- Subtotal :{{ carts.subTotal }} -->
+                  Subtotal:
+                </td>
+                <td colspan="4" align="right">
+                  <button class="btn btn-danger">
+                    <!-- <button class="btn btn-danger" (click)="_emptyCart()"> -->
+                    Empty Cart
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
