@@ -2,10 +2,7 @@ declare var process: any;
 
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-
-import { Book } from './models/book';
+import { Observable } from 'rxjs';
 
 const defaultHttpOptions = {
   headers: new HttpHeaders({

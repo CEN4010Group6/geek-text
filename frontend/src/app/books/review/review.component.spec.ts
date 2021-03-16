@@ -8,7 +8,6 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { RateTitlePipe } from '../star-rating/rate-title.pipe';
-import { BooksModule } from '../books.module';
 import { UserService } from 'src/app/users/user.service';
 import { FlashMessageService } from 'src/app/flash-message/flash-message.service';
 

@@ -11,7 +11,6 @@ describe('ReviewsController', () => {
   let module: TestingModule;
   let controller: ReviewsController;
   let database: PrismaService;
-  let utility: UtilityService;
 
   const mockReview: any = {
     value: 5,
@@ -35,7 +34,6 @@ describe('ReviewsController', () => {
 
     controller = module.get<ReviewsController>(ReviewsController);
     database = module.get<PrismaService>(PrismaService);
-    utility = module.get<UtilityService>(UtilityService);
 
     user = await database.user.findFirst();
     book = await database.book.findFirst();

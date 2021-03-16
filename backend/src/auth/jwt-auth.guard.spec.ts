@@ -1,5 +1,4 @@
 import { TestingModule, Test } from '@nestjs/testing';
-import { APP_GUARD } from '@nestjs/core';
 
 import { JwtAuthGuard } from './jwt-auth.guard';
 

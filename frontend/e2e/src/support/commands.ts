@@ -1,3 +1,3 @@
-Cypress.Commands.add('login', (email: string, password: string) => {
-
+Cypress.Commands.add('dataTest', (value: string) => {
+  return cy.get(`[data-test=${value}]`);
 });

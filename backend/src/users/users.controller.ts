@@ -1,8 +1,7 @@
 import { UtilityService } from './../utility/utility.service';
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Public } from '../public.decorator';
-import { Roles, Role } from '../roles.decorator';
 
 import { Resource } from '../interface/resource.interface';
 import { UsersService } from './users.service';

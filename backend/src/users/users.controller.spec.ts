@@ -12,7 +12,6 @@ describe('UsersController', () => {
   let module: TestingModule;
   let controller: UsersController;
   let database: PrismaService;
-  let utility: UtilityService;
 
   let mockUser: any = {
     email: 'a@b.com',
@@ -36,7 +35,6 @@ describe('UsersController', () => {
 
     controller = module.get<UsersController>(UsersController);
     database = module.get<PrismaService>(PrismaService);
-    utility = module.get<UtilityService>(UtilityService);
 
     mockUser.passwordHash = await argon2.hash('IAmAPassword');
 

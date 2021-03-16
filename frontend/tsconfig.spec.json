@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "types": [
-      "jest"
+      "jest",
+      "cypress"
     ],
     "module": "commonjs",
     "emitDecoratorMetadata": true,

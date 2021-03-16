@@ -1,5 +1,3 @@
-declare var process: any;
-
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,

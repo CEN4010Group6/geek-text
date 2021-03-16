@@ -6,8 +6,7 @@
   "contributors": [
     "Paulo Pinto",
     "Arturo Presa",
-    "Nicholas Prieto",
-    "John Quitto-Graham"
+    "Nicholas Prieto"
   ],
   "scripts": {
     "ng": "ng",
@@ -49,6 +48,7 @@
     "@ngx-pwa/local-storage": "^11.1.0",
     "bootstrap": "^4.5.0",
     "immutable": "^4.0.0-rc.12",
+    "luxon": "^1.26.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
@@ -56,6 +56,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^11.0.0",
     "@angular-builders/jest": "11.0.0",
+    "@angular-devkit/architect": "^0.1001.7",
     "@angular-devkit/build-angular": "~0.1101.0",
     "@angular-devkit/schematics": "^11.2.0",
     "@angular-eslint/builder": "1.2.0",
@@ -67,12 +68,10 @@
     "@types/dotenv-webpack": "^5.0.0",
     "@types/jest": "^26.0.20",
     "@types/node": "^12.19.15",
-    "@types/terser-webpack-plugin": "^5.0.2",
     "@types/webpack": "^4.41.26",
     "@types/webpack-subresource-integrity": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
-    "copy-webpack-plugin": "^6.0.0",
     "dotenv": "^8.2.0",
     "dotenv-webpack": "^6.0.0",
     "eslint": "^7.6.0",

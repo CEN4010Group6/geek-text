@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 
 import { ApiService } from '../api.service';
 import { User } from '../models/user';
-import { UserService } from '../users/user.service';
 
 @Injectable()
 export class AuthService {
@@ -14,8 +13,7 @@ export class AuthService {
 
   constructor(
     private readonly $apiService: ApiService,
-    private readonly $storage: StorageMap,
-    private readonly $userService: UserService
+    private readonly $storage: StorageMap
   ) {
     this.tokenSubject = new BehaviorSubject<string>('');
     this.$storage.get('accessToken').subscribe((t) => {

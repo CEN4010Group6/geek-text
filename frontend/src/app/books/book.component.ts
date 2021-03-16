@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,6 @@ import { AuthorsService } from '../authors/authors.service';
 import { Author } from '../models/author';
 import { Book } from '../models/book';
 import { Genre } from '../models/genre';
-import { Review } from '../models/review';
 import { UserService } from '../users/user.service';
 
 @Component({

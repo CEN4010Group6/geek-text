@@ -10,7 +10,6 @@ import { CaslAbilityFactory } from '../auth/casl-ability.factory';
 describe('GenresController', () => {
   let module: TestingModule;
   let controller: GenresController;
-  let utility: UtilityService;
   let database: PrismaService;
 
   let mockGenre: {
@@ -29,7 +28,6 @@ describe('GenresController', () => {
     }).compile();
 
     controller = module.get<GenresController>(GenresController);
-    utility = module.get<UtilityService>(UtilityService);
     database = module.get<PrismaService>(PrismaService);
   });
 

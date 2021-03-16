@@ -1,7 +1,6 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { Review as ReviewModel, Prisma } from '@prisma/client';
 import { IsAlpha, IsDate, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString, IsUUID } from 'class-validator';
-import { Book } from '../../books/dto/book';
 
 import { BaseDTO } from '../../dto/base';
 

@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Book as BookModel, Prisma } from '@prisma/client'
-import { ObjectUnsubscribedError } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { Book } from './dto/book';
 

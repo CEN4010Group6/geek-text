@@ -1,4 +1,3 @@
-import { AuthModuleOptions } from '@nestjs/passport';
 import { AuthModule } from './auth.module';
 
 describe('AuthController', () => {

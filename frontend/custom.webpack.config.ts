@@ -4,7 +4,6 @@ import * as webpack from 'webpack';
 import ResourceHintWebpackPlugin from 'resource-hints-webpack-plugin';
 import SriPlugin from 'webpack-subresource-integrity';
 import DotenvPlugin from 'dotenv-webpack';
-import CopyPlugin from 'copy-webpack-plugin';
 
 export default {
   module: {
@@ -29,6 +28,6 @@ export default {
       hashFuncNames: [ 'sha256' ],
       enabled: process.env.NODE_ENV === 'production'
     }),
-    new ResourceHintWebpackPlugin()
+    new ResourceHintWebpackPlugin(),
   ]
 } as unknown as webpack.Configuration;

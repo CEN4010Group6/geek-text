@@ -6,7 +6,6 @@ import { NotFoundComponent } from './not-found.component';
 describe('NotFoundComponent', () => {
   let component: NotFoundComponent;
   let fixture: ComponentFixture<NotFoundComponent>;
-  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -1,5 +1,5 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
-import { User as UserModel, Prisma, Role } from '@prisma/client';
+import { User as UserModel, Prisma } from '@prisma/client';
 import { IsDate, IsEmail, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { BaseDTO } from '../../dto/base';
