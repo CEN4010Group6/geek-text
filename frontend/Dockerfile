@@ -9,7 +9,6 @@ WORKDIR /app
 COPY . .
 
 RUN npm install -g @angular/cli && \
-  # npm install --no-optional && \
   npm cache clean --force
 
 EXPOSE 4200

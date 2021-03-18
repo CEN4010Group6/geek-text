@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 RUN NODE_ENV=development npm install --no-optional && \
-  npm run build -- --prod --aot --preserve-symlinks && \
+  npm run build -- --prod --aot && \
   npm cache clean --force
 
 FROM nginx:mainline-alpine

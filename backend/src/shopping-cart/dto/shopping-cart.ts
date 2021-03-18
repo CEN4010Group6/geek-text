@@ -8,8 +8,9 @@ export class ShoppingCart implements ShoppingCartModel {
   @IsString()
   userId: string;
 
+  @IsOptional()
   @IsDefined()
-  books: Prisma.BookCreateNestedManyWithoutShoppingCartInput;
+  books?: Prisma.BookCreateNestedManyWithoutShoppingCartInput;
 
   @IsDate()
   createdAt: Date;

@@ -39,16 +39,6 @@ services:
     volumes:
       - redis_cache:/data
 
-  # db-migration:
-  #   image: backend
-  #   command: npm run seed
-  #   volumes:
-  #     - database:/app/db
-  #   profiles:
-  #     - develop
-  #   depends_on:
-  #     - backend
-
 volumes:
   database: {}
   nginx_cache: {}
