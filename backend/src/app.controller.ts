@@ -31,12 +31,18 @@ export class AppController {
   }
 
   /**
-   * POST method for adding logging infomation to the database.
+   * POST method for adding logging information to the database.
    * @param messageBody
    */
   @Post('logs')
   @Public()
   public async logError(@Body() messageBody: BrowserError) {
-    console.log(messageBody);
+    this.$prismaService.log.create({
+      data: {
+        name: messageBody.name,
+        message: messageBody.message,
+        createdAt: messageBody.createdAt
+      }
+    });
   }
 }

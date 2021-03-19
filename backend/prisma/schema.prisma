@@ -151,3 +151,11 @@ model Role {
   users User[]
   @@map("roles")
 }
+
+model Log {
+  id String @id @default(uuid())
+  name String
+  message String
+  createdAt DateTime @default(now())
+  @@map("logs")
+}
