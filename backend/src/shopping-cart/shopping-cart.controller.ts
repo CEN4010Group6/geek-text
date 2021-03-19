@@ -9,9 +9,11 @@ import {
   Put,
   Query,
   UseGuards,
+  ParseUUIDPipe
 } from '@nestjs/common';
 import { ShoppingCart, Prisma } from '@prisma/client';
 import { PoliciesGuard } from '../auth/policies.guard';
+import { ParseFrontendBtoaPipe } from '../parse-frontend-btoa.pipe';
 import { UtilityService } from './../utility/utility.service';
 import { ShoppingCartService } from './shopping-cart.service';
 
@@ -25,7 +27,7 @@ export class ShoppingCartController {
   constructor(
     private readonly $utilityService: UtilityService,
     private readonly $shoppingCartService: ShoppingCartService,
-  ) {}
+  ) { }
 
   /**
    * GET request to find all records in the `shopping_carts` table
@@ -65,13 +67,15 @@ export class ShoppingCartController {
    * @param id The UUID of the requested Shopping Cart
    */
   @Get(':id')
-  @Header('Cache-Control', 'max-age=0, s-max-age=3600, proxy-revalidate')
   @UseGuards(PoliciesGuard)
-  public async findOne(@Param('id') id: string): Promise<ShoppingCart | null> {
-    return this.$shoppingCartService.findOne({
-      id: id,
-    } as Prisma.ShoppingCartWhereUniqueInput);
-  }
+  public async findOne(@Param('id', ParseUUIDPipe) id: string, @Query('select', new ParseFrontendBtoaPipe) select?: Prisma.ShoppingCartSelect): Promise<ShoppingCart | null> {
+
+    const query = { where: { id: id }, select };
+
+    return this.$shoppingCartService.findOne(
+      query
+    );
+                                            }
 
   /**
    * POST request to create a new ShoppingCart in the `shopping_carts` table
@@ -80,8 +84,9 @@ export class ShoppingCartController {
    */
   @Post('')
   @UseGuards(PoliciesGuard)
+  // @CheckPolicies((ability: AppAbility) => ability.can(Action.Create, ShoppingCart)) TODO ask about this
   public async create(
-    @Body() postData: Prisma.ShoppingCartCreateInput,
+    @Body() postData: Prisma.ShoppingCartCreateInput
   ): Promise<ShoppingCart> {
     return this.$shoppingCartService.create(postData);
   }

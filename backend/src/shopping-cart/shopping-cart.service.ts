@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Book, Prisma } from '@prisma/client';
+import { ShoppingCart as ShoppingCartModel, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { ShoppingCart } from './dto/shopping-cart';
 
@@ -10,7 +10,7 @@ export class ShoppingCartService {
    *
    * @param $prisma;
    */
-  constructor(private readonly $prisma: PrismaService) {}
+  constructor(private readonly $prisma: PrismaService) { }
 
   /**
    * Find a single Shopping Cart in the 'shopping_carts' table
@@ -18,11 +18,18 @@ export class ShoppingCartService {
    * @param shoppingCartWhereUniqueInput
    */
   public async findOne(
-    shoppingCartWhereUniqueInput: Prisma.ShoppingCartWhereUniqueInput,
+    params: { where: Prisma.ShoppingCartWhereUniqueInput; select?: Prisma.ShoppingCartSelect; }
   ): Promise<ShoppingCart | null> {
-    return this.$prisma.shoppingCart.findUnique({
-      where: shoppingCartWhereUniqueInput,
-    });
+    const { where, select } = params;
+
+    const dbShoppingCart = await this.$prisma.shoppingCart.findUnique({ where, select }) as ShoppingCartModel | null;
+
+    let shoppingCart: any;
+
+    if (dbShoppingCart) {
+      shoppingCart = new ShoppingCart(dbShoppingCart);
+    }
+    return shoppingCart;
   }
 
   /**
