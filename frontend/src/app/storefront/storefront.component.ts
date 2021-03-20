@@ -12,6 +12,7 @@ import { Book } from '../models/book';
 export class StorefrontComponent implements OnInit {
 
   public books: Book[] = [];
+  public count: number = 0;
 
   constructor(
     private readonly $apiService: ApiService,
@@ -20,7 +21,10 @@ export class StorefrontComponent implements OnInit {
 
   public ngOnInit(): void {
     this.$apiService.get('/books')
-      .subscribe(res => this.books = res);
+      .subscribe(res => {
+        this.books = res.books;
+        this.count = res.count;
+      });
   }
 
   public async navigate(id: string) {

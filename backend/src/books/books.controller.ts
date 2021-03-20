@@ -46,9 +46,14 @@ export class BooksController implements Resource {
     @Query('where', new ParseFrontendBtoaPipe()) where?: Prisma.BookWhereInput,
     @Query('orderBy', new ParseFrontendBtoaPipe()) orderBy?: Prisma.BookOrderByInput,
     @Query('select', new ParseFrontendBtoaPipe()) select?: Prisma.BookSelect
-  ): Promise<Book[]> {
+  ): Promise<{ books: Book[], count: number}> {
     const query = { skip, take, cursor, where, orderBy, select };
-    return this.$booksService.findAll(query);
+    const books = await this.$booksService.findAll(query);
+    const count = await this.$booksService.count(query);
+    return {
+      books,
+      count
+    }
   }
 
   /**

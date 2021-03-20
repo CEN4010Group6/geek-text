@@ -138,4 +138,34 @@ export class BooksService {
   public async delete(where: Prisma.BookWhereUniqueInput): Promise<Book> {
     return this.$prisma.book.delete({ where });
   }
+
+  /**
+   * Counts the books in the database
+   *
+   * @param params
+   * @returns
+   */
+  public async count(params: {
+    where?: Prisma.BookWhereInput;
+    cursor?: Prisma.BookWhereUniqueInput;
+    skip?: number;
+    take?: number;
+    orderBy?: Prisma.BookOrderByInput;
+  }): Promise<number> {
+    const { where, cursor, skip, take, orderBy } = params;
+
+    let count = await this.$prisma.book.count({
+      where,
+      cursor,
+      skip,
+      take,
+      orderBy
+    });
+
+    if(!count) {
+      count = 0;
+    }
+
+    return count;
+  }
 }
