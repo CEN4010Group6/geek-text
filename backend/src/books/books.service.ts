@@ -33,7 +33,6 @@ export class BooksService {
       // @ts-ignore
       delete select.averageRating;
     }
-    /** @ts-ignore */
 
     const dbBook = await this.$prisma.book.findUnique({
       where,
@@ -77,6 +76,15 @@ export class BooksService {
   }): Promise<Book[]> {
     const { skip, take, cursor, where, orderBy, select } = params;
 
+    let averageRating = false;
+
+    // @ts-ignore
+    if(select?.averageRating) {
+      averageRating  = true;
+      // @ts-ignore
+      delete select.averageRating;
+    }
+
     let books = await this.$prisma.book.findMany({
       skip,
       take,
@@ -89,7 +97,7 @@ export class BooksService {
     for(let idx in books) {
       let book = new Book(books[idx]);
 
-      if(select?.reviews) {
+      if(averageRating) {
         const aggregate = await this.$prisma.review.aggregate({
           where: {
             bookId: book.id
@@ -149,16 +157,14 @@ export class BooksService {
     where?: Prisma.BookWhereInput;
     cursor?: Prisma.BookWhereUniqueInput;
     skip?: number;
-    take?: number;
     orderBy?: Prisma.BookOrderByInput;
   }): Promise<number> {
-    const { where, cursor, skip, take, orderBy } = params;
+    const { where, cursor, skip, orderBy } = params;
 
     let count = await this.$prisma.book.count({
       where,
       cursor,
       skip,
-      take,
       orderBy
     });
 

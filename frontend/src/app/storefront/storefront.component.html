@@ -1,5 +1,5 @@
 <div class="row" *ngIf="books">
-  <div class="col-sm-3" *ngFor="let book of books">
+  <div class="col-sm-3" *ngFor="let book of (books | async)">
     <div class="card" (click)="navigate(book.id)">
       <div class="card-header">{{ book.title }}</div>
       <div *ngIf="book.coverDataUri; then thenBlock else elseBlock"></div>
@@ -10,7 +10,9 @@
         <img class="card-img-top img-thumbnail" [src]="book.coverUrl" [alt]="book.title" width="100px" height="200px" />
       </ng-template>
       <div class="card-body">
-        <p *ngIf="book.genres">Genres: {{ book.genres.join(', ') }}</p>
+        <p *ngIf="book.genres">Genres: {{
+          book.genres.join(', ')
+        }}</p>
         <p>Price: {{ book.price | currency }}</p>
         <p><app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
       </div>

@@ -49,7 +49,7 @@ export class BooksController implements Resource {
   ): Promise<{ books: Book[], count: number}> {
     const query = { skip, take, cursor, where, orderBy, select };
     const books = await this.$booksService.findAll(query);
-    const count = await this.$booksService.count(query);
+    const count = await this.$booksService.count({ skip, cursor, where, orderBy });
     return {
       books,
       count
