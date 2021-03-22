@@ -77,15 +77,9 @@ export class LoginComponent implements OnInit {
         this.$router.navigate([this.returnUrl]);
       }, error => {
         if(error === 'Unauthorized') {
-          this.$flashMessageService.add({
-            value: "Username or password was incorrect",
-            level: Level.Danger
-          });
+          this.$flashMessageService.add('Username or password was incorrect');
         } else {
-          this.$flashMessageService.add({
-            value: error,
-            level: Level.Danger
-          });
+          this.$flashMessageService.add(error);
         }
       });
   }
@@ -103,10 +97,7 @@ export class LoginComponent implements OnInit {
         this.$userService.load(user);
         this.$router.navigate(['/']);
       }, (error) => {
-        this.$flashMessageService.add({
-          value: error,
-          level: Level.Danger
-        });
+        this.$flashMessageService.add(error);
       });
   }
 }

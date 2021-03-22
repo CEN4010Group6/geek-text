@@ -24,7 +24,8 @@
       "dom"
     ],
     "types": [
-      "cypress"
+      "cypress",
+      "jest"
     ]
   },
   "angularCompilerOptions": {

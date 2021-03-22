@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../users/user.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-navigation',
@@ -10,8 +13,10 @@ import { UserService } from '../users/user.service';
 })
 export class NavigationComponent implements OnInit {
 
+  public isLoggedIn?: Observable<boolean>
+  public user?: User;
   private collapsed = true;
-  public isLoggedIn = false;
+  private _profileCollapsed = true;
 
   constructor(
     private readonly $router: Router,
@@ -20,9 +25,13 @@ export class NavigationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.$userService.isLoggedIn().subscribe((loggedIn) => {
-      this.isLoggedIn = loggedIn;
-    });
+    this.$userService.asObservable()
+      .subscribe((user: User | undefined) => {
+        if(user) {
+          this.user = user;
+        }
+      });
+    this.isLoggedIn = this.$userService.isLoggedIn();
   }
 
   public isCollapsed(): boolean {
@@ -31,5 +40,13 @@ export class NavigationComponent implements OnInit {
 
   public toggleCollapsed() {
     this.collapsed = !this.collapsed;
+  }
+
+  public get profileCollapsed(): boolean {
+    return this._profileCollapsed;
+  }
+
+  public toggleProfileCollapsed() {
+    this._profileCollapsed = !this._profileCollapsed;
   }
 }

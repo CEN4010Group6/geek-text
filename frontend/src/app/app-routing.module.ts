@@ -11,11 +11,18 @@ import { AuthorsComponent } from './authors/authors.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './auth/auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
   { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
+  {
+    path: 'logout',
+    component: LogoutComponent,
+    canActivate: [ AuthGuard ] // Seems silly to allow logging
+                               // out when someone isn't even
+                               // logged in
+  },
   { path: 'books/:bookId', component: BookComponent },
   {
     path: 'books/:bookId/review',
@@ -23,6 +30,11 @@ const routes: List<Route> = List([
     canActivate: [ AuthGuard ]
   },
   { path: 'authors/:authorId', component: AuthorsComponent },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [ AuthGuard ]
+  },
   { path: '', component: StorefrontComponent },
   { path: '**', component: NotFoundComponent }
 ]);

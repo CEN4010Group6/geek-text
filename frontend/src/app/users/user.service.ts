@@ -18,7 +18,7 @@ export class UserService {
     this.$storage.get('user').subscribe((data) => {
       if(data) {
         const parsed = JSON.parse(atob(data as string));
-        this.userSubject.next(new BehaviorSubject(new User(parsed)));
+        this.userSubject.next(new User(parsed));
         this.isLoggedInSubject.next(true);
       }
     });
@@ -43,11 +43,15 @@ export class UserService {
     this.isLoggedInSubject.next(false);
   }
 
+  public get user(): User | undefined {
+    return this.userSubject.value;
+  }
+
   public isLoggedIn(): Observable<boolean> {
     return this.isLoggedInSubject.asObservable();
   }
 
-  public get user(): User | undefined {
-    return this.userSubject.value;
+  public asObservable(): Observable<User | undefined> {
+    return this.userSubject.asObservable();
   }
 }

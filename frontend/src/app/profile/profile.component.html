@@ -1,0 +1,103 @@
+<div *ngIf="user">
+  <div class="row">
+    <div class="col-sm-3">
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a class="nav-link"
+            [ngClass]="{ 'active': isActiveTab('profile') }"
+            (click)="activeTab = eTabState.Profile"><i class="fas fa-user"></i>&nbsp;Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+            [ngClass]="{ 'active': isActiveTab('security') }"
+            (click)="activeTab = eTabState.Security"><i class="fas fa-lock"></i>&nbsp;Security</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9" [ngSwitch]="activeTab">
+      <div *ngSwitchCase="'profile'">
+        <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
+          <div class="form-group row">
+            <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"
+                id="firstName" formControlName="firstName" required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="middleName" class="col-sm-2 col-form-label">Middle Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"
+                id="middleName" formControlName="middleName" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"
+                id="lastName" formControlName="lastName" required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nickName" class="col-sm-2 col-form-label">Nickname</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"
+                id="nickName" formControlName="nickName" required />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="profilePicture" class="col-sm-2 col-form-label">Profile Picture</label>
+            <div class="col-sm-10">
+              <input type="file" class="form-control-file"
+              id="profilePicture"
+              (change)="convertToDataURL($event)"
+              accepts="image/gif,image/jpeg,images/jpg,image/png" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid">Update</button>
+          </div>
+        </form>
+      </div>
+      <div *ngSwitchCase="eTabState.Security">
+        <form [formGroup]="securityForm" *ngIf="securityForm" (submit)="onSubmitSecurity()">
+          <div class="form-group row">
+            <label for="newPassword" class="col-sm-3 col-form-label">New Password</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control"
+                id="newPassword"
+                formControlName="newPassword"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="newPasswordConfirm" class="col-sm-3 col-form-label">Confirm New Password</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control"
+                id="newPasswordConfirm"
+                formControlName="newPasswordConfirm"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="currentPassword" class="col-sm-3 col-form-label">Current Password</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control"
+                id="currentPassword" formControlName="currentPassword"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <button type="submit"
+              class="btn btn-primary"
+              [disabled]="!securityForm.valid"
+            >Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

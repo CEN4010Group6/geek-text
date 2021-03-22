@@ -32,6 +32,8 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { StorefrontModule } from './storefront/storefront.module';
 import { FlashMessageModule } from './flash-message/flash-message.module';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfilesModule } from './profile/profile.module';
 
 @NgModule({
   imports: [
@@ -55,6 +57,7 @@ import { FlashMessageModule } from './flash-message/flash-message.module';
     AuthorsModule,
     BooksModule,
     FlashMessageModule,
+    ProfilesModule,
     StorefrontModule
   ],
   declarations: [

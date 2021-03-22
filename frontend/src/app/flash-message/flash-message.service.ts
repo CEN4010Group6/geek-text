@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { List } from 'immutable';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Message } from './message';
+import { Level } from './level';
 
 @Injectable()
 export class FlashMessageService {
@@ -12,8 +13,8 @@ export class FlashMessageService {
     this.messagesSubject = new BehaviorSubject(List<Message>());
   }
 
-  public add(msg: Message) {
-    this.messagesSubject.next(this.messagesSubject.value.push(msg))
+  public add(value: string, level: Level = Level.Danger) {
+    this.messagesSubject.next(this.messagesSubject.value.push({ value, level }))
   }
 
   public remove(idx: number) {

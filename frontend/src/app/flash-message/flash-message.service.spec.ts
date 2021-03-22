@@ -20,7 +20,7 @@ describe('FlashMessageService', () => {
   });
 
   it('should allow for a message to be added and removed', () => {
-    service.add({ value: 'Hello', level: Level.Info });
+    service.add('Hello', Level.Info);
     service.messages.subscribe((msgs) => {
       expect(msgs.size).toBe(1);
     });

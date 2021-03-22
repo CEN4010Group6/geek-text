@@ -89,11 +89,11 @@ describe('BooksController', () => {
     await expect(controller.findAll).toBeDefined();
     let findAll = await controller.findAll(0, 10, cursor, where, orderBy, select);
     await expect(findAll).toBeDefined();
-    await expect(findAll.length).toBeGreaterThan(0);
+    await expect(findAll.books.length).toBeGreaterThan(0);
 
     findAll = await controller.findAll();
     await expect(findAll).toBeDefined();
-    await expect(findAll.length).toBeGreaterThan(0);
+    await expect(findAll.books.length).toBeGreaterThan(0);
   });
 
   it('should have a method findOne', async () => {

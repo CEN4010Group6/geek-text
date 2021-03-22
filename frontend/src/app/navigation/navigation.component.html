@@ -20,11 +20,21 @@
         <a class="nav-link" id="storefront" [routerLink]="['/']">Store</a>
       </li>
     </ul>
-    <div *ngIf="isLoggedIn; then thenBlock else elseBlock"></div>
+    <div *ngIf="isLoggedIn | async; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" id="logout" [routerLink]="['/logout']">Log Out</a>
+      <ul class="navbar-nav ml-auto" *ngIf="user">
+        <li class="nav-item dropdown" [ngClass]="{ 'show': !profileCollapsed }">
+          <a class="nav-link dropdown-toggle" id="profile"
+            (click)="toggleProfileCollapsed()"
+            aria-haspopup="true">
+            Hello {{ user.firstName }} <span *ngIf="user.middleName">{{ user.middleName}} </span>{{ user.lastName }}
+          </a>
+          <div class="dropdown-menu"
+            aria-labelledby="profile"
+            [ngClass]="{ 'show': !profileCollapsed }">
+            <a class="dropdown-item" id="profilePage" [routerLink]="['/profile']">Profile</a>
+            <a class="dropdown-item" id="logout" [routerLink]="['/logout']">Log Out</a>
+          </div>
         </li>
       </ul>
     </ng-template>
