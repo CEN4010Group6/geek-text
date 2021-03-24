@@ -12,6 +12,9 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent as ProfileProfileComponent } from './profile/profile/profile.component';
+import { SecurityComponent } from './profile/security/security.component';
+import { AddressComponent } from './profile/address/address.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
@@ -33,9 +36,27 @@ const routes: List<Route> = List([
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [ AuthGuard ]
+    canActivate: [ AuthGuard ],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        component: ProfileProfileComponent,
+        outlet: 'sub'
+      },
+      {
+        path: 'security',
+        component: SecurityComponent,
+        outlet: 'sub'
+      },
+      {
+        path: 'address',
+        component: AddressComponent,
+        outlet: 'sub'
+      }
+    ]
   },
-  { path: '', component: StorefrontComponent },
+  { path: '', component: StorefrontComponent, pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }
 ]);
 

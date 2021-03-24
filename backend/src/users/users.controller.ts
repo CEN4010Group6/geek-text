@@ -86,17 +86,25 @@ export class UsersController implements Resource {
    * @param id The UUID of the User to be updated
    * @param bookData The updated information of the Book
    */
-  @Put(':id')
+  @Put(':id/:context')
   @UseGuards(PoliciesGuard)
   @CheckPolicies((ability: AppAbility) => ability.can(Action.Update, User))
   public async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() postData: UpdateUser
+    @Body() postData: any,
+    @Param('context') context?: string,
   ): Promise<User> {
-    return this.$usersService.update({
-      where: { id: id } as Prisma.UserWhereUniqueInput,
-      data: postData
-    });
+    if(context === 'update-password') {
+      return this.$usersService.updatePassword({
+        where: { id } as Prisma.UserWhereUniqueInput,
+        data: postData
+      });
+    } else {
+      return this.$usersService.update({
+        where: { id: id } as Prisma.UserWhereUniqueInput,
+        data: postData
+      });
+    }
   }
 
   /**

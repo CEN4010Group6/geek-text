@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
 import { PrismaService } from '../prisma/prisma.service';
@@ -155,5 +155,39 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  public async updatePassword(params: {
+    where: Prisma.UserWhereUniqueInput;
+    data: { currentPassword: string; newPassword: string; newPasswordConfirm: string };
+  }): Promise<User> {
+    const { where, data } = params;
+    const { currentPassword, newPassword } = data;
+
+    let user = await this.$prisma.user.findUnique({ where }) as User;
+
+    if(user) {
+      const isValidPassword = await argon2.verify(user.passwordHash as string, currentPassword);
+
+      if(!isValidPassword) {
+        throw new BadRequestException('Current password is incorrect');
+      }
+
+      const newHash = await argon2.hash(newPassword);
+
+      user.passwordHash = newHash;
+
+      user = await this.$prisma.user.update({
+        where,
+        data: user
+      }) as User;
+
+      // @ts-ignore
+      delete user.passwordHash;
+
+      return user;
+    } else {
+      throw new NotFoundException('The requested user ID could not be found');
+    }
   }
 }

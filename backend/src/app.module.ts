@@ -15,6 +15,7 @@ import { AuthorsModule } from './authors/authors.module';
 import { GenresModule } from './genres/genres.module';
 import { RolesGuard } from './auth/roles.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { AddressesModule } from './addresses/addresses.module';
 
 @Module({
   imports: [
@@ -28,12 +29,13 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
       port: 6379,
       max: 50
     }),
+    AddressesModule,
     AuthModule,
-    BooksModule,
-    ReviewsModule,
-    UsersModule,
     AuthorsModule,
-    GenresModule
+    BooksModule,
+    GenresModule,
+    ReviewsModule,
+    UsersModule
   ],
   controllers: [ AppController ],
   providers: [
