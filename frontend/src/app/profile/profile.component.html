@@ -37,6 +37,9 @@
       <div *ngSwitchCase="eActiveTab.Security">
         <app-profile-security [user]="user"></app-profile-security>
       </div>
+      <div *ngSwitchCase="eActiveTab.CreditCard">
+        <app-profile-credit-card [user]="user"></app-profile-credit-card>
+      </div>
     </div>
   </div>
 </div>

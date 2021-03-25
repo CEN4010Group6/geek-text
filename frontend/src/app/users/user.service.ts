@@ -31,10 +31,28 @@ export class UserService {
     lastName?: string;
     nickName?: string;
     profilePicture?: string;
+    shippingAddresses?: any[];
+    creditCards: any[];
   }) {
     this.$storage.set('user', btoa(JSON.stringify(data))).subscribe(() => {});
     this.userSubject.next(new User(data));
     this.isLoggedInSubject.next(true);
+  }
+
+  public update(data: {
+    id?: string;
+    firstName?: string;
+    middleName?: string;
+    lastName?: string;
+    nickName?: string;
+    profilePicture?: string;
+    shippingAddresses?: any[];
+    creditCards: any[];
+  }) {
+    let user = this.userSubject.value;
+    user = Object.assign(user, data);
+    this.$storage.set('user', btoa(JSON.stringify(data))).subscribe(() => {});
+    this.userSubject.next(new User(data));
   }
 
   public unload() {

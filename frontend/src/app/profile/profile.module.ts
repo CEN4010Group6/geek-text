@@ -10,6 +10,7 @@ import { UsersModule } from '../users/users.module';
 import { ProfileComponent as ProfileProfileComponent } from './profile/profile.component';
 import { AddressComponent } from './address/address.component';
 import { SecurityComponent } from './security/security.component';
+import { CreditCardComponent } from './credit-card/credit-card.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { SecurityComponent } from './security/security.component';
     ProfileComponent,
     ProfileProfileComponent,
     AddressComponent,
-    SecurityComponent
+    SecurityComponent,
+    CreditCardComponent
   ],
   providers: [
     ApiService

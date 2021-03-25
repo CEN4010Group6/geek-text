@@ -109,6 +109,7 @@ model Address {
   zipcode String
   userShippingAddress User @relation("ShippingAddress", fields: [userShippingAddressId], references: [id])
   userShippingAddressId String
+  isPreferredAddress Boolean @default(false)
   @@map("addresses")
 }
 
@@ -130,6 +131,7 @@ model CreditCard {
   encryptedCCV String
   lastFourDigits String
   expirationDate DateTime
+  isPreferredCreditCard Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   @@map("credit_cards")

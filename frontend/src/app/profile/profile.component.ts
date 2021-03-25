@@ -6,7 +6,8 @@ import { User } from '../models/user';
 enum ActiveTab {
   Profile,
   Address,
-  Security
+  Security,
+  CreditCard
 }
 
 @Component({
