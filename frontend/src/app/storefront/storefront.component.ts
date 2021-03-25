@@ -8,6 +8,11 @@ import { ApiService } from '../api.service';
 
 import { Book } from '../models/book';
 
+enum OrderBy {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
 @Component({
   selector: 'app-storefront',
   templateUrl: './storefront.component.html',
@@ -15,18 +20,17 @@ import { Book } from '../models/book';
 })
 export class StorefrontComponent implements OnInit {
 
-  public books: Observable<Book[]>;
-  public count: number = 0;
+  public books?: Observable<Book[]>;
+  private count: number = 0;
   private skip: number = 0;
   private limit: number = 20;
-  private orderBy: any = { title: 'asc' };
+  private orderByField = 'title';
+  private orderByMethod = OrderBy.Asc;
 
   constructor(
     private readonly $apiService: ApiService,
     private readonly $router: Router
-  ) {
-    this.books = of([]);
-  }
+  ) {}
 
   public async ngOnInit(): Promise<void> {
     await this.fetchBooks();
@@ -36,10 +40,23 @@ export class StorefrontComponent implements OnInit {
     await this.$router.navigate(['/books', id]);
   }
 
-  private async fetchBooks(): Promise<void> {
+  public hasNextPage(): boolean {
+    return this.count > this.skip + this.limit;
+  }
+
+  public get orderBy() {
+    let obj = {}
+    Object.defineProperty(obj, this.orderByField, {
+      value: this.orderByMethod,
+      enumerable: true
+    });
+    return obj;
+  }
+
+  private fetchBooks(): void {
     let httpParams = new HttpParams();
 
-    const select = await this.$apiService.prepareJsonForApi({
+    const select = this.$apiService.prepareJsonForApi({
       id: true,
       title: true,
       genres: true,
@@ -49,7 +66,7 @@ export class StorefrontComponent implements OnInit {
       averageRating: true
     });
 
-    const orderBy = await this.$apiService.prepareJsonForApi(this.orderBy);
+    const orderBy = this.$apiService.prepareJsonForApi(this.orderBy);
 
     httpParams = httpParams.set('select', select);
     httpParams = httpParams.set('orderBy', orderBy);

@@ -67,7 +67,7 @@ export class ApiService {
     return this.http.delete(this.REST_API_ENTRYPOINT, options);
   }
 
-  public async prepareJsonForApi(obj: Object): Promise<string > {
+  public prepareJsonForApi(obj: Object): string {
     return btoa(JSON.stringify(obj));
   }
 }
