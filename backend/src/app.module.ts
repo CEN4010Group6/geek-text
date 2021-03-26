@@ -16,6 +16,7 @@ import { GenresModule } from './genres/genres.module';
 import { RolesGuard } from './auth/roles.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AddressesModule } from './addresses/addresses.module';
+import { CreditCardsModule } from './credit-cards/credit-cards.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { AddressesModule } from './addresses/addresses.module';
     BooksModule,
     GenresModule,
     ReviewsModule,
-    UsersModule
+    UsersModule,
+    CreditCardsModule
   ],
   controllers: [ AppController ],
   providers: [

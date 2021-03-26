@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { Role } from '@prisma/client';
 import { Author } from "../authors/dto/author";
 import { Book } from '../books/dto/book';
+import { CreditCard } from "../credit-cards/dto/credit-card";
 import { Genre } from "../genres/dto/genre";
 import { Review } from "../reviews/dto/review";
 import { ShoppingCart } from "../shopping-cart/dto/shopping-cart";
@@ -24,6 +25,7 @@ type Subjects = InferSubjects<
   typeof Review |
   typeof ShoppingCart |
   typeof User |
+  typeof CreditCard |
   'all'
 >;
 

@@ -18,6 +18,7 @@ import * as argon2 from 'argon2';
 import { List, Map } from 'immutable';
 import * as dataURIs from './data_uri.json';
 import authors from './authors.json';
+import { DefaultValuePipe } from '@nestjs/common';
 
 const client = new PrismaClient();
 
@@ -27,7 +28,7 @@ async function main() {
   const hash = await argon2.hash(password);
 
   const cc = faker.finance.creditCardNumber();
-  const lastFour = cc.substring(cc.length - 4, cc.length);
+  const lastFour = parseInt(cc.substring(cc.length - 4, cc.length));
 
   let users: List<User> = List();
   let books: List<Book> = List();
@@ -62,7 +63,8 @@ async function main() {
           encryptedCreditCardNumber: cc,
           encryptedCCV: faker.finance.creditCardCVV(),
           lastFourDigits: lastFour,
-          expirationDate: new Date()
+          expirationDate: new Date(),
+          nickName: 'My Card'
         }
       },
       shippingAddresses: {

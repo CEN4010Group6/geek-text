@@ -125,7 +125,7 @@ export class AuthorsService {
   /**
    * Removes an Author from the `authors` table
    *
-   * @param where The unique identifier(s) of teh Author to be removed
+   * @param where The unique identifier(s) of the Author to be removed
    */
   public async delete(where: Prisma.AuthorWhereUniqueInput): Promise<Author> {
     return this.$prisma.author.delete({ where });

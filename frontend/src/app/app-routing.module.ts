@@ -15,6 +15,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProfileComponent as ProfileProfileComponent } from './profile/profile/profile.component';
 import { SecurityComponent } from './profile/security/security.component';
 import { AddressComponent } from './profile/address/address.component';
+import { CreditCardComponent } from './profile/credit-card/credit-card.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
@@ -52,6 +53,11 @@ const routes: List<Route> = List([
       {
         path: 'address',
         component: AddressComponent,
+        outlet: 'sub'
+      },
+      {
+        path: 'credit-card',
+        component: CreditCardComponent,
         outlet: 'sub'
       }
     ]

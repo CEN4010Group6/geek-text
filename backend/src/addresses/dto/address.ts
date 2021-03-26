@@ -1,6 +1,6 @@
 import { PartialType, OmitType } from '@nestjs/mapped-types';
 import { Address as AddressModel, Prisma } from '@prisma/client';
-import { IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { BaseDTO } from '../../dto/base';
 
@@ -26,6 +26,9 @@ export class Address extends BaseDTO implements AddressModel {
 
   @IsString()
   public zipcode: string;
+
+  @IsBoolean()
+  public isPreferredAddress: boolean;
 
   @IsOptional()
   @IsUUID()

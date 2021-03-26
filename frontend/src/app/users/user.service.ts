@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { BehaviorSubject, Observable } from 'rxjs';
+import merge from 'lodash.merge';
 
 import { User } from '../models/user';
 
@@ -50,14 +51,25 @@ export class UserService {
     creditCards: any[];
   }) {
     let user = this.userSubject.value;
-    user = Object.assign(user, data);
-    this.$storage.set('user', btoa(JSON.stringify(data))).subscribe(() => {});
-    this.userSubject.next(new User(data));
+    user = merge(user, data);
+    this.$storage.set('user', btoa(JSON.stringify(user))).subscribe(() => {});
+    this.userSubject.next(new User(user));
+  }
+
+  public deleteFromArrayField(field: string, value: any) {
+    let user = this.userSubject.value;
+    if(user) {
+      user[field] = user[field].filter((val: any) => {
+        return val != value
+      });
+      this.$storage.set('user', btoa(JSON.stringify(user))).subscribe(() => {});
+      this.userSubject.next(new User(user));
+    }
   }
 
   public unload() {
     this.$storage.delete('user').subscribe(() => {});
-    this.userSubject.next(null as unknown as User);
+    this.userSubject.next(undefined);
     this.isLoggedInSubject.next(false);
   }
 

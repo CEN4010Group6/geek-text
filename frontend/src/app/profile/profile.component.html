@@ -19,6 +19,14 @@
         </li>
         <li class="nav-item">
           <a class="nav-link"
+            [ngClass]="{ 'active': activeTab === eActiveTab.CreditCard }"
+            (click)="activeTab=eActiveTab.CreditCard"
+          >
+            <i class="fas fa-credit-card"></i>&nbsp;Credit Cards
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
             [ngClass]="{ 'active': activeTab === eActiveTab.Security }"
             (click)="activeTab=eActiveTab.Security"
           >

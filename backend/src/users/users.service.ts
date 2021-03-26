@@ -33,6 +33,13 @@ export class UsersService {
       delete user.passwordHash;
     }
 
+    if(user.creditCards) {
+      // @ts-ignore
+      delete user.creditCards.encryptedCCV;
+      // @ts-ignore
+      delete user.creditCards.encryptedCreditCardNumber;
+    }
+
     return user;
   }
 

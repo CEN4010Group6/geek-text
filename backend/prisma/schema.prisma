@@ -127,9 +127,10 @@ model CreditCard {
   id String @id @default(uuid())
   user User @relation(fields: [userId], references: [id])
   userId String
-  encryptedCreditCardNumber String
+  nickName String?
+  encryptedCreditCardNumber String @unique
   encryptedCCV String
-  lastFourDigits String
+  lastFourDigits Int
   expirationDate DateTime
   isPreferredCreditCard Boolean @default(false)
   createdAt DateTime @default(now())
