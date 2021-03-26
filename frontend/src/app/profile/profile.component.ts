@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ApiService } from '../api.service';
 import { UserService } from '../users/user.service';
 import { User } from '../models/user';
+import { ApiService } from '../api.service';
 import { FlashMessageService } from '../flash-message/flash-message.service';
 import { Level } from '../flash-message/level';
+import { ActivatedRoute, Router } from '@angular/router';
 
-const passwordValidation = [
-  Validators.required,
-  Validators.minLength(6),
-  Validators.maxLength(36)
-];
+type GetFieldControl = AbstractControl | null | undefined;
 
-export enum TabState {
-  Profile = 'profile',
-  Security = 'security'
+enum ActiveTab {
+  Profile = '',
+  Address = 'addresses',
+  Security = 'security',
+  CreditCard = 'credit-cards'
 }
 
 @Component({
@@ -25,20 +24,18 @@ export enum TabState {
 })
 export class ProfileComponent implements OnInit {
 
-  public profileForm?: FormGroup;
-  public securityForm?: FormGroup;
   public user: User | undefined;
-  private _activeTab = TabState.Profile
+  public activeTab = ActiveTab.Profile;
+  public profileForm?: FormGroup;
 
-  public eTabState = TabState;
+  public eActiveTab = ActiveTab;
 
   constructor(
+    private readonly $userService: UserService,
     private readonly $formBuilder: FormBuilder,
     private readonly $apiService: ApiService,
-    private readonly $userService: UserService,
-    private readonly $flashMessage: FlashMessageService,
-  ) {
-  }
+    private readonly $flashMessage: FlashMessageService
+  ) {}
 
   ngOnInit(): void {
     this.$userService.asObservable()
@@ -53,38 +50,38 @@ export class ProfileComponent implements OnInit {
           profilePicture: [ user?.profilePicture ]
         });
       });
-
-    this.securityForm = this.$formBuilder.group({
-      newPassword: ['', passwordValidation ],
-      newPasswordConfirm: [ '', passwordValidation ],
-      currentPassword: [ '', passwordValidation ]
-    }, {
-      validator: this.checkPasswords
-    });
   }
 
-  public isActiveTab(tab: string): boolean {
-    return tab === this._activeTab;
+
+  public get firstName(): GetFieldControl {
+    return this.profileForm?.get('firstName');
   }
 
-  public get activeTab(): TabState {
-    return this._activeTab;
+  public get middleName(): GetFieldControl {
+    return this.profileForm?.get('middleName');
   }
 
-  public set activeTab(str: TabState) {
-    this._activeTab = str;
+  public get lastName(): GetFieldControl {
+    return this.profileForm?.get('lastName');
   }
 
-  public onSubmitProfile() {
+  public get nickName(): GetFieldControl {
+    return this.profileForm?.get('nickName');
+  }
+
+  public get profilePicture(): GetFieldControl {
+    return this.profileForm?.get('profilePicture');
+  }
+
+  public onSubmit() {
     this.$apiService.put(`/users/${ this.user?.id }`, this.profileForm?.value)
-      .subscribe((user) => {
-        this.$userService.load(user);
-      });
-  }
-
-  public onSubmitSecurity() {
-    this.$flashMessage.add('Currently not implemented', Level
-    .Info);
+      .subscribe(
+        (user) => {
+          this.$userService.load(user);
+          this.$flashMessage.add('Successfully updated your profile.', Level.Success);
+        },
+        (err) => this.$flashMessage.add(err)
+      );
   }
 
   public convertToDataURL(event: any) {
@@ -92,8 +89,8 @@ export class ProfileComponent implements OnInit {
       const file = event.target.files[0];
       const maxSize = 20971520;
       const allowedType = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
-      const maxHeight = 64;
-      const maxWidth = 64;
+      const maxHeight = 256;
+      const maxWidth = 256;
 
       if(file.size > maxSize) {
         this.$flashMessage.add(`Maximum profile picture file size allowed is ${ maxSize / 1000 } Mb. Given size was ${ file.size / 1000 } Mb`);
@@ -129,12 +126,4 @@ export class ProfileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-
-  private checkPasswords(group: FormGroup) {
-    const password = group.get('newPassword')?.value;
-    const confirmPassword = group.get('newPasswordConfirm')?.value;
-
-    return (password === confirmPassword) ? null : { passwordsNotEqual: true }
-  }
-
 }

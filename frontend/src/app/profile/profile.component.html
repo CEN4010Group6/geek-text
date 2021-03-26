@@ -1,27 +1,63 @@
-<div *ngIf="user">
+<div *ngIf="user && user.id">
   <div class="row">
     <div class="col-sm-3">
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
           <a class="nav-link"
-            [ngClass]="{ 'active': isActiveTab('profile') }"
-            (click)="activeTab = eTabState.Profile"><i class="fas fa-user"></i>&nbsp;Profile</a>
+            [ngClass]="{ 'active': activeTab === eActiveTab.Profile }"
+            (click)="activeTab = eActiveTab.Profile"
+          >
+              <i class="fas fa-user"></i>&nbsp;Profile
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
-            [ngClass]="{ 'active': isActiveTab('security') }"
-            (click)="activeTab = eTabState.Security"><i class="fas fa-lock"></i>&nbsp;Security</a>
+            [ngClass]="{ 'active': activeTab === eActiveTab.Address }"
+            (click)="activeTab = eActiveTab.Address"
+          >
+            <i class="fas fa-address-book"></i>&nbsp;Addresses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+            [ngClass]="{ 'active': activeTab === eActiveTab.CreditCard }"
+            (click)="activeTab = eActiveTab.CreditCard"
+          >
+            <i class="fas fa-credit-card"></i>&nbsp;Credit Cards
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+            [ngClass]="{ 'active': activeTab === eActiveTab.Security }"
+            (click)="activeTab = eActiveTab.Security"
+          >
+            <i class="fas fa-lock"></i>&nbsp;Security
+          </a>
         </li>
       </ul>
     </div>
     <div class="col-sm-9" [ngSwitch]="activeTab">
-      <div *ngSwitchCase="'profile'">
-        <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
+      <div *ngSwitchCase="eActiveTab.Address">
+        <app-profile-address [userId]="user.id"></app-profile-address>
+      </div>
+      <div *ngSwitchCase="eActiveTab.Security">
+        <app-profile-security [userId]="user.id"></app-profile-security>
+      </div>
+      <div *ngSwitchCase="eActiveTab.CreditCard">
+        <app-profile-credit-card [userId]="user.id"></app-profile-credit-card>
+      </div>
+      <div *ngSwitchCase="eActiveTab.Profile">
+        <h3>User Profile</h3>
+        <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
           <div class="form-group row">
             <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
             <div class="col-sm-10">
               <input type="text" class="form-control"
                 id="firstName" formControlName="firstName" required />
+              <div *ngIf="firstName && firstName.invalid && (firstName.dirty || firstName.touched)"
+                class="alert alert-danger">
+                <span *ngIf="firstName.errors?.required">A First Name is Required.</span>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -36,6 +72,10 @@
             <div class="col-sm-10">
               <input type="text" class="form-control"
                 id="lastName" formControlName="lastName" required />
+              <div *ngIf="lastName && lastName.invalid && (lastName.dirty || lastName.touched)"
+                class="alert alert-danger">
+                <span *ngIf="lastName.errors?.required">A Last Name is Required.</span>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -43,6 +83,10 @@
             <div class="col-sm-10">
               <input type="text" class="form-control"
                 id="nickName" formControlName="nickName" required />
+              <div *ngIf="nickName && nickName.invalid && (nickName.dirty || nickName.touched)"
+                class="alert alert-danger">
+                <span *ngIf="nickName.errors?.required">A Nickname is Required.</span>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -53,48 +97,12 @@
               (change)="convertToDataURL($event)"
               accepts="image/gif,image/jpeg,images/jpg,image/png" />
             </div>
-          </div>
-          <div class="form-group row">
-            <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid">Update</button>
-          </div>
-        </form>
-      </div>
-      <div *ngSwitchCase="eTabState.Security">
-        <form [formGroup]="securityForm" *ngIf="securityForm" (submit)="onSubmitSecurity()">
-          <div class="form-group row">
-            <label for="newPassword" class="col-sm-3 col-form-label">New Password</label>
-            <div class="col-sm-9">
-              <input type="password" class="form-control"
-                id="newPassword"
-                formControlName="newPassword"
-                required
-              />
+            <div *ngIf="">
+
             </div>
           </div>
           <div class="form-group row">
-            <label for="newPasswordConfirm" class="col-sm-3 col-form-label">Confirm New Password</label>
-            <div class="col-sm-9">
-              <input type="password" class="form-control"
-                id="newPasswordConfirm"
-                formControlName="newPasswordConfirm"
-                required
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="currentPassword" class="col-sm-3 col-form-label">Current Password</label>
-            <div class="col-sm-9">
-              <input type="password" class="form-control"
-                id="currentPassword" formControlName="currentPassword"
-                required
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <button type="submit"
-              class="btn btn-primary"
-              [disabled]="!securityForm.valid"
-            >Update</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!profileForm.valid || (!profileForm.dirty || !profileForm.touched)">Update</button>
           </div>
         </form>
       </div>

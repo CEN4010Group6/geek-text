@@ -53,6 +53,8 @@ describe('AuthService', () => {
 
     const user = await service.validateUser('john.doe@gmail.com', 'IAmAPassword');
 
+    console.log(user);
+
     await expect(user).toBeDefined();
     await expect(user?.email).toBe('john.doe@gmail.com');
   });

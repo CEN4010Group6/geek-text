@@ -64,7 +64,7 @@ export class ApiService {
    */
   public delete(endpoint: string, params?: HttpParams): Observable<any> {
     const options = { params: params, ...defaultHttpOptions };
-    return this.http.delete(this.REST_API_ENTRYPOINT, options);
+    return this.http.delete(this.REST_API_ENTRYPOINT + endpoint, options);
   }
 
   public prepareJsonForApi(obj: Object): string {

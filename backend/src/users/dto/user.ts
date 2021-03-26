@@ -32,7 +32,10 @@ export class User extends BaseDTO implements UserModel {
   passwordHash: string;
 
   @IsOptional()
-  roles?: Prisma.RoleUpdateManyWithoutUsersInput
+  roles?: Prisma.RoleUpdateManyWithoutUsersInput;
+
+  @IsOptional()
+  creditCards?: Prisma.CreditCardCreateNestedManyWithoutUserInput;
 
   @IsDate()
   createdAt: Date;
