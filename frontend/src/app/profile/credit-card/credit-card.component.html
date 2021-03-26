@@ -1,3 +1,4 @@
+<h3 *ngIf="creditCards">Saved Credit Cards</h3>
 <div class="row" *ngIf="creditCards">
   <div class="col-sm-6" *ngFor="let card of creditCards; index as idx">
     <div class="card">
@@ -9,9 +10,11 @@
         <div class="media">
           <img class="mr-3" src="/assets/chip.png" height="32px" width="32px" />
           <div class="media-body">
-            <p>Ending In: {{ card.lastFourDigits }}</p>
-            <p>Expires: {{ card.expirationDate | date: 'MM/YYYY' }}</p>
-            <p><button class="btn btn-danger" (click)="deleteCard(card.id)">Delete</button></p>
+            Ending In: {{ card.lastFourDigits }}
+            <br />
+            Expires: {{ card.expirationDate | date: 'MM/YYYY' }}
+            <br />
+            <button class="btn btn-sm btn-danger" (click)="deleteCard(card.id)">Delete</button>
           </div>
         </div>
       </div>

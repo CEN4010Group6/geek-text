@@ -8,6 +8,7 @@ import { ApiService } from '../../api.service';
 import { User } from '../../models/user';
 import { UserService } from '../../users/user.service';
 import { CreditCard } from 'src/app/models/credit-card';
+import { FlashMessageService } from 'src/app/flash-message/flash-message.service';
 
 @Component({
   selector: 'app-profile-credit-card',
@@ -16,31 +17,18 @@ import { CreditCard } from 'src/app/models/credit-card';
 })
 export class CreditCardComponent implements OnInit {
 
-  @Input() public user: User | undefined;
+  @Input() public userId: string | undefined = '';
 
   private _creditCards: List<CreditCard> = List();
-  public creditCardForm?: FormGroup;
+  public creditCardForm: FormGroup;
 
   constructor(
     private readonly $formBuilder: FormBuilder,
     private readonly $apiService: ApiService,
-    private readonly $userService: UserService
-  ) { }
-
-  public async ngOnInit(): Promise<void> {
-    let httpParams = new HttpParams();
-
-    const select = await this.$apiService.prepareJsonForApi({
-      creditCards: true
-    });
-
-    httpParams = httpParams.set('select', select);
-    this.$apiService.get(`/users/${ this.user?.id }`, httpParams)
-      .subscribe((res) => {
-        this._creditCards = List(res.creditCards);
-      });
-
-    this.creditCardForm = this.$formBuilder.group({
+    private readonly $userService: UserService,
+    private readonly $flashMessage: FlashMessageService
+  ) {
+    this.creditCardForm = $formBuilder.group({
       creditCardNumber: [
         '',
         [
@@ -63,6 +51,21 @@ export class CreditCardComponent implements OnInit {
     });
   }
 
+  public async ngOnInit(): Promise<void> {
+    let httpParams = new HttpParams();
+
+    const select = await this.$apiService.prepareJsonForApi({
+      creditCards: true
+    });
+
+    httpParams = httpParams.set('select', select);
+    this.$apiService.get(`/users/${ this.userId }`, httpParams)
+      .subscribe((res) => {
+        this._creditCards = List(res.creditCards);
+      },
+      (err) => this.$flashMessage.add(err));
+  }
+
   public get creditCards(): CreditCard[] {
     return this._creditCards.toArray();
   }
@@ -79,11 +82,12 @@ export class CreditCardComponent implements OnInit {
 
     values.expirationDate = DateTime.fromISO(values.expirationDate).toISO();
 
-    this.$apiService.post(`/credit-cards/${ this.user?.id }`, values)
+    this.$apiService.post(`/credit-cards/${ this.userId }`, values)
       .subscribe((res) => {
         this._creditCards = this._creditCards.push(res);
         this.creditCardForm?.reset();
-      });
+      },
+      (err) => this.$flashMessage.add(err));
   }
 
   public deleteCard(id: string) {
@@ -93,6 +97,7 @@ export class CreditCardComponent implements OnInit {
         this._creditCards = this._creditCards.filter((val) => {
           return val.id != res.id
         });
-      });
+      },
+      (err) => this.$flashMessage.add(err));
   }
 }

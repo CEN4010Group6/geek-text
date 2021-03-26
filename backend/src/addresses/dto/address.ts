@@ -42,6 +42,9 @@ export class Address extends BaseDTO implements AddressModel {
   }
 }
 
-export class CreateAddress extends OmitType(Address, ['id'] as const) implements Prisma.AddressCreateWithoutUserShippingAddressInput {}
+export class CreateAddress extends OmitType(Address, [
+  'id',
+  'userShippingAddress'
+] as const) implements Prisma.AddressCreateWithoutUserShippingAddressInput {}
 
 export class UpdateAddress extends PartialType(Address) implements Prisma.AddressUpdateInput {}

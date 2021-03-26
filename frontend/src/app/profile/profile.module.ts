@@ -7,7 +7,6 @@ import { ProfileComponent } from './profile.component';
 import { FlashMessageModule } from '../flash-message/flash-message.module';
 import { UsersModule } from '../users/users.module';
 
-import { ProfileComponent as ProfileProfileComponent } from './profile/profile.component';
 import { AddressComponent } from './address/address.component';
 import { SecurityComponent } from './security/security.component';
 import { CreditCardComponent } from './credit-card/credit-card.component';
@@ -22,7 +21,6 @@ import { CreditCardComponent } from './credit-card/credit-card.component';
   ],
   declarations: [
     ProfileComponent,
-    ProfileProfileComponent,
     AddressComponent,
     SecurityComponent,
     CreditCardComponent

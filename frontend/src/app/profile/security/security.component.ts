@@ -18,7 +18,7 @@ const passwordValidation = [
 })
 export class SecurityComponent implements OnInit {
 
-  @Input() public user: User | undefined;
+  @Input() public userId: string | undefined = '';
 
   public securityForm?: FormGroup;
 
@@ -26,10 +26,8 @@ export class SecurityComponent implements OnInit {
     private readonly $formBuilder: FormBuilder,
     private readonly $apiService: ApiService,
     private readonly $flashMessage: FlashMessageService
-  ) {}
-
-  ngOnInit(): void {
-    this.securityForm = this.$formBuilder.group({
+  ) {
+    this.securityForm = $formBuilder.group({
       newPassword: [ '', passwordValidation ],
       newPasswordConfirm: [ '', passwordValidation ],
       currentPassword: [ '', passwordValidation ]
@@ -38,8 +36,11 @@ export class SecurityComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+  }
+
   public onSubmit() {
-    this.$apiService.put(`/users/${ this.user?.id }/update-password`, this.securityForm?.value)
+    this.$apiService.put(`/users/${ this.userId }/update-password`, this.securityForm?.value)
       .subscribe(
         (_user) => this.$flashMessage.add('Successfully updated password', Level.Success),
         (err) => this.$flashMessage.add(err)

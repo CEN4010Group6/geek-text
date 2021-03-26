@@ -33,7 +33,7 @@ export class UsersService {
       delete user.passwordHash;
     }
 
-    if(user.creditCards) {
+    if(user?.creditCards) {
       // @ts-ignore
       delete user.creditCards.encryptedCCV;
       // @ts-ignore

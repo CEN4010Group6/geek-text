@@ -7,6 +7,7 @@ import { CreditCard } from "../credit-cards/dto/credit-card";
 import { Genre } from "../genres/dto/genre";
 import { Review } from "../reviews/dto/review";
 import { ShoppingCart } from "../shopping-cart/dto/shopping-cart";
+import { Address } from '../addresses/dto/address';
 
 import { User } from '../users/dto/user';
 
@@ -26,6 +27,7 @@ type Subjects = InferSubjects<
   typeof ShoppingCart |
   typeof User |
   typeof CreditCard |
+  typeof Address |
   'all'
 >;
 
@@ -59,6 +61,10 @@ export class CaslAbilityFactory {
     can(Action.Create, ShoppingCart, { userId: user.id });
     can(Action.Update, ShoppingCart, { userId: user.id });
     can(Action.Delete, ShoppingCart, { userId: user.id });
+    can(Action.Create, Address, { userShippingAddressId: user.id });
+    can(Action.Delete, Address, { userShippingAddressId: user.id });
+    can(Action.Create, CreditCard, { userId: user.id });
+    can(Action.Delete, CreditCard, { userId: user.id });
 
     return build({
       detectSubjectType: item => item.constructor as ExtractSubjectType<Subjects>
