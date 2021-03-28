@@ -48,7 +48,7 @@ export class UserService {
     nickName?: string;
     profilePicture?: string;
     shippingAddresses?: any[];
-    creditCards: any[];
+    creditCards?: any[];
   }) {
     let user = this.userSubject.value;
     user = merge(user, data);

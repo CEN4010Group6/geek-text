@@ -11,7 +11,9 @@ describe('UserService', () => {
     middleName: 'M',
     lastName: 'McMockface',
     nickName: 'EmCeeMockface',
-    profilePicture: 'https://apicture.com'
+    profilePicture: 'https://apicture.com',
+    creditCards: [],
+    shippingAddresses: []
   };
 
   beforeEach(() => {

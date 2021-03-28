@@ -4,8 +4,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlashMessageModule } from '../flash-message/flash-message.module';
 import { UserService } from '../users/user.service';
+import { AddressComponent } from './address/address.component';
+import { CreditCardComponent } from './credit-card/credit-card.component';
 
 import { ProfileComponent } from './profile.component';
+import { SecurityComponent } from './security/security.component';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -23,7 +26,10 @@ describe('ProfileComponent', () => {
         UserService
       ],
       declarations: [
-        ProfileComponent
+        ProfileComponent,
+        CreditCardComponent,
+        AddressComponent,
+        SecurityComponent
       ]
     })
     .compileComponents();
