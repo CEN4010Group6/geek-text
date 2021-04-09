@@ -1,18 +1,129 @@
-<div class="row" *ngIf="books">
-  <div class="col-sm-3" *ngFor="let book of (books | async)">
-    <div class="card" (click)="navigate(book.id)">
-      <div class="card-header">{{ book.title }}</div>
-      <div *ngIf="book.coverDataUri; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>
-        <img class="card-img-top img-thumbnail" [src]="book.coverDataUri" [alt]="book.title" width="100px" height="200px" />
-      </ng-template>
-      <ng-template #elseBlock>
-        <img class="card-img-top img-thumbnail" [src]="book.coverUrl" [alt]="book.title" width="100px" height="200px" />
-      </ng-template>
-      <div class="card-body">
-        <p *ngIf="book.genres">Genres: {{
-          book.genres.join(', ')
-        }}</p>
+{{ whereBy }}
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link"
+      [ngClass]="{ 'active': (activeTab === 0) }"
+      (click)="activeTab = 0">
+        Browse
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"
+      [ngClass]="{ 'active': (activeTab === 1) }"
+      (click)="activeTab = 1">
+        Top Sellers
+    </a>
+  </li>
+</ul>
+<div *ngIf="activeTab === 0">
+  <div class="row">
+    <div class="col">
+      Order By: <select class="form-select" (change)="onOrderByField($event.target)">
+        <option selected [value]="'title'">Title</option>
+        <option [value]="'author'">Author</option>
+        <option [value]="'genre'">Genre</option>
+        <option [value]="'price'">Price</option>
+        <option [value]="'averageRating'">Rating</option>
+        <option [value]="'createdAt'">Added Date</option>
+      </select>
+      <select class="form-select" (change)="onOrderByMethod($event.target)">
+        <option selected [value]="eOrderBy.Asc">Ascending</option>
+        <option [value]="eOrderBy.Desc">Descending</option>
+      </select>
+    </div>
+    <div class="col">
+      Rating:
+      <div class="btn-group-toggle">
+        <button class="btn btn-light"
+          [ngClass]="{ 'active' : whereBy === eWhereBy.ThreeStars }"
+          (click)="changeWhereBy(eWhereBy.ThreeStars)">
+          3-Stars
+      </button>
+        <button class="btn btn-light"
+          [ngClass]="{ 'active' : whereBy === eWhereBy.FourStars }"
+          (click)="changeWhereBy(eWhereBy.FourStars)">
+          4-Stars
+      </button>
+        <button class="btn btn-light"
+          [ngClass]="{ 'active' : whereBy === eWhereBy.FiveStars }"
+          (click)="changeWhereBy(eWhereBy.FiveStars)">
+          5-Stars
+      </button>
+        <button type="button" class="btn btn-light"
+          (click)="changeWhereBy(eWhereBy.None)"
+        >Clear</button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group float-right">
+        Number of Results:
+        <select class="form-select" (change)="changeLimit($event.target)">
+          <option [value]="10">10</option>
+          <option selected [value]="20">20</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-light btn-sm" [disabled]="!hasPreviousPage()" (click)="prevPage()">&lsaquo;&lsaquo; Previous Page</button>
+    </div>
+    <div class="col">
+      <button class="btn btn-light btn-sm float-right" [disabled]="!hasNextPage()" (click)="nextPage()">Next Page &rsaquo;&rsaquo;</button>
+    </div>
+  </div>
+  <br />
+  <div class="row" *ngIf="books">
+    <div class="col" *ngFor="let book of (books | async)">
+      <div class="card" (click)="navigate(book.id)">
+        <div class="card-header">{{ book.title }}</div>
+        <div class="card-body">
+          <div class="media">
+            <div class="mr-3">
+              <div *ngIf="book.coverDataUri; then thenBlock else elseBlock"></div>
+              <ng-template #thenBlock>
+                <figure class="figure" height="96px">
+                  <img class="figure-img" [src]="book.coverDataUri" [alt]="book.title" height="128px" />
+                </figure>
+              </ng-template>
+              <ng-template #elseBlock>
+                <figure class="figure" width="100px" height="96px">
+                  <img class="figure-img" [src]="book.coverUrl" [alt]="book.title" height="128px"/>
+                </figure>
+              </ng-template>
+            </div>
+            <div class="media-body">
+              <p *ngIf="book.authors.length === 1">Author: {{ book.authors[0].firstName }} {{ book.authors[0].lastName }}</p>
+              <p *ngIf="book.authors.length > 1">Authors: {{ authorList(book.authors) }}</p>
+              <p *ngIf="book.genres">Genres: {{ book.genres.join(', ') }}</p>
+              <p>Price: {{ book.price | currency }}</p>
+              <p><app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-light btn-sm" [disabled]="!hasPreviousPage()" (click)="prevPage()">&lsaquo;&lsaquo; Previous Page</button>
+    </div>
+    <div class="col">
+      <button class="btn btn-light btn-sm float-right" [disabled]="!hasNextPage()" (click)="nextPage()">Next Page &rsaquo;&rsaquo;</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="activeTab === 1">
+  <h3>Top Sellers</h3>
+  <div class="card" *ngFor="let book of (topSellers | async)">
+    <div class="media">
+      <figure class="figure mr-3" height="96px">
+        <img class="figure-img" [src]="book.coverUrl" [alt]="book.title" height="128px" />
+      </figure>
+      <div class="media-body">
+        <h5>{{ book.title }}</h5>
+        <p>Authors: {{ authorList(book.authors) }}</p>
+        <p *ngIf="book.genres">Genres: {{ book.genres.join(',') }}</p>
         <p>Price: {{ book.price | currency }}</p>
         <p><app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
       </div>
