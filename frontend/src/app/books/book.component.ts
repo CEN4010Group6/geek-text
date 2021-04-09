@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { ApiService } from '../api.service';
 import { AuthorsService } from '../authors/authors.service';
 import { Author } from '../models/author';
 import { Book } from '../models/book';
 import { Genre } from '../models/genre';
+import { Review } from '../models/review';
 import { UserService } from '../users/user.service';
 import { ShoppingCart } from '../models/shopping-cart';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
@@ -27,7 +27,7 @@ export class BookComponent implements OnInit {
     private readonly $authorsService: AuthorsService,
     private readonly $shoppingCartService: ShoppingCartService,
     private readonly $userService: UserService
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.$route.params.subscribe(async (params) => {

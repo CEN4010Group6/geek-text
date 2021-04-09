@@ -2,7 +2,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 import { List } from 'immutable';
-
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BookComponent } from './books/book.component';
 import { StorefrontComponent } from './storefront/storefront.component';
@@ -17,6 +16,7 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 // List of routes used in the top-level
 const routes: List<Route> = List([
+  { path: 'shopping-cart', component: ShoppingCartComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'logout',
@@ -39,7 +39,6 @@ const routes: List<Route> = List([
   },
   { path: '', component: StorefrontComponent, pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
-  { path: 'shopping-cart', component: ShoppingCartComponent }
 ]);
 
 @NgModule({

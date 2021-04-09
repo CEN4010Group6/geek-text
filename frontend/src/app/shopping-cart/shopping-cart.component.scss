@@ -1,0 +1,30 @@
+.row {
+  h1 {
+    width: 100%;
+  }
+
+  ol {
+    font-size: 1.2rem;
+    width: 100%;
+    li {
+      margin-bottom: 10px;
+      .btn-primary {
+        width: 2rem;
+      }
+      .btn-danger {
+        margin-left: 1rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
+  }
+
+  a {
+    color: black;
+  }
+  .subtotal {
+    font-size: 1.3rem;
+    margin-left: 1rem;
+  }
+}

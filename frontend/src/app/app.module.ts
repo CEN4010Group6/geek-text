@@ -37,6 +37,7 @@ import { FlashMessageModule } from './flash-message/flash-message.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfilesModule } from './profile/profile.module';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
   providers: [
     ApiService,
     LoggerService,
+    ShoppingCartService,
     {
       provide: ErrorHandler,
       useClass: CustomErrorHandlerService,
