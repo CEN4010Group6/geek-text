@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # geek-text
 
 ## Prerequisites
@@ -36,6 +35,3 @@ eg:
 - `docker-compose exec backend primsa migrate deploy --preview-feature`
 - `docker-compose exec backend npm run prisma:seed`
 - `docker-compose exec frontend npm run build -- --prod`
-=======
-# geek-text
->>>>>>> 0cad389 (Initial commit)
