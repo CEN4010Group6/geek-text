@@ -1,0 +1,23 @@
+<div class="row" *ngIf="books">
+  <h1>Your Shopping Cart</h1>
+  <br>
+  <ol id="shopping-cart-list">
+    <!-- The list of items that have been selected via the "Add to Cart" button in the Book Details page -->
+    <li *ngFor="let book of books.values()">
+      <h2><a [routerLink]="['/books', book.id]">{{book.title}}</a></h2>
+      <p id="authors" *ngFor="let author of book.authors; index as i">
+        <a [routerLink]="['/authors', author.id]">{{authorName(author)}}</a><span *ngIf="i < book.authors.length - 1">, </span>
+      </p>
+      <div class="item-quantity"><span>Quantity: </span>
+        <button class="btn btn-primary" (click)="decrementQuantity(book)">-</button>
+        <span>
+          {{ book.quantity }}
+        </span>
+        <button class="btn btn-primary" (click)="incrementQuantity(book)">+</button>
+        <button class="btn btn-danger" (click)="deleteItem(book)">Delete</button>
+      </div>
+    </li>
+  </ol>
+  <button class="btn btn-secondary" (click)="clearCart()">Clear Cart</button>
+  <span class="subtotal">Subtotal: <strong>${{cartSubtotal()}}</strong></span>
+</div>

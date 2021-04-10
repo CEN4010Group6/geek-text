@@ -1,40 +1,93 @@
 <div *ngIf="book">
   <div class="row">
     <div class="col-12">
-      <div class="card" style="width: 100%;">
+      <div class="card" style="width: 100%">
         <div class="card-body">
           <div class="row">
             <div class="col-6">
               <h1 id="title">{{ book.title }}</h1>
               <h2 id="authors" *ngFor="let author of book.authors; index as i">
-                <a [routerLink]="['/authors', author.id]">{{ authorName(author) }}</a><span *ngIf="i < book.authors.length - 1">,
-                </span>
+                <a [routerLink]="['/authors', author.id]">{{
+                  authorName(author)
+                }}</a
+                ><span *ngIf="i < book.authors.length - 1">, </span>
               </h2>
-              <div *ngIf="book.coverDataUri; then thenBookBlock else elseBookBlock"></div>
+              <div
+                *ngIf="
+                  book.coverDataUri;
+                  then thenBookBlock;
+                  else elseBookBlock
+                "
+              ></div>
               <ng-template #thenBookBlock>
-                <img id="cover" width="198" height="298" [src]="book.coverDataUri" [alt]="book.title" lightbox />
+                <img
+                  id="cover"
+                  width="198"
+                  height="298"
+                  [src]="book.coverDataUri"
+                  [alt]="book.title"
+                  lightbox
+                />
               </ng-template>
               <ng-template #elseBookBlock>
-                <img id="cover" width="198" height="298" [src]="book.coverUrl" [alt]="book.title" lightbox />
+                <img
+                  id="cover"
+                  width="198"
+                  height="298"
+                  [src]="book.coverUrl"
+                  [alt]="book.title"
+                  lightbox
+                />
               </ng-template>
             </div>
             <div class="col-6">
               <p id="price">Price: {{ book.price | currency }}</p>
               <p id="genres">Genres: {{ genres }}</p>
-              <p id="publisher">Published: {{ book.publishYear}}
-                <span *ngIf="book.publisher"> by
-                  <div *ngIf="book.publisher.website; then thenBlock else elseBlock"></div>
+              <p id="publisher">
+                Published: {{ book.publishYear }}
+                <span *ngIf="book.publisher">
+                  by
+                  <div
+                    *ngIf="
+                      book.publisher.website;
+                      then thenBlock;
+                      else elseBlock
+                    "
+                  ></div>
                   <ng-template #thenBlock>
-                    <a [href]="book?.publisher?.website">{{ book.publisher.name }}</a>
+                    <a [href]="book?.publisher?.website">{{
+                      book.publisher.name
+                    }}</a>
                   </ng-template>
                   <ng-template #elseBlock>
                     {{ book.publisher.name }}
                   </ng-template>
                 </span>
               </p>
-              <p id="average-rating">Average User Reviews: <app-star-rating [rating]="book.averageRating || 0" [max]="5" [readOnly]="true"></app-star-rating></p>
+              <p id="average-rating">
+                Average User Reviews:
+                <app-star-rating
+                  [rating]="book.averageRating || 0"
+                  [max]="5"
+                  [readOnly]="true"
+                ></app-star-rating>
+              </p>
               <p>
-                <button id="add-to-cart" class="btn btn-primary">Add To Cart</button>&nbsp;<button id="submit-review" type="button" class="btn btn-info" [routerLink]="['./review']" [disabled]="!(isLoggedIn | async)">Leave a review</button>
+                <button
+                  id="add-to-cart"
+                  class="btn btn-primary"
+                  (click)="addToCart(book)"
+                >
+                  Add To Cart</button
+                >&nbsp;<button
+                  id="submit-review"
+                  type="button"
+                  class="btn btn-info"
+                  [routerLink]="['./review']"
+                  [disabled]="!(isLoggedIn | async)"
+                >
+                  Leave a review
+                </button>
               </p>
             </div>
           </div>
@@ -46,16 +99,23 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <ul ngbNav #nav="ngbNav" class="nav-tabs mt-2 card-header-tabs" [(activeId)]="activeTab">
-            <li [ngbNavItem]=1>
+          <ul
+            ngbNav
+            #nav="ngbNav"
+            class="nav-tabs mt-2 card-header-tabs"
+            [(activeId)]="activeTab"
+          >
+            <li [ngbNavItem]="1">
               <a ngbNavLink>Book Description</a>
               <ng-template ngbNavContent>
                 <p>{{ book.description }}</p>
               </ng-template>
             </li>
-            <span *ngIf="(book.authors.length == 1); then thenBlock else elseBlock"></span>
+            <span
+              *ngIf="book.authors.length == 1; then thenBlock; else elseBlock"
+            ></span>
             <ng-template #thenBlock>
-              <li [ngbNavItem]=2>
+              <li [ngbNavItem]="2">
                 <a ngbNavLink>About the Author</a>
                 <ng-template ngbNavContent>
                   <p>{{ book.authors[0].description }}</p>
@@ -63,7 +123,7 @@
               </li>
             </ng-template>
             <ng-template #elseBlock>
-              <li [ngbNavItem]=2>
+              <li [ngbNavItem]="2">
                 <a ngbNavLink>About the Authors</a>
                 <ng-template ngbNavContent>
                   <div *ngFor="let author of book.authors">
@@ -85,26 +145,47 @@
   <div class="row">
     <div class="col-12">
       <h2>Reviews of this Book</h2>
-      <div *ngIf="book.reviews?.length; then thenReviewBlock else elseReviewBlock"></div>
+      <div
+        *ngIf="book.reviews?.length; then thenReviewBlock; else elseReviewBlock"
+      ></div>
       <ng-template #thenReviewBlock>
-         <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
+        <ul class="list-unstyled mt-3" *ngFor="let review of book.reviews">
           <li class="media">
-            <div *ngIf="review.user?.profilePicture; then thenBlock else elseBlock"></div>
+            <div
+              *ngIf="
+                review.user?.profilePicture;
+                then thenBlock;
+                else elseBlock
+              "
+            ></div>
             <ng-template #thenBlock>
               <img class="mr-3" [src]="review.user?.profilePicture" />
             </ng-template>
             <ng-template #elseBlock>
-              <i class="fas fa-user" style="width: 64px; height: 64px;"></i>
+              <i class="fas fa-user" style="width: 64px; height: 64px"></i>
             </ng-template>
             <div class="media-body">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">By:
+                  <h5 class="mt-0 mb-1 card-title" [ngSwitch]="review.postedAs">
+                    By:
                     <span *ngSwitchCase="'anonymous'">Anonymous</span>
-                    <span *ngSwitchCase="'realName'">{{ review.user?.firstName }} {{ review.user?.lastName }}</span>
-                    <span *ngSwitchCase="'nickName'">{{ review.user?.nickName }}</span>
+                    <span *ngSwitchCase="'realName'"
+                      >{{ review.user?.firstName }}
+                      {{ review.user?.lastName }}</span
+                    >
+                    <span *ngSwitchCase="'nickName'">{{
+                      review.user?.nickName
+                    }}</span>
                   </h5>
-                  <p>Review Rating: <app-star-rating [rating]="review.value" [max]="5" [readOnly]="true"></app-star-rating></p>
+                  <p>
+                    Review Rating:
+                    <app-star-rating
+                      [rating]="review.value"
+                      [max]="5"
+                      [readOnly]="true"
+                    ></app-star-rating>
+                  </p>
                   <p>{{ review.description }}</p>
                 </div>
               </div>

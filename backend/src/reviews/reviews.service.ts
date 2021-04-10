@@ -28,7 +28,7 @@ export class ReviewsService {
 
     const dbReview = await this.$prisma.review.findUnique({where, select}) as ReviewModel | null;
 
-    let review;
+    let review: any;
 
     if(dbReview) {
       review = new Review(dbReview);

@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 import { RateTitlePipe } from './star-rating/rate-title.pipe';
 import { UserService } from '../users/user.service';
+import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 
 describe('BookComponent', () => {
   let component: BookComponent;
@@ -20,7 +21,7 @@ describe('BookComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule, NgbModule, ReactiveFormsModule ],
       declarations: [ BookComponent, StarRatingComponent, RateTitlePipe ],
-      providers: [ ApiService, AuthorsService, UserService ]
+      providers: [ ApiService, AuthorsService, UserService, ShoppingCartService ]
     })
     .compileComponents();
   });

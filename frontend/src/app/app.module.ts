@@ -31,9 +31,13 @@ import { LogoutComponent } from './logout/logout.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { StorefrontModule } from './storefront/storefront.module';
+import { FlashMessageComponent } from './flash-message/flash-message.component';
+import { FlashMessageService } from './flash-message/flash-message.service';
 import { FlashMessageModule } from './flash-message/flash-message.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfilesModule } from './profile/profile.module';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { ShoppingCartService } from './shopping-cart/shopping-cart.service';
 
 @NgModule({
   imports: [
@@ -47,10 +51,10 @@ import { ProfilesModule } from './profile/profile.module';
     LoadingBarModule,
     StorageModule.forRoot({
       IDBDBName: 'geektext',
-      LSPrefix: 'geektext_'
+      LSPrefix: 'geektext_',
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: (process.env.NODE_ENV === 'production')
+      enabled: process.env.NODE_ENV === 'production',
     }),
     AppRoutingModule,
     AuthModule,
@@ -66,26 +70,28 @@ import { ProfilesModule } from './profile/profile.module';
     LoginComponent,
     LogoutComponent,
     NavigationComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ShoppingCartComponent,
   ],
   providers: [
     ApiService,
     LoggerService,
+    ShoppingCartService,
     {
       provide: ErrorHandler,
-      useClass: CustomErrorHandlerService
+      useClass: CustomErrorHandlerService,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
