@@ -74,9 +74,10 @@ export class BooksService {
     orderBy?: Prisma.BookOrderByInput;
     select?: Prisma.BookSelect;
   }): Promise<Book[]> {
-    const { skip, take, cursor, where, orderBy, select } = params;
+    let { skip, take, cursor, where, orderBy, select } = params;
 
     let averageRating = false;
+    let orderByAverageRating;
 
     // @ts-ignore
     if(select?.averageRating) {
