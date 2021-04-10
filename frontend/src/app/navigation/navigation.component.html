@@ -24,6 +24,11 @@
     <div *ngIf="isLoggedIn | async; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>
       <ul class="navbar-nav ml-auto" *ngIf="user">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/shopping-cart']"
+            >Shopping Cart</a
+          >
+        </li>
         <li class="nav-item dropdown" [ngClass]="{ 'show': !profileCollapsed }">
           <a class="nav-link dropdown-toggle" id="profile"
             (click)="toggleProfileCollapsed()"
@@ -37,22 +42,17 @@
             <a class="dropdown-item" id="logout" [routerLink]="['/logout']">Log Out</a>
           </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/shopping-cart']"
-            >Shopping Cart</a
-          >
-        </li>
       </ul>
     </ng-template>
     <ng-template #elseBlock>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" id="login" [routerLink]="['/login']">Login</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" [routerLink]="['/shopping-cart']"
             >Shopping Cart</a
           >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="login" [routerLink]="['/login']">Login</a>
         </li>
       </ul>
     </ng-template>
