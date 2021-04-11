@@ -9,7 +9,7 @@ import { Book } from '../models/book';
 import { Genre } from '../models/genre';
 import { Review } from '../models/review';
 import { UserService } from '../users/user.service';
-import { ShoppingCart } from '../models/shopping-cart';
+// import { ShoppingCart } from '../models/shopping-cart';
 import { ShoppingCartService } from '../shopping-cart/shopping-cart.service';
 
 @Component({
